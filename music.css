@@ -345,3 +345,42 @@ a { color: inherit; text-decoration: none; }
 
 .foot a { color: var(--grey); transition: color .18s; }
 .foot a:hover { color: var(--bone); }
+
+/* ── responsive ── */
+@media (max-width: 900px) {
+    .set-grid { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { gap: 20px; }
+    .shot { height: 260px; }
+}
+
+@media (max-width: 600px) {
+    :root { --gut: 20px; }
+
+    .nav { flex-direction: column; align-items: flex-start; gap: 10px; padding-top: 14px; padding-bottom: 14px; }
+    .nav-links { gap: 0; justify-content: space-between; width: 100%; }
+    .sec { scroll-margin-top: 92px; }
+
+    .set-grid { grid-template-columns: 1fr; gap: 24px; }
+    .hero { min-height: 68vh; }
+    .shot { height: 220px; }
+
+    .gig { grid-template-columns: 84px minmax(0, 1fr); row-gap: 4px; }
+    .gig-city { grid-column: 2; text-align: left; }
+
+    .foot { flex-direction: column; gap: 8px; }
+}
+
+/* ── reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+
+    *, *::before, *::after {
+        transition: none !important;
+        animation: none !important;
+    }
+
+    .tile:hover .tile-art,
+    .tile:focus-visible .tile-art {
+        transform: none;
+    }
+}
