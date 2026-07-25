@@ -80,10 +80,11 @@
             <h2>Photos</h2>
             <span class="count">Drag &rarr;</span>
         </div>
-        <div class="rail">
+        <div class="rail" tabindex="0" role="region" aria-label="Performance photos">
             <p class="photos-empty">Photographs go here.</p>
-            <!-- Add one figure per photo. Portrait and landscape both work: the rail
-                 fixes height and lets width follow the image's own aspect ratio.
+            <!-- Add one figure per photo, then DELETE the .photos-empty paragraph above.
+                 Portrait and landscape both work: the rail fixes height and lets width
+                 follow the image's own aspect ratio.
             <figure class="shot">
                 <img src="images/photos/FILENAME.jpg" alt="DESCRIBE THE SHOT" loading="lazy">
                 <figcaption>01</figcaption>
