@@ -208,3 +208,61 @@ a { color: inherit; text-decoration: none; }
 }
 
 .tile:hover .tile-meta { color: var(--violet); }
+
+/* ── photos ── */
+.sec--bleed { padding-left: 0; padding-right: 0; }
+.sec--bleed .sechead { padding: 0 var(--gut); }
+
+.rail {
+    display: flex;
+    align-items: stretch;
+    gap: 14px;
+    overflow-x: auto;
+    padding: 0 var(--gut) 16px;
+    scroll-snap-type: x proximity;
+    overscroll-behavior-x: contain;
+}
+
+.rail::-webkit-scrollbar { height: 3px; }
+.rail::-webkit-scrollbar-track { background: var(--panel); }
+.rail::-webkit-scrollbar-thumb { background: rgba(232, 228, 220, .2); }
+
+.shot {
+    flex: 0 0 auto;
+    position: relative;
+    height: 330px;
+    border-radius: 2px;
+    overflow: hidden;
+    background: var(--panel);
+    scroll-snap-align: start;
+}
+
+.shot img {
+    display: block;
+    height: 100%;
+    width: auto;
+    object-fit: cover;
+}
+
+.shot figcaption {
+    position: absolute;
+    left: 12px;
+    bottom: 10px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 9px;
+    letter-spacing: .2em;
+    color: rgba(232, 228, 220, .62);
+}
+
+.photos-empty {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--grey);
+    border: 1px dashed #4A4757;
+    border-radius: 2px;
+    padding: 54px 40px;
+    width: 100%;
+    text-align: center;
+}
