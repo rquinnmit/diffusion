@@ -104,6 +104,36 @@ a { color: inherit; text-decoration: none; }
     color: var(--bone);
 }
 
+/* Edge sweep: a violet outline of the wordmark, revealed through a narrow
+   travelling mask, so a lit hairline runs across the letterforms. Only the
+   stroke is ever lit — the bone fill underneath never changes.
+   The mask gradient's colour is irrelevant (an alpha mask reads only opacity);
+   it uses the bone triple rather than black to keep the stylesheet palette-pure.
+   The h1 carries aria-label="Diffusion", so the duplicated text in this
+   pseudo-element is never announced twice. */
+.hero-mark::after {
+    content: 'DIFFUSION';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    color: transparent;
+    -webkit-text-stroke: 1.1px var(--violet);
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(100deg, transparent 38%, rgba(232, 228, 220, 1) 50%, transparent 62%);
+            mask-image: linear-gradient(100deg, transparent 38%, rgba(232, 228, 220, 1) 50%, transparent 62%);
+    -webkit-mask-size: 320% 100%;
+            mask-size: 320% 100%;
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+    animation: edge-sweep 5.5s linear infinite;
+}
+
+@keyframes edge-sweep {
+    from { -webkit-mask-position: 170% 0;  mask-position: 170% 0; }
+    to   { -webkit-mask-position: -70% 0;  mask-position: -70% 0; }
+}
+
 .hero-tag {
     position: relative;
     margin-top: 24px;
@@ -390,4 +420,8 @@ a { color: inherit; text-decoration: none; }
     .tile:focus-visible .tile-art {
         transform: none;
     }
+
+    /* `animation: none` alone would freeze the sweep mid-travel, leaving a
+       violet outline stuck across part of the wordmark. Remove it outright. */
+    .hero-mark::after { display: none; }
 }
