@@ -122,9 +122,10 @@ a { color: inherit; text-decoration: none; }
    the fill in the same colour instead of shifting hue mid-animation — and so
    the stylesheet stays on its six palette values.
    Nothing here reflows: only mask-position, opacity and color animate, so the
-   wordmark's box never moves. It is the largest-contentful-paint element. */
+   wordmark's box never moves. It is the largest-contentful-paint element, which
+   is also why the whole entrance is 1s: the word is fully legible by 0.78s. */
 .hero-mark {
-    animation: mark-fill 2.2s ease-out both;
+    animation: mark-fill 1s ease-out both;
 }
 
 @keyframes mark-fill {
@@ -147,7 +148,7 @@ a { color: inherit; text-decoration: none; }
             mask-size: 200% 100%;
     -webkit-mask-repeat: no-repeat;
             mask-repeat: no-repeat;
-    animation: mark-draw 2.2s ease-out both;
+    animation: mark-draw 1s ease-out both;
 }
 
 @keyframes mark-draw {
