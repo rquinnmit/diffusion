@@ -108,7 +108,11 @@ a { color: inherit; text-decoration: none; }
 
 .hero-mark {
     position: relative;
-    font-size: clamp(2.5rem, 11vw, 5.75rem);
+    /* 13.5vw, not 16.5vw. The cap is a straight 1.5x (92px -> 138px), but the
+       slope is not: "DIFFUSION" measures 6.083em wide at wght800/wdth110, so a
+       1.5x slope overflows the viewport at 375px, 430px and 768px. 13.5vw is the
+       widest slope that clears every width from 320px up with real margin. */
+    font-size: clamp(2.5rem, 13.5vw, 8.625rem);
     line-height: .92;
     font-weight: 800;
     font-stretch: 110%;
@@ -192,9 +196,9 @@ a { color: inherit; text-decoration: none; }
 
 .hero-tag {
     position: relative;
-    margin-top: 24px;
+    margin-top: 36px;
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: 16.5px;
     letter-spacing: .34em;
     text-transform: uppercase;
     color: var(--grey);
@@ -207,9 +211,9 @@ a { color: inherit; text-decoration: none; }
 
 .hero-soc {
     position: relative;
-    margin-top: 28px;
+    margin-top: 42px;
     display: flex;
-    gap: 22px;
+    gap: 33px;
 }
 
 .hero-soc a { color: var(--bone); opacity: .82; transition: color .18s, opacity .18s; }
