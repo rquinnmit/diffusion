@@ -29,54 +29,24 @@
 </head>
 <body>
 
-    <!-- Wordmark entrance. The noise resolves into the letterforms over 3s, then
-         music.css drops the filter entirely so the h1 is not left permanently on
-         the CPU raster path. Filter primitive attributes cannot be animated from
-         CSS at all — SMIL is the only declarative way to do this, and Chrome's
-         2015 deprecation of it was suspended and never shipped.
-         baseFrequency is deliberately fixed: regenerating Perlin noise every
-         frame is the single most expensive thing this graph could do, so the
-         turbulence is computed once and only re-sampled. -->
+    <!-- Wordmark entrance. A static noise rendering of the word sits over the clean
+         text; a CSS mask wipes it away left to right while the complementary mask
+         reveals the clean text underneath, so the D resolves first and the N last.
+         The filter carries no SMIL and never changes, so it is rasterized once
+         rather than re-evaluated every frame — only mask-position animates. -->
     <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
-        <filter id="mark-resolve" x="-25%" y="-140%" width="150%" height="380%" color-interpolation-filters="sRGB">
+        <filter id="mark-noise" x="-25%" y="-140%" width="150%" height="380%" color-interpolation-filters="sRGB">
             <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" seed="5" stitchTiles="stitch" result="noise"/>
-
-            <!-- The region the grain may occupy: a heavily blurred blob of the word,
-                 tightening onto the glyphs. Clipping to the glyphs directly would make
-                 the noise wear the shape of the letters, and the word would be legible
-                 from the first frame. -->
-            <feGaussianBlur in="SourceGraphic" stdDeviation="26" result="blob">
-                <animate attributeName="stdDeviation" values="26;0" dur="3s" fill="freeze"/>
-            </feGaussianBlur>
+            <!-- grain fills a heavily blurred blob of the word, not the glyph outlines:
+                 clipping to the glyphs would make the noise wear the letters' shape -->
+            <feGaussianBlur in="SourceGraphic" stdDeviation="26" result="blob"/>
             <feColorMatrix in="noise" type="matrix"
                 values="0 0 0 0 .91  0 0 0 0 .89  0 0 0 0 .86  0 0 0 2.2 0" result="grainColor"/>
-            <feComposite in="grainColor" in2="blob" operator="in" result="grainClipped"/>
-            <feComponentTransfer in="grainClipped" result="grainFading">
-                <feFuncA type="linear" intercept="0" slope="1">
-                    <animate attributeName="slope" values="1;0" dur="3s" fill="freeze"/>
-                </feFuncA>
-            </feComponentTransfer>
-
-            <!-- The word itself: smeared and nearly transparent at first, resolving to
-                 sharp and opaque. Alpha starts at .15 rather than 0 so the element
-                 always paints something — an element that paints nothing risks not
-                 registering as a largest-contentful-paint candidate. -->
-            <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="soft">
-                <animate attributeName="stdDeviation" values="12;0" dur="3s" fill="freeze"/>
-            </feGaussianBlur>
-            <feDisplacementMap in="soft" in2="noise" scale="100" xChannelSelector="R" yChannelSelector="G" result="torn">
-                <animate attributeName="scale" values="100;0" dur="3s" fill="freeze"/>
-            </feDisplacementMap>
-            <feComponentTransfer in="torn" result="textRising">
-                <feFuncA type="linear" intercept="0" slope=".15">
-                    <animate attributeName="slope" values=".15;1" dur="3s" fill="freeze"/>
-                </feFuncA>
-            </feComponentTransfer>
-
-            <feMerge>
-                <feMergeNode in="textRising"/>
-                <feMergeNode in="grainFading"/>
-            </feMerge>
+            <feComposite in="grainColor" in2="blob" operator="in" result="grain"/>
+            <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="soft"/>
+            <feDisplacementMap in="soft" in2="noise" scale="100" xChannelSelector="R" yChannelSelector="G" result="torn"/>
+            <feComponentTransfer in="torn" result="tornDim"><feFuncA type="linear" slope=".35"/></feComponentTransfer>
+            <feMerge><feMergeNode in="tornDim"/><feMergeNode in="grain"/></feMerge>
         </filter>
     </svg>
 
@@ -91,7 +61,7 @@
     </nav>
 
     <header class="hero" id="top">
-        <h1 class="hero-mark" aria-label="Diffusion">DIFFUSION</h1>
+        <h1 class="hero-mark" aria-label="Diffusion"><span class="mark-text">DIFFUSION</span></h1>
         <p class="hero-tag">MIT <span aria-hidden="true">|</span> Boston, MA</p>
         <p class="hero-soc">
             <a href="https://soundcloud.com/rquinn1" target="_blank" rel="noopener" aria-label="SoundCloud">
