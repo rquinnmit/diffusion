@@ -265,7 +265,10 @@ a { color: inherit; text-decoration: none; }
     gap: 14px;
     overflow-x: auto;
     padding: 0 var(--edge) 16px;
-    scroll-snap-type: x proximity;
+    /* No scroll-snap here on purpose. The photos are mixed crops, so the snap
+       points sit at irregular intervals; with only ~300px of scrollable width
+       the second point is further away than the rail can travel, so proximity
+       snapping dragged the view back to the start on every pause. */
     overscroll-behavior-x: contain;
 }
 
@@ -280,7 +283,6 @@ a { color: inherit; text-decoration: none; }
     border-radius: 2px;
     overflow: hidden;
     background: var(--panel);
-    scroll-snap-align: start;
 }
 
 .shot img {
