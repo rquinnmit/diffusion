@@ -132,7 +132,7 @@ a { color: inherit; text-decoration: none; }
    3.2s rather than 3s so the SMIL animations have frozen at their identity state
    before the filter is pulled; at that point removing it changes nothing visible.
 
-   Below 900px the filter is skipped entirely — see the responsive block. The
+   Below 600px the filter is skipped entirely — see the responsive block. The
    displacement scale is an absolute length, so on a narrow viewport it is
    enormous relative to the glyphs; and this graph is CPU-rasterized every frame,
    which is exactly what a phone should not be asked to do on load. */
@@ -458,17 +458,19 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 900px) {
-    /* No noise entrance below this width: the displacement scale is absolute, so
-       it is enormous relative to smaller glyphs, and the graph is CPU-rasterized
-       every frame. The wordmark simply renders as text. */
-    .hero-mark { animation: none; filter: none; }
-
     .set-grid { grid-template-columns: repeat(2, 1fr); }
     .nav-links { gap: 20px; }
     .shot { height: 260px; }
 }
 
 @media (max-width: 600px) {
+    /* No noise entrance on phones: the displacement scale is an absolute length,
+       so it is enormous relative to small glyphs, and this graph is CPU-rasterized
+       every frame. Deliberately NOT a wider cutoff — at 900px it also killed the
+       effect on unmaximized laptop windows and on any viewport shrunk by docked
+       devtools, which is most of the times someone would be looking for it. */
+    .hero-mark { animation: none; filter: none; }
+
     :root { --gut: 20px; }
 
     .nav { flex-direction: column; align-items: flex-start; gap: 10px; padding-top: 14px; padding-bottom: 14px; }
