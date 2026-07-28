@@ -54,7 +54,10 @@ a { color: inherit; text-decoration: none; }
     justify-content: space-between;
     align-items: center;
     gap: 20px;
-    padding: 20px var(--edge);
+    /* Gutter, not --edge. The nav is a full-bleed bar: its background and border
+       already span the viewport, so insetting its contents to the content measure
+       left the wordmark and links floating well inside the bar on wide screens. */
+    padding: 20px var(--gut);
     background: rgba(8, 7, 12, .86);
     backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--line);
