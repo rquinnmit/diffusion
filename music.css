@@ -13,6 +13,7 @@
     --violet: #6E64FF;
 
     --gut: 40px;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -62,7 +63,7 @@ a { color: inherit; text-decoration: none; }
 .nav-links { display: flex; gap: 30px; }
 
 .nav-links a {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-family: var(--mono);
     font-size: 10.5px;
     letter-spacing: .24em;
     text-transform: uppercase;
@@ -82,7 +83,6 @@ a { color: inherit; text-decoration: none; }
     justify-content: center;
     text-align: center;
     padding: 80px var(--gut);
-    scroll-margin-top: 0;
 }
 
 .hero::before {
@@ -106,7 +106,7 @@ a { color: inherit; text-decoration: none; }
 .hero-tag {
     position: relative;
     margin-top: 24px;
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-family: var(--mono);
     font-size: 11px;
     letter-spacing: .34em;
     text-transform: uppercase;
@@ -130,6 +130,9 @@ a { color: inherit; text-decoration: none; }
 .hero-soc svg { display: block; }
 
 /* ── section shell ── */
+/* scroll-margin-top ≈ the sticky nav's rendered height (20+20 padding + ~22.5px
+   line box + 1px border ≈ 63.5px). .sec's 74px padding-top absorbs the rounding,
+   so anchored headings clear the nav. Raised to 92px at 600px where nav restacks. */
 .sec {
     padding: 74px var(--gut);
     border-top: 1px solid var(--line);
@@ -145,7 +148,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .sechead h2 {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-family: var(--mono);
     font-size: 11px;
     font-weight: 500;
     letter-spacing: .34em;
@@ -154,7 +157,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .sechead .count {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-family: var(--mono);
     font-size: 10px;
     letter-spacing: .2em;
     text-transform: uppercase;
@@ -199,7 +202,7 @@ a { color: inherit; text-decoration: none; }
 .tile-meta {
     display: block;
     margin-top: 5px;
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-family: var(--mono);
     font-size: 10px;
     letter-spacing: .16em;
     text-transform: uppercase;
@@ -207,7 +210,8 @@ a { color: inherit; text-decoration: none; }
     transition: color .18s;
 }
 
-.tile:hover .tile-meta { color: var(--violet); }
+.tile:hover .tile-meta,
+.tile:focus-visible .tile-meta { color: var(--violet); }
 
 /* ── photos ── */
 /* .sec--bleed must stay AFTER .sec in this file. Both are single-class selectors,
@@ -250,14 +254,15 @@ a { color: inherit; text-decoration: none; }
     position: absolute;
     left: 12px;
     bottom: 10px;
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-family: var(--mono);
     font-size: 9px;
     letter-spacing: .2em;
     color: rgba(232, 228, 220, .62);
+    text-shadow: 0 1px 3px rgba(8, 7, 12, .9);
 }
 
 .photos-empty {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-family: var(--mono);
     font-size: 11px;
     letter-spacing: .2em;
     text-transform: uppercase;
@@ -281,7 +286,7 @@ a { color: inherit; text-decoration: none; }
 
 .gig-date,
 .gig-city {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-family: var(--mono);
     font-size: 10px;
     letter-spacing: .15em;
     text-transform: uppercase;
@@ -293,7 +298,7 @@ a { color: inherit; text-decoration: none; }
 .gig-venue { font-size: 15px; font-weight: 500; color: var(--bone); }
 
 .played-empty {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-family: var(--mono);
     font-size: 11px;
     letter-spacing: .2em;
     text-transform: uppercase;
@@ -308,8 +313,9 @@ a { color: inherit; text-decoration: none; }
 .book { text-align: center; padding-top: 96px; padding-bottom: 96px; }
 
 .book-label {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-family: var(--mono);
     font-size: 11px;
+    font-weight: 500;
     letter-spacing: .34em;
     text-transform: uppercase;
     color: var(--grey);
@@ -336,7 +342,7 @@ a { color: inherit; text-decoration: none; }
     gap: 16px;
     padding: 24px var(--gut) 36px;
     border-top: 1px solid var(--line);
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-family: var(--mono);
     font-size: 9.5px;
     letter-spacing: .2em;
     text-transform: uppercase;
