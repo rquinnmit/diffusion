@@ -120,47 +120,29 @@ a { color: inherit; text-decoration: none; }
     color: var(--bone);
 }
 
-/* Entrance, plays once on load: the wordmark's outline draws left to right in
-   bone, the fill floods in behind it, the outline retires, and the ambient edge
-   sweep below takes over. Bone rather than violet so the outline hands off to
-   the fill in the same colour instead of shifting hue mid-animation — and so
-   the stylesheet stays on its six palette values.
-   Nothing here reflows: only mask-position, opacity and color animate, so the
-   wordmark's box never moves.
-   The ambient sweep below is delayed by exactly this duration. Both effects draw
-   a masked outline over the same letterforms, so running them together produced
-   two outlines crossing each other; they are sequenced instead. */
+/* Entrance, plays once on load: the wordmark resolves out of a field of noise.
+   The filter graph lives in index.html — filter primitive attributes cannot be
+   animated from CSS, so SMIL drives it there and CSS only applies and then
+   removes the filter.
+
+   step-end holds `filter: url(#mark-resolve)` for 3.2s, then drops to `none`.
+   The removal matters: filtered text cannot use the GPU compositor path, so a
+   filter left in place would keep the h1 on the CPU raster path for the life of
+   the page — and the ambient sweep below would then repaint through it forever.
+   3.2s rather than 3s so the SMIL animations have frozen at their identity state
+   before the filter is pulled; at that point removing it changes nothing visible.
+
+   Below 900px the filter is skipped entirely — see the responsive block. The
+   displacement scale is an absolute length, so on a narrow viewport it is
+   enormous relative to the glyphs; and this graph is CPU-rasterized every frame,
+   which is exactly what a phone should not be asked to do on load. */
 .hero-mark {
-    animation: mark-fill 5s ease-out both;
+    animation: mark-unfilter 3.2s step-end forwards;
 }
 
-@keyframes mark-fill {
-    0%, 32%   { color: transparent; }
-    78%, 100% { color: var(--bone); }
-}
-
-.hero-mark::before {
-    content: 'DIFFUSION';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    color: transparent;
-    -webkit-text-stroke: 1.4px var(--violet);
-    pointer-events: none;
-    -webkit-mask-image: linear-gradient(90deg, var(--bone) 50%, transparent 50%);
-            mask-image: linear-gradient(90deg, var(--bone) 50%, transparent 50%);
-    -webkit-mask-size: 200% 100%;
-            mask-size: 200% 100%;
-    -webkit-mask-repeat: no-repeat;
-            mask-repeat: no-repeat;
-    animation: mark-draw 5s ease-out both;
-}
-
-@keyframes mark-draw {
-    0%   { -webkit-mask-position: 100% 0; mask-position: 100% 0; opacity: 1; }
-    55%  { -webkit-mask-position: 0% 0;   mask-position: 0% 0;   opacity: 1; }
-    100% { -webkit-mask-position: 0% 0;   mask-position: 0% 0;   opacity: 0; }
+@keyframes mark-unfilter {
+    from { filter: url(#mark-resolve); }
+    to   { filter: none; }
 }
 
 /* Edge sweep: a violet outline of the wordmark, revealed through a narrow
@@ -170,7 +152,9 @@ a { color: inherit; text-decoration: none; }
    it uses the bone triple rather than black to keep the stylesheet palette-pure.
    The h1 carries aria-label="Diffusion", so the duplicated text in this
    pseudo-element is never announced twice.
-   Delayed to start when the entrance ends — see the entrance block above. */
+   Delayed to start when the entrance ends, with fill-mode backwards so it
+   holds its opening frame during the delay instead of rendering its base
+   mask position. See the entrance block above. */
 .hero-mark::after {
     content: 'DIFFUSION';
     position: absolute;
@@ -186,7 +170,7 @@ a { color: inherit; text-decoration: none; }
             mask-size: 320% 100%;
     -webkit-mask-repeat: no-repeat;
             mask-repeat: no-repeat;
-    animation: edge-sweep 5.5s linear 5s infinite;
+    animation: edge-sweep 5.5s linear 3.2s infinite backwards;
 }
 
 @keyframes edge-sweep {
@@ -474,6 +458,11 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 900px) {
+    /* No noise entrance below this width: the displacement scale is absolute, so
+       it is enormous relative to smaller glyphs, and the graph is CPU-rasterized
+       every frame. The wordmark simply renders as text. */
+    .hero-mark { animation: none; filter: none; }
+
     .set-grid { grid-template-columns: repeat(2, 1fr); }
     .nav-links { gap: 20px; }
     .shot { height: 260px; }
@@ -514,11 +503,11 @@ a { color: inherit; text-decoration: none; }
         transform: none;
     }
 
-    /* `animation: none` alone would freeze the sweep mid-travel, leaving a
-       violet outline stuck across part of the wordmark, and would strand the
-       entrance outline fully drawn on top of the fill. Remove both outright.
-       The h1's own colour falls back to the base rule's var(--bone) once its
-       animation is off, so the wordmark is simply there, immediately. */
-    .hero-mark::after,
-    .hero-mark::before { display: none; }
+    /* `animation: none` alone would freeze the sweep mid-travel, leaving a violet
+       outline stuck across part of the wordmark, and would strand the entrance
+       filter at its opening frame — a permanent field of noise where the wordmark
+       should be. Remove the sweep and the filter outright; the h1 then simply
+       renders as plain text, immediately. */
+    .hero-mark::after { display: none; }
+    .hero-mark { filter: none; }
 }
