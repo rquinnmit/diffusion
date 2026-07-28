@@ -20,7 +20,7 @@
        the plain gutter once the viewport is narrower than --page, so nothing
        changes on laptops and phones. It resolves against the element it is used
        on, so it belongs on full-width blocks only. */
-    --page: 1240px;
+    --page: 1480px;
     --edge: max(var(--gut), calc((100% - var(--page)) / 2));
     --mono: 'JetBrains Mono', ui-monospace, monospace;
 }
@@ -207,7 +207,7 @@ a { color: inherit; text-decoration: none; }
 /* ── sets ── */
 .set-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 28px 24px;
 }
 
@@ -393,6 +393,13 @@ a { color: inherit; text-decoration: none; }
 .foot a:hover { color: var(--bone); }
 
 /* ── responsive ── */
+/* Column ladder: 4 -> 3 -> 2 -> 1. These blocks must stay in descending
+   max-width order; they are equal specificity, so a later block wins and
+   reordering would strand the grid at the wrong count. */
+@media (max-width: 1200px) {
+    .set-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
 @media (max-width: 900px) {
     .set-grid { grid-template-columns: repeat(2, 1fr); }
     .nav-links { gap: 20px; }
