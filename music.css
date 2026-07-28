@@ -273,62 +273,75 @@ a { color: inherit; text-decoration: none; }
 /* Entrance, plays once on load: the wordmark resolves out of noise, left to
    right — the D clears first, the N last.
 
-   Two layers with complementary masks. .mark-text is the real, clean text and
-   its mask brings opacity in from the left; .hero-mark::before is a static
-   noise rendering of the same word and its mask takes opacity away from the
-   left. Between them a soft diffusion front travels across the word.
+   Three stacked renderings of the word, each revealed through its own mask:
+   full noise on top, half-resolved beneath it, clean text at the bottom. The
+   masks are offset from one another, so what travels across the word is a band
+   of partial resolution — clean behind it, half-formed inside it, pure noise
+   ahead of it. A two-layer version could only crossfade between "noise" and
+   "clean"; the middle layer is what gives genuinely intermediate states.
 
-   The mask is on .mark-text rather than on the h1 because a mask set on the h1
-   would also mask its pseudo-elements, and the two layers need opposite masks.
+   Each mask is 300% wide, so its element sees one third at a time: at position
+   100% the right third, at 0% the left third. Both filters are static, so they
+   rasterize once — only mask-position animates.
 
-   The filter itself never changes — no SMIL — so it is rasterized once instead
-   of re-evaluated every frame. Only mask-position animates, which is the cheap
-   part. This is materially lighter than animating filter primitives.
+   The clean layer's mask is on .mark-text and the middle layer's is on
+   .mark-mid::before. .mark-mid itself carries no mask deliberately: a mask on it
+   would also mask .mark-text inside it, and the layers need independent masks.
 
-   The mask is 300% wide, so the element sees one third of it at a time: at
-   position 100% it sees the right third, at 0% the left third. The 36%-to-58%
-   ramp is therefore about two thirds of the word wide — a soft front rather
-   than a hard wipe. */
-.mark-text {
-    display: block;
-    -webkit-mask-image: linear-gradient(90deg, #E8E4DC 0%, #E8E4DC 36%, transparent 58%, transparent 100%);
-            mask-image: linear-gradient(90deg, #E8E4DC 0%, #E8E4DC 36%, transparent 58%, transparent 100%);
-    -webkit-mask-size: 300% 100%;
-            mask-size: 300% 100%;
-    -webkit-mask-repeat: no-repeat;
-            mask-repeat: no-repeat;
-    animation: mark-reveal 3s ease-out both;
-}
-
-@keyframes mark-reveal {
-    from { -webkit-mask-position: 100% 0; mask-position: 100% 0; }
-    to   { -webkit-mask-position: 0% 0;   mask-position: 0% 0; }
-}
-
-.hero-mark::before {
+   The first 12% holds at pure noise before the front sets off, so it reads as
+   starting from noise rather than already resolving. */
+.hero-mark::before,
+.mark-mid::before {
     content: 'DIFFUSION';
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     color: var(--bone);
-    filter: url(#mark-noise);
     pointer-events: none;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 36%, #E8E4DC 58%, #E8E4DC 100%);
-            mask-image: linear-gradient(90deg, transparent 0%, transparent 36%, #E8E4DC 58%, #E8E4DC 100%);
     -webkit-mask-size: 300% 100%;
             mask-size: 300% 100%;
     -webkit-mask-repeat: no-repeat;
             mask-repeat: no-repeat;
-    /* the second animation retires the layer outright once it is spent, so the
-       filter is not left rasterizing behind a fully transparent mask */
-    animation: mark-dissolve 3s ease-out both,
-               mark-retire 3.05s step-end both;
 }
 
-@keyframes mark-dissolve {
-    from { -webkit-mask-position: 100% 0; mask-position: 100% 0; }
-    to   { -webkit-mask-position: 0% 0;   mask-position: 0% 0; }
+/* top: full noise, cleared from the left */
+.hero-mark::before {
+    z-index: 3;
+    filter: url(#mark-noise-full);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 52%, #E8E4DC 66%, #E8E4DC 100%);
+            mask-image: linear-gradient(90deg, transparent 0%, transparent 52%, #E8E4DC 66%, #E8E4DC 100%);
+    animation: mark-front 3.4s cubic-bezier(.35,0,.5,1) both,
+               mark-retire 3.45s step-end both;
+}
+
+/* middle: half-resolved, visible only as a travelling band */
+.mark-mid::before {
+    z-index: 2;
+    filter: url(#mark-noise-mid);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 36%, #E8E4DC 48%, #E8E4DC 54%, transparent 66%, transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0%, transparent 36%, #E8E4DC 48%, #E8E4DC 54%, transparent 66%, transparent 100%);
+    animation: mark-front 3.4s cubic-bezier(.35,0,.5,1) both,
+               mark-retire 3.45s step-end both;
+}
+
+/* bottom: the real text, arriving from the left */
+.mark-text {
+    display: block;
+    position: relative;
+    z-index: 1;
+    -webkit-mask-image: linear-gradient(90deg, #E8E4DC 0%, #E8E4DC 34%, transparent 50%, transparent 100%);
+            mask-image: linear-gradient(90deg, #E8E4DC 0%, #E8E4DC 34%, transparent 50%, transparent 100%);
+    -webkit-mask-size: 300% 100%;
+            mask-size: 300% 100%;
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+    animation: mark-front 3.4s cubic-bezier(.35,0,.5,1) both;
+}
+
+@keyframes mark-front {
+    0%, 12% { -webkit-mask-position: 100% 0; mask-position: 100% 0; }
+    100%    { -webkit-mask-position: 0% 0;   mask-position: 0% 0; }
 }
 
 @keyframes mark-retire {
@@ -660,7 +673,7 @@ a { color: inherit; text-decoration: none; }
        every frame. Deliberately NOT a wider cutoff — at 900px it also killed the
        effect on unmaximized laptop windows and on any viewport shrunk by docked
        devtools, which is most of the times someone would be looking for it. */
-    .hero-mark::before { display: none; }
+    .hero-mark::before, .mark-mid::before { display: none; }
     .mark-text { mask-image: none; -webkit-mask-image: none; animation: none; }
 
     :root { --gut: 20px; }
@@ -703,6 +716,6 @@ a { color: inherit; text-decoration: none; }
        should be. Remove the sweep and the filter outright; the h1 then simply
        renders as plain text, immediately. */
     .hero-mark::after,
-    .hero-mark::before { display: none; }
+    .hero-mark::before, .mark-mid::before { display: none; }
     .mark-text { mask-image: none; -webkit-mask-image: none; animation: none; }
 }

@@ -29,23 +29,36 @@
 </head>
 <body>
 
-    <!-- Wordmark entrance. A static noise rendering of the word sits over the clean
-         text; a CSS mask wipes it away left to right while the complementary mask
-         reveals the clean text underneath, so the D resolves first and the N last.
-         The filter carries no SMIL and never changes, so it is rasterized once
-         rather than re-evaluated every frame — only mask-position animates. -->
+    <!-- Wordmark entrance. Three static renderings of the word are stacked — full
+         noise, half-resolved, and clean — each revealed through its own mask. The
+         masks are offset so a band of partial resolution travels left to right:
+         behind it the word is clean, inside it half-formed, ahead of it pure noise.
+         Nothing here animates, so both filters are rasterized once. Only the three
+         mask positions move, which is the cheap part. -->
     <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
-        <filter id="mark-noise" x="-25%" y="-140%" width="150%" height="380%" color-interpolation-filters="sRGB">
+        <filter id="mark-noise-full" x="-25%" y="-140%" width="150%" height="380%" color-interpolation-filters="sRGB">
             <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" seed="5" stitchTiles="stitch" result="noise"/>
-            <!-- grain fills a heavily blurred blob of the word, not the glyph outlines:
-                 clipping to the glyphs would make the noise wear the letters' shape -->
             <feGaussianBlur in="SourceGraphic" stdDeviation="26" result="blob"/>
             <feColorMatrix in="noise" type="matrix"
-                values="0 0 0 0 .91  0 0 0 0 .89  0 0 0 0 .86  0 0 0 2.2 0" result="grainColor"/>
+                values="0 0 0 0 .91  0 0 0 0 .89  0 0 0 0 .86  0 0 0 2.4 0" result="grainColor"/>
             <feComposite in="grainColor" in2="blob" operator="in" result="grain"/>
             <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="soft"/>
             <feDisplacementMap in="soft" in2="noise" scale="100" xChannelSelector="R" yChannelSelector="G" result="torn"/>
-            <feComponentTransfer in="torn" result="tornDim"><feFuncA type="linear" slope=".35"/></feComponentTransfer>
+            <feComponentTransfer in="torn" result="tornDim"><feFuncA type="linear" slope=".3"/></feComponentTransfer>
+            <feMerge><feMergeNode in="tornDim"/><feMergeNode in="grain"/></feMerge>
+        </filter>
+
+        <!-- half way: less blur, less displacement, lighter grain. This is the state
+             the original uniform version passed through in the middle of its run. -->
+        <filter id="mark-noise-mid" x="-25%" y="-140%" width="150%" height="380%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" seed="5" stitchTiles="stitch" result="noise"/>
+            <feGaussianBlur in="SourceGraphic" stdDeviation="9" result="blob"/>
+            <feColorMatrix in="noise" type="matrix"
+                values="0 0 0 0 .91  0 0 0 0 .89  0 0 0 0 .86  0 0 0 1.1 0" result="grainColor"/>
+            <feComposite in="grainColor" in2="blob" operator="in" result="grain"/>
+            <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="soft"/>
+            <feDisplacementMap in="soft" in2="noise" scale="34" xChannelSelector="R" yChannelSelector="G" result="torn"/>
+            <feComponentTransfer in="torn" result="tornDim"><feFuncA type="linear" slope=".72"/></feComponentTransfer>
             <feMerge><feMergeNode in="tornDim"/><feMergeNode in="grain"/></feMerge>
         </filter>
     </svg>
@@ -61,7 +74,7 @@
     </nav>
 
     <header class="hero" id="top">
-        <h1 class="hero-mark" aria-label="Diffusion"><span class="mark-text">DIFFUSION</span></h1>
+        <h1 class="hero-mark" aria-label="Diffusion"><span class="mark-mid"><span class="mark-text">DIFFUSION</span></span></h1>
         <p class="hero-tag">MIT <span aria-hidden="true">|</span> Boston, MA</p>
         <p class="hero-soc">
             <a href="https://soundcloud.com/rquinn1" target="_blank" rel="noopener" aria-label="SoundCloud">
