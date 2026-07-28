@@ -272,7 +272,11 @@ a { color: inherit; text-decoration: none; }
        points sit at irregular intervals; with only ~300px of scrollable width
        the second point is further away than the rail can travel, so proximity
        snapping dragged the view back to the start on every pause. */
-    overscroll-behavior-x: contain;
+    /* `none`, not `contain`. Both stop scroll chaining to the page, but `contain`
+       still allows the local rubber-band, and with only ~295px of travel a
+       trackpad flick hits the limit instantly and springs back — indistinguishable
+       from the snap bug this rail already had once. */
+    overscroll-behavior-x: none;
 }
 
 .rail::-webkit-scrollbar { height: 3px; }
@@ -320,12 +324,28 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ── played ── */
+/* The header row shares the gig grid, so PLAYED sits over the date column and
+   LOCATION exactly over the city column. It was previously a flex row with
+   space-between while the rows below were a 3-column grid, so the right-hand
+   label missed the city column by the width of .gig's horizontal padding. */
+.sechead--cols {
+    display: grid;
+    grid-template-columns: 104px minmax(0, 1fr) 140px;
+    gap: 18px;
+}
+
+.sechead--cols .count {
+    grid-column: 3;
+    text-align: right;
+}
+
 .gig {
     display: grid;
     grid-template-columns: 104px minmax(0, 1fr) 140px;
     gap: 18px;
     align-items: baseline;
-    padding: 14px 2px;
+    /* No horizontal padding — it would offset every cell from the header above. */
+    padding: 14px 0;
     border-bottom: 1px solid var(--line);
 }
 
@@ -423,6 +443,11 @@ a { color: inherit; text-decoration: none; }
 
     .gig { grid-template-columns: 84px minmax(0, 1fr); row-gap: 4px; }
     .gig-city { grid-column: 2; text-align: left; }
+
+    /* The rows drop to two columns and move the city onto a second line, so the
+       three-column header no longer has anything to align to. Back to flex. */
+    .sechead--cols { display: flex; justify-content: space-between; }
+    .sechead--cols .count { grid-column: auto; }
 
     .foot { flex-direction: column; gap: 8px; }
 }
