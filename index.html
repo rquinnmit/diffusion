@@ -38,10 +38,16 @@
     <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
         <filter id="mark-noise-full" x="-25%" y="-140%" width="150%" height="380%" color-interpolation-filters="sRGB">
             <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" seed="5" stitchTiles="stitch" result="noise"/>
-            <feGaussianBlur in="SourceGraphic" stdDeviation="26" result="blob"/>
+            <!-- The grain is clipped to a lightly blurred copy of the word, at 12px.
+                 Clipping to the glyphs themselves (0px) leaves crisp letter edges and
+                 the word reads from the first frame; blurring to 26px merges it into a
+                 rectangle and puts a visible box around the lettering. 12px is the
+                 value that follows the word's shape without squaring off and without
+                 being legible — checked by rendering 0/7/12/18/26 side by side. -->
+            <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="clip"/>
             <feColorMatrix in="noise" type="matrix"
                 values="0 0 0 0 .91  0 0 0 0 .89  0 0 0 0 .86  0 0 0 2.4 0" result="grainColor"/>
-            <feComposite in="grainColor" in2="blob" operator="in" result="grain"/>
+            <feComposite in="grainColor" in2="clip" operator="in" result="grain"/>
             <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="soft"/>
             <feDisplacementMap in="soft" in2="noise" scale="100" xChannelSelector="R" yChannelSelector="G" result="torn"/>
             <feComponentTransfer in="torn" result="tornDim"><feFuncA type="linear" slope=".3"/></feComponentTransfer>
@@ -52,10 +58,10 @@
              the original uniform version passed through in the middle of its run. -->
         <filter id="mark-noise-mid" x="-25%" y="-140%" width="150%" height="380%" color-interpolation-filters="sRGB">
             <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" seed="5" stitchTiles="stitch" result="noise"/>
-            <feGaussianBlur in="SourceGraphic" stdDeviation="9" result="blob"/>
+            <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="clip"/>
             <feColorMatrix in="noise" type="matrix"
                 values="0 0 0 0 .91  0 0 0 0 .89  0 0 0 0 .86  0 0 0 1.1 0" result="grainColor"/>
-            <feComposite in="grainColor" in2="blob" operator="in" result="grain"/>
+            <feComposite in="grainColor" in2="clip" operator="in" result="grain"/>
             <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="soft"/>
             <feDisplacementMap in="soft" in2="noise" scale="34" xChannelSelector="R" yChannelSelector="G" result="torn"/>
             <feComponentTransfer in="torn" result="tornDim"><feFuncA type="linear" slope=".72"/></feComponentTransfer>
