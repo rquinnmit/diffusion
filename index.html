@@ -26,6 +26,13 @@
     <!-- Only gstatic: the @font-face rules are inlined in music.css, so no
          render-blocking stylesheet request to fonts.googleapis.com. -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Preloaded so the real faces are present at first paint. Without this the
+         fallback renders first and the wordmark visibly jumps to its real width
+         when Archivo arrives — mid-entrance, which is worse than usual. -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="https://fonts.gstatic.com/s/archivo/v25/k3kQo8UDI-1M0wlSfdnoLmvDIaI.woff2">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+          href="https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwgknk-4.woff2">
 </head>
 <body>
 
@@ -36,15 +43,18 @@
          Nothing here animates, so both filters are rasterized once. Only the three
          mask positions move, which is the cheap part. -->
     <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
-        <filter id="mark-noise-full" x="-25%" y="-140%" width="150%" height="380%" color-interpolation-filters="sRGB">
+        <filter id="mark-noise-full" x="-30%" y="-165%" width="160%" height="430%" color-interpolation-filters="sRGB">
             <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" seed="5" stitchTiles="stitch" result="noise"/>
-            <!-- The grain is clipped to a lightly blurred copy of the word, at 12px.
-                 Clipping to the glyphs themselves (0px) leaves crisp letter edges and
-                 the word reads from the first frame; blurring to 26px merges it into a
-                 rectangle and puts a visible box around the lettering. 12px is the
-                 value that follows the word's shape without squaring off and without
-                 being legible — checked by rendering 0/7/12/18/26 side by side. -->
-            <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="clip"/>
+            <!-- The grain's clip region. Blurring the word enough to hide the letters
+                 also merges the gaps between them into one horizontal blob — that blob
+                 IS the box that was visible around the lettering, and no blur radius
+                 avoids it (verified: a grain-only render with no smeared text still had
+                 it). So the blurred blob is then displaced by a second, much coarser
+                 turbulence, which breaks its edge into a ragged cloud. Checked by
+                 rendering five blur/displacement pairs side by side. -->
+            <feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="2" seed="9" result="coarse"/>
+            <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blob"/>
+            <feDisplacementMap in="blob" in2="coarse" scale="110" xChannelSelector="R" yChannelSelector="G" result="clip"/>
             <feColorMatrix in="noise" type="matrix"
                 values="0 0 0 0 .91  0 0 0 0 .89  0 0 0 0 .86  0 0 0 2.4 0" result="grainColor"/>
             <feComposite in="grainColor" in2="clip" operator="in" result="grain"/>
@@ -56,9 +66,11 @@
 
         <!-- half way: less blur, less displacement, lighter grain. This is the state
              the original uniform version passed through in the middle of its run. -->
-        <filter id="mark-noise-mid" x="-25%" y="-140%" width="150%" height="380%" color-interpolation-filters="sRGB">
+        <filter id="mark-noise-mid" x="-30%" y="-165%" width="160%" height="430%" color-interpolation-filters="sRGB">
             <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" seed="5" stitchTiles="stitch" result="noise"/>
-            <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="clip"/>
+            <feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="2" seed="9" result="coarse"/>
+            <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blob"/>
+            <feDisplacementMap in="blob" in2="coarse" scale="45" xChannelSelector="R" yChannelSelector="G" result="clip"/>
             <feColorMatrix in="noise" type="matrix"
                 values="0 0 0 0 .91  0 0 0 0 .89  0 0 0 0 .86  0 0 0 1.1 0" result="grainColor"/>
             <feComposite in="grainColor" in2="clip" operator="in" result="grain"/>
