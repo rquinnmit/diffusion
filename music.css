@@ -305,14 +305,31 @@ a { color: inherit; text-decoration: none; }
             mask-repeat: no-repeat;
 }
 
-/* top: full noise, cleared from the left */
+/* top: a field of pure noise, cleared from the left.
+   Three mask layers intersected: the travelling wipe, plus a vertical and a
+   horizontal feather so the field has no hard edge anywhere. Without the
+   feathers the noise is a plain rectangle, which is the box that kept showing
+   up around the lettering. Only the first layer's position animates. */
 .hero-mark::before {
     z-index: 3;
     filter: url(#mark-noise-full);
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 52%, #E8E4DC 66%, #E8E4DC 100%);
-            mask-image: linear-gradient(90deg, transparent 0%, transparent 52%, #E8E4DC 66%, #E8E4DC 100%);
-    animation: mark-front 3.4s cubic-bezier(.35,0,.5,1) both,
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 52%, #E8E4DC 66%, #E8E4DC 100%),
+                        linear-gradient(180deg, transparent 0%, #E8E4DC 20%, #E8E4DC 80%, transparent 100%),
+                        linear-gradient(90deg, transparent 0%, #E8E4DC 8%, #E8E4DC 92%, transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0%, transparent 52%, #E8E4DC 66%, #E8E4DC 100%),
+                        linear-gradient(180deg, transparent 0%, #E8E4DC 20%, #E8E4DC 80%, transparent 100%),
+                        linear-gradient(90deg, transparent 0%, #E8E4DC 8%, #E8E4DC 92%, transparent 100%);
+    -webkit-mask-size: 300% 100%, 100% 100%, 100% 100%;
+            mask-size: 300% 100%, 100% 100%, 100% 100%;
+    -webkit-mask-composite: source-in;
+            mask-composite: intersect;
+    animation: mark-front-noise 3.4s cubic-bezier(.35,0,.5,1) both,
                mark-retire 3.45s step-end both;
+}
+
+@keyframes mark-front-noise {
+    0%, 12% { -webkit-mask-position: 100% 0, 0 0, 0 0; mask-position: 100% 0, 0 0, 0 0; }
+    100%    { -webkit-mask-position: 0% 0, 0 0, 0 0;   mask-position: 0% 0, 0 0, 0 0; }
 }
 
 /* middle: half-resolved, visible only as a travelling band */
@@ -344,9 +361,16 @@ a { color: inherit; text-decoration: none; }
     100%    { -webkit-mask-position: 0% 0;   mask-position: 0% 0; }
 }
 
+/* Retiring these layers needs opacity and display, NOT visibility. The noise
+   filter is pure feTurbulence — it generates its output without reading
+   SourceGraphic — so `visibility: hidden` empties the element's own paint while
+   the filter keeps emitting noise, and in that state the mask stops suppressing
+   it. The result was a hard-edged noise rectangle appearing after the entrance
+   finished. opacity applies to the filtered result, so it hides it for certain;
+   display:none additionally stops the filter rasterizing at all. */
 @keyframes mark-retire {
-    from { visibility: visible; }
-    to   { visibility: hidden; }
+    from { opacity: 1; display: block; }
+    to   { opacity: 0; display: none; }
 }
 
 /* Edge sweep: a violet outline of the wordmark, revealed through a narrow

@@ -43,25 +43,15 @@
          Nothing here animates, so both filters are rasterized once. Only the three
          mask positions move, which is the cheap part. -->
     <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
-        <filter id="mark-noise-full" x="-30%" y="-165%" width="160%" height="430%" color-interpolation-filters="sRGB">
-            <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" seed="5" stitchTiles="stitch" result="noise"/>
-            <!-- The grain's clip region. Blurring the word enough to hide the letters
-                 also merges the gaps between them into one horizontal blob — that blob
-                 IS the box that was visible around the lettering, and no blur radius
-                 avoids it (verified: a grain-only render with no smeared text still had
-                 it). So the blurred blob is then displaced by a second, much coarser
-                 turbulence, which breaks its edge into a ragged cloud. Checked by
-                 rendering five blur/displacement pairs side by side. -->
-            <feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="2" seed="9" result="coarse"/>
-            <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blob"/>
-            <feDisplacementMap in="blob" in2="coarse" scale="110" xChannelSelector="R" yChannelSelector="G" result="clip"/>
-            <feColorMatrix in="noise" type="matrix"
-                values="0 0 0 0 .91  0 0 0 0 .89  0 0 0 0 .86  0 0 0 2.4 0" result="grainColor"/>
-            <feComposite in="grainColor" in2="clip" operator="in" result="grain"/>
-            <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="soft"/>
-            <feDisplacementMap in="soft" in2="noise" scale="100" xChannelSelector="R" yChannelSelector="G" result="torn"/>
-            <feComponentTransfer in="torn" result="tornDim"><feFuncA type="linear" slope=".3"/></feComponentTransfer>
-            <feMerge><feMergeNode in="tornDim"/><feMergeNode in="grain"/></feMerge>
+        <!-- The opening state is a field of pure turbulence that owes nothing to the
+             letterforms. Deriving the noise from the text — by clipping it to the
+             glyphs, or to a blurred blob of them — always leaves the word's silhouette
+             in it, so it reads as warped text rather than noise. This ignores
+             SourceGraphic entirely; CSS masks feather its edges so it has no boundary. -->
+        <filter id="mark-noise-full" x="-8%" y="-45%" width="116%" height="190%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="4" seed="5" stitchTiles="stitch" result="n"/>
+            <feColorMatrix in="n" type="matrix"
+                values="0 0 0 0 .91  0 0 0 0 .89  0 0 0 0 .86  0 0 0 1.9 -.25"/>
         </filter>
 
         <!-- half way: less blur, less displacement, lighter grain. This is the state
