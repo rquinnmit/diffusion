@@ -1,0 +1,22 @@
+<!-- DJ site mark: a record. Built on the music palette rather than the personal
+     site's, so the tab matches the page it opens: void tile, bone disc, violet
+     label. The disc is light on dark because a black record on the site's near
+     black needs an outline to exist, and outlines close up at 16px. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="7" fill="#08070C"/>
+  <circle cx="16" cy="16" r="11" fill="#E8E4DC"/>
+  <!-- Grooves, cut in the tile colour: many, tightly spaced, low contrast. Three
+       widely spaced rings made a bullseye, and a broad flat field of bone around
+       a violet centre made an eye. Dense banding is what actually says vinyl, and
+       at 16px it collapses into a faint grey cast over the disc, which is fine. -->
+  <g fill="none" stroke="#08070C" stroke-width=".5" opacity=".3">
+    <circle cx="16" cy="16" r="9.9"/>
+    <circle cx="16" cy="16" r="9.05"/>
+    <circle cx="16" cy="16" r="8.2"/>
+    <circle cx="16" cy="16" r="7.35"/>
+    <circle cx="16" cy="16" r="6.5"/>
+    <circle cx="16" cy="16" r="5.65"/>
+  </g>
+  <circle cx="16" cy="16" r="3.7" fill="#6E64FF"/>
+  <circle cx="16" cy="16" r="1" fill="#08070C"/>
+</svg>
