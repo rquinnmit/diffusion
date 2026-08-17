@@ -634,6 +634,26 @@ a { color: inherit; text-decoration: none; }
     text-align: center;
 }
 
+/* ── upcoming ── */
+/* Shares the played grid, so a show moves between the two sections by editing
+   its date and dropping .gig--next. .gig-note is its own cell rather than a
+   child of .gig-venue so the mobile stack keeps the played order: venue, city,
+   then the ticket line. */
+.gig--next { row-gap: 5px; }
+
+.gig-note {
+    grid-column: 2;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--grey);
+    transition: color .18s;
+}
+
+.gig--next:hover .gig-note,
+.gig--next:focus-visible .gig-note { color: var(--violet); }
+
 /* ── booking ── */
 .book { text-align: center; padding-top: 96px; padding-bottom: 96px; }
 
@@ -704,6 +724,9 @@ a { color: inherit; text-decoration: none; }
 
     .nav { flex-direction: column; align-items: flex-start; gap: 10px; padding-top: 14px; padding-bottom: 14px; }
     .nav-links { gap: 0; justify-content: space-between; width: 100%; }
+    /* Five links spread across a 320px viewport leave no gap at the full-size
+       tracking, so the labels touch. */
+    .nav-links a { font-size: 10px; letter-spacing: .14em; }
     .sec { scroll-margin-top: 92px; }
 
     .set-grid { grid-template-columns: 1fr; gap: 24px; }
