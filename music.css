@@ -605,8 +605,7 @@ a { color: inherit; text-decoration: none; }
     gap: 18px;
     align-items: baseline;
     /* No horizontal padding — it would offset every cell from the header above. */
-    padding: 14px 0;
-    border-bottom: 1px solid var(--line);
+    padding: 20px 0;
 }
 
 .gig-date,
@@ -640,11 +639,6 @@ a { color: inherit; text-decoration: none; }
    child of .gig-venue so the mobile stack keeps the played order: venue, city,
    then the ticket line. */
 .gig--next { row-gap: 5px; }
-
-/* A lone show has nothing to be divided from, so its rule reads as a stray line
-   under the section. :only-of-type, not :only-child — .sechead is an element
-   sibling, so the row is never an only child. */
-.gig--next:only-of-type { border-bottom: 0; }
 
 .gig-note {
     grid-column: 2;
