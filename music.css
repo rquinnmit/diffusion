@@ -714,13 +714,10 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 600px) {
-    /* No noise entrance on phones: the displacement scale is an absolute length,
-       so it is enormous relative to small glyphs, and this graph is CPU-rasterized
-       every frame. Deliberately NOT a wider cutoff — at 900px it also killed the
-       effect on unmaximized laptop windows and on any viewport shrunk by docked
-       devtools, which is most of the times someone would be looking for it. */
-    .hero-mark::before, .mark-mid::before { display: none; }
-    .mark-text { mask-image: none; -webkit-mask-image: none; animation: none; }
+    /* The middle layer's displacement and blur are absolute lengths, so at phone
+       glyph sizes the stock filter tears the letters apart. Swap in the half-scale
+       twin; the top layer is pure turbulence and needs nothing. */
+    .mark-mid::before { filter: url(#mark-noise-mid-sm); }
 
     :root { --gut: 20px; }
 
@@ -729,18 +726,20 @@ a { color: inherit; text-decoration: none; }
     /* Five links spread across a 320px viewport leave no gap at the full-size
        tracking, so the labels touch. */
     .nav-links a { font-size: 10px; letter-spacing: .14em; }
-    .sec { scroll-margin-top: 92px; }
+    .sec { scroll-margin-top: 92px; padding-top: 56px; padding-bottom: 56px; }
+    .sechead { margin-bottom: 24px; }
 
-    .set-grid { grid-template-columns: 1fr; gap: 24px; }
+    /* Two columns, not one: six full-width squares stack to more than 2000px
+       and lose the grid the desktop page is built around. */
+    .set-grid { grid-template-columns: repeat(2, 1fr); gap: 22px 14px; }
+    .tile-cap { font-size: 13px; margin-top: 10px; }
     .shot { height: 220px; }
 
-    .gig { grid-template-columns: 84px minmax(0, 1fr); row-gap: 4px; }
-    .gig-city { grid-column: 2; text-align: left; }
-
-    /* The rows drop to two columns and move the city onto a second line, so the
-       three-column header no longer has anything to align to. Back to flex. */
-    .sechead--cols { display: flex; justify-content: space-between; }
-    .sechead--cols .count { grid-column: auto; }
+    /* Keep the desktop's three columns so LOCATION still sits over the cities.
+       The venue column is the one that gives; a long name wraps rather than
+       pushing the city onto its own line. */
+    .sechead--cols,
+    .gig { grid-template-columns: 68px minmax(0, 1fr) auto; gap: 14px; }
 
     .foot { flex-direction: column; gap: 8px; }
 }

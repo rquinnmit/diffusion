@@ -73,6 +73,25 @@
             <feComponentTransfer in="torn" result="tornDim"><feFuncA type="linear" slope=".72"/></feComponentTransfer>
             <feMerge><feMergeNode in="tornDim"/><feMergeNode in="grain"/></feMerge>
         </filter>
+
+        <!-- Phone twin of mark-noise-mid. Filter lengths are absolute, so against a
+             wordmark half the size the tearing and blur read twice as coarse. Every
+             length is halved and the coarse-warp frequency doubled so the warp keeps
+             its size relative to the glyphs; the fine grain is left alone because
+             pixel grain belongs to the screen, not the letterforms. -->
+        <filter id="mark-noise-mid-sm" x="-30%" y="-165%" width="160%" height="430%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.4" numOctaves="3" seed="5" stitchTiles="stitch" result="noise"/>
+            <feTurbulence type="fractalNoise" baseFrequency="0.028" numOctaves="2" seed="9" result="coarse"/>
+            <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blob"/>
+            <feDisplacementMap in="blob" in2="coarse" scale="22" xChannelSelector="R" yChannelSelector="G" result="clip"/>
+            <feColorMatrix in="noise" type="matrix"
+                values="0 0 0 0 .91  0 0 0 0 .89  0 0 0 0 .86  0 0 0 .75 0" result="grainColor"/>
+            <feComposite in="grainColor" in2="clip" operator="in" result="grain"/>
+            <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="soft"/>
+            <feDisplacementMap in="soft" in2="noise" scale="17" xChannelSelector="R" yChannelSelector="G" result="torn"/>
+            <feComponentTransfer in="torn" result="tornDim"><feFuncA type="linear" slope=".72"/></feComponentTransfer>
+            <feMerge><feMergeNode in="tornDim"/><feMergeNode in="grain"/></feMerge>
+        </filter>
     </svg>
 
     <nav class="nav">
