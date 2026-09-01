@@ -632,10 +632,6 @@ a { color: inherit; text-decoration: none; }
 .gig--next:focus-visible .gig-note { color: var(--violet); }
 
 /* ── shows ── */
-/* A Played row with media turns its title into a button that opens the
-   matching .show dialog; show.js does the opening. The button is reset to the
-   span's type so a wired row and a plain one set identically, and it keeps a
-   faint underline because nothing else marks the row as openable. */
 .gig--show .gig-venue {
     appearance: none;
     background: none;
@@ -657,10 +653,6 @@ a { color: inherit; text-decoration: none; }
 .gig--show .gig-venue:hover,
 .gig--show .gig-venue:focus-visible { text-decoration-color: var(--violet); }
 
-/* The section is the backdrop and the click-outside target; the panel inside
-   it is the dialog. margin: auto centres the panel when it fits and lets the
-   backdrop scroll when it does not. display: flex would beat the UA's
-   [hidden] rule, hence the explicit reset. */
 .show {
     position: fixed;
     inset: 0;
@@ -675,16 +667,17 @@ a { color: inherit; text-decoration: none; }
     transition: opacity .26s;
 }
 
+/* The display: flex above would otherwise beat the user agent's [hidden] rule. */
 .show[hidden] { display: none; }
 
 .show.is-open { opacity: 1; }
 
 body.show-open { overflow: hidden; }
 
-/* Two halves: the lead on the left, the photo grid on the right. A show
-   without a grid narrows to a single column so the lead is not left beside
-   an empty half. The min-height is for a show with nothing yet: title and
-   date alone would make a strip, and the blank below them is the point. */
+/* margin: auto centres the panel when it fits and lets the backdrop scroll
+   when it does not, where align-items: center would clip the top. The
+   min-height is for a show with nothing in it yet: the blank under the title
+   is the intended empty state, and the title alone would make a strip. */
 .show-panel {
     position: relative;
     display: grid;
@@ -757,7 +750,6 @@ body.show-open { overflow: hidden; }
 .show-embed--video { aspect-ratio: 16 / 9; height: auto; }
 .show-embed--audio { height: 166px; margin-top: 16px; }
 
-/* Photo tiles borrow the Sets grid's art and caption styles outright. */
 .show-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
