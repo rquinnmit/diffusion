@@ -104,7 +104,8 @@
             show(section, trigger);
             return;
         }
-        if (open && event.target.closest('.show-close')) close();
+        if (!open) return;
+        if (event.target === open || event.target.closest('.show-close')) close();
     });
 
     document.addEventListener('keydown', function (event) {

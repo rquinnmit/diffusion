@@ -230,7 +230,6 @@
                 <span class="gig-date">AUG 2026</span>
                 <button class="gig-venue" type="button" aria-haspopup="dialog" aria-controls="show-aziman-last-cruise">Aziman Tribe&rsquo;s Last Cruise</button>
                 <span class="gig-city">New York</span>
-                <span class="gig-note">Photos &middot; Video &middot; Recording</span>
             </div>
             <div class="gig">
                 <span class="gig-date">MAY 2026</span>
@@ -249,61 +248,44 @@
             </div>
 
             <!-- Shows with media. A row opens one of these when its gig-venue is a
-                 <button aria-controls="show-SLUG">, the row carries gig--show, and
-                 its gig-note lists what is inside. The section id is show-SLUG and
-                 the URL for an open show is #show/SLUG; show.js does the rest.
-                 Each band is optional: delete any the show does not have, or leave
-                 a show-empty line where media is still to come. Embeds use
-                 data-src, not src, so hidden shows load nothing until opened.
-                 Photos for a show live under images/music/shows/SLUG/.
+                 <button aria-controls="show-SLUG"> and the row carries gig--show.
+                 The section id is show-SLUG and the URL for an open show is
+                 #show/SLUG; show.js does the rest.
+                 The panel has two halves and no labels. show-lead is the left
+                 half: the video, then the title, the date and city, then the
+                 recording. A show with no video can lead with a photo instead by
+                 swapping the iframe for <img class="tile-art" ...>. show-grid is
+                 the right half, one show-tile per photo, and is omitted when
+                 there are none. Embeds use data-src, not src, so hidden shows
+                 load nothing until opened. Photos for a show live under
+                 images/music/shows/SLUG/. While a show's media is still to come,
+                 show-lead holds a show-empty line and there is no show-grid.
             <section class="show" id="show-SLUG" role="dialog" aria-modal="true" aria-labelledby="show-SLUG-title" hidden>
-                <div class="nav show-bar">
-                    <span class="nav-mark">DIFFUSION</span>
+                <div class="show-panel">
                     <button class="show-close" type="button">Close <span aria-hidden="true">&#x2715;</span></button>
-                </div>
-                <div class="show-head">
-                    <p class="show-kicker">MON YEAR &middot; City</p>
-                    <h2 class="show-title" id="show-SLUG-title">Event Name</h2>
-                </div>
-                <div class="show-band show-band--bleed">
-                    <h3>Photos</h3>
-                    <div class="rail" tabindex="0" role="region" aria-label="Photos from Event Name">
-                        <figure class="shot">
-                            <img src="images/shows/SLUG/FILENAME.webp" alt="DESCRIBE THE SHOT" loading="lazy" height="330">
-                            <figcaption>01</figcaption>
+                    <div class="show-lead">
+                        <iframe class="show-embed show-embed--video" data-src="https://www.youtube.com/embed/VIDEO_ID" title="Video from Event Name" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <h2 class="show-title" id="show-SLUG-title">Event Name</h2>
+                        <p class="show-kicker">MON YEAR &middot; City</p>
+                        <iframe class="show-embed show-embed--audio" data-src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/rquinn1/TRACK&amp;color=%236e64ff&amp;auto_play=false&amp;show_teaser=false" title="Recording of Event Name" loading="lazy" allow="autoplay"></iframe>
+                    </div>
+                    <div class="show-grid">
+                        <figure class="show-tile">
+                            <img class="tile-art" src="images/shows/SLUG/FILENAME.webp" alt="DESCRIBE THE SHOT" loading="lazy" width="500" height="500">
+                            <figcaption class="tile-meta">Short caption</figcaption>
                         </figure>
                     </div>
-                </div>
-                <div class="show-band">
-                    <h3>Video</h3>
-                    <iframe class="show-embed show-embed--video" data-src="https://www.youtube.com/embed/VIDEO_ID" title="Video from Event Name" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-                <div class="show-band">
-                    <h3>Recording</h3>
-                    <iframe class="show-embed show-embed--audio" data-src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/rquinn1/TRACK&amp;color=%236e64ff&amp;auto_play=false&amp;show_teaser=false" title="Recording of Event Name" loading="lazy" allow="autoplay"></iframe>
                 </div>
             </section>
             -->
             <section class="show" id="show-aziman-last-cruise" role="dialog" aria-modal="true" aria-labelledby="show-aziman-last-cruise-title" hidden>
-                <div class="nav show-bar">
-                    <span class="nav-mark">DIFFUSION</span>
+                <div class="show-panel">
                     <button class="show-close" type="button">Close <span aria-hidden="true">&#x2715;</span></button>
-                </div>
-                <div class="show-head">
-                    <p class="show-kicker">Aug 2026 &middot; New York</p>
-                    <h2 class="show-title" id="show-aziman-last-cruise-title">Aziman Tribe&rsquo;s Last Cruise</h2>
-                </div>
-                <div class="show-band show-band--bleed">
-                    <h3>Photos</h3>
-                    <p class="show-empty">Coming soon</p>
-                </div>
-                <div class="show-band">
-                    <h3>Video</h3>
-                    <p class="show-empty">Coming soon</p>
-                </div>
-                <div class="show-band">
-                    <h3>Recording</h3>
-                    <p class="show-empty">Coming soon</p>
+                    <div class="show-lead">
+                        <h2 class="show-title" id="show-aziman-last-cruise-title">Aziman Tribe&rsquo;s Last Cruise</h2>
+                        <p class="show-kicker">Aug 2026 &middot; New York</p>
+                        <p class="show-empty">Coming soon</p>
+                    </div>
                 </div>
             </section>
         </section>
