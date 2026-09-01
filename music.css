@@ -710,18 +710,17 @@ body.show-open { overflow: hidden; }
 
 .show-close {
     position: absolute;
-    top: 18px;
-    right: 20px;
+    top: 16px;
+    right: 18px;
     z-index: 1;
     appearance: none;
     background: none;
     border: 0;
-    padding: 4px 0;
+    padding: 6px;
     cursor: pointer;
     font-family: var(--mono);
-    font-size: 10.5px;
-    letter-spacing: .24em;
-    text-transform: uppercase;
+    font-size: 18px;
+    line-height: 1;
     color: var(--grey);
     transition: color .18s;
 }
@@ -746,14 +745,6 @@ body.show-open { overflow: hidden; }
 }
 
 .show-lead > :first-child { margin-top: 0; }
-
-.show-kicker {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: .15em;
-    text-transform: uppercase;
-    color: var(--grey);
-}
 
 .show-embed {
     display: block;
