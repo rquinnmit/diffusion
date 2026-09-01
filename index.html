@@ -225,10 +225,11 @@
                 <span class="gig-city">Boston</span>
             </div>
             -->
-            <div class="gig">
+            <div class="gig gig--show">
                 <span class="gig-date">AUG 2026</span>
-                <span class="gig-venue">Aziman Tribe&rsquo;s Last Cruise</span>
+                <button class="gig-venue" type="button" aria-haspopup="dialog" aria-controls="show-aziman-last-cruise">Aziman Tribe&rsquo;s Last Cruise</button>
                 <span class="gig-city">New York</span>
+                <span class="gig-note">Photos &middot; Video &middot; Recording</span>
             </div>
             <div class="gig">
                 <span class="gig-date">MAY 2026</span>
@@ -245,6 +246,65 @@
                 <span class="gig-venue">Venu Nightclub</span>
                 <span class="gig-city">Boston</span>
             </div>
+
+            <!-- Shows with media. A row opens one of these when its gig-venue is a
+                 <button aria-controls="show-SLUG">, the row carries gig--show, and
+                 its gig-note lists what is inside. The section id is show-SLUG and
+                 the URL for an open show is #show/SLUG; show.js does the rest.
+                 Each band is optional: delete any the show does not have, or leave
+                 a show-empty line where media is still to come. Embeds use
+                 data-src, not src, so hidden shows load nothing until opened.
+                 Photos for a show live under images/music/shows/SLUG/.
+            <section class="show" id="show-SLUG" role="dialog" aria-modal="true" aria-labelledby="show-SLUG-title" hidden>
+                <div class="nav show-bar">
+                    <span class="nav-mark">DIFFUSION</span>
+                    <button class="show-close" type="button">Close <span aria-hidden="true">&#x2715;</span></button>
+                </div>
+                <div class="show-head">
+                    <p class="show-kicker">MON YEAR &middot; City</p>
+                    <h2 class="show-title" id="show-SLUG-title">Event Name</h2>
+                </div>
+                <div class="show-band show-band--bleed">
+                    <h3>Photos</h3>
+                    <div class="rail" tabindex="0" role="region" aria-label="Photos from Event Name">
+                        <figure class="shot">
+                            <img src="images/shows/SLUG/FILENAME.webp" alt="DESCRIBE THE SHOT" loading="lazy" height="330">
+                            <figcaption>01</figcaption>
+                        </figure>
+                    </div>
+                </div>
+                <div class="show-band">
+                    <h3>Video</h3>
+                    <iframe class="show-embed show-embed--video" data-src="https://www.youtube.com/embed/VIDEO_ID" title="Video from Event Name" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="show-band">
+                    <h3>Recording</h3>
+                    <iframe class="show-embed show-embed--audio" data-src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/rquinn1/TRACK&amp;color=%236e64ff&amp;auto_play=false&amp;show_teaser=false" title="Recording of Event Name" loading="lazy" allow="autoplay"></iframe>
+                </div>
+            </section>
+            -->
+            <section class="show" id="show-aziman-last-cruise" role="dialog" aria-modal="true" aria-labelledby="show-aziman-last-cruise-title" hidden>
+                <div class="nav show-bar">
+                    <span class="nav-mark">DIFFUSION</span>
+                    <button class="show-close" type="button">Close <span aria-hidden="true">&#x2715;</span></button>
+                </div>
+                <div class="show-head">
+                    <p class="show-kicker">Aug 2026 &middot; New York</p>
+                    <h2 class="show-title" id="show-aziman-last-cruise-title">Aziman Tribe&rsquo;s Last Cruise</h2>
+                </div>
+                <div class="show-band show-band--bleed">
+                    <h3>Photos</h3>
+                    <p class="show-empty">Coming soon</p>
+                </div>
+                <div class="show-band">
+                    <h3>Video</h3>
+                    <p class="show-empty">Coming soon</p>
+                </div>
+                <div class="show-band">
+                    <h3>Recording</h3>
+                    <p class="show-empty">Coming soon</p>
+                </div>
+            </section>
         </section>
         <section class="sec book" id="booking">
             <h2 class="book-label">Booking</h2>
