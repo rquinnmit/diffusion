@@ -123,14 +123,22 @@
 
     <main>
         <section class="sec" id="upcoming">
+            <div class="sechead">
+                <h2>Upcoming</h2>
+            </div>
+            <!-- This section stays on the page with nothing booked. It is the
+                 standing home for the next date, so it is never removed; with no
+                 rows it shows the gig-empty line under a plain sechead. Once a
+                 show is booked, delete that line and give the header its
+                 Location column back:
             <div class="sechead sechead--cols">
                 <h2>Upcoming</h2>
                 <span class="count">Location</span>
             </div>
-            <!-- Add one row per booked show, soonest first. The date is the day
-                 here, not the year, because an upcoming show needs the day. Once
-                 it passes, move the row to #played, change the date to MONTH
-                 YEAR, and drop the gig--next class and the gig-note line:
+                 Then add one row per booked show, soonest first. The date is the
+                 day here, not the year, because an upcoming show needs the day.
+                 Once it passes, move the row to #played, change the date to
+                 MONTH YEAR, and drop the gig--next class and the gig-note line:
             <a class="gig gig--next" href="TICKET URL" target="_blank" rel="noopener">
                 <span class="gig-date">MON DD</span>
                 <span class="gig-venue">Event Name</span>
@@ -138,12 +146,7 @@
                 <span class="gig-note">Tickets &#8599;</span>
             </a>
             -->
-            <a class="gig gig--next" href="https://posh.vip/e/last-cruise-summer-season-finale-house-music-party" target="_blank" rel="noopener">
-                <span class="gig-date">Aug 29</span>
-                <span class="gig-venue">Aziman Tribe&rsquo;s Last Cruise</span>
-                <span class="gig-city">New York</span>
-                <span class="gig-note">Tickets &#8599;</span>
-            </a>
+            <p class="gig-empty">No dates announced</p>
         </section>
         <section class="sec" id="sets">
             <div class="sechead">
@@ -222,6 +225,11 @@
                 <span class="gig-city">Boston</span>
             </div>
             -->
+            <div class="gig">
+                <span class="gig-date">AUG 2026</span>
+                <span class="gig-venue">Aziman Tribe&rsquo;s Last Cruise</span>
+                <span class="gig-city">New York</span>
+            </div>
             <div class="gig">
                 <span class="gig-date">MAY 2026</span>
                 <span class="gig-venue">MIT SpringFest Opener</span>
