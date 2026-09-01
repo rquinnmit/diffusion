@@ -259,14 +259,17 @@
                  there are none. Embeds use data-src, not src, so hidden shows
                  load nothing until opened. Photos for a show live under
                  images/music/shows/SLUG/. While a show's media is still to come,
-                 show-lead holds only the title, there is no show-grid, and the
-                 panel's blank space is deliberate.
+                 show-lead holds only the title and the listing link, there is
+                 no show-grid, and the panel's blank space is deliberate. The
+                 show-link is the show's page on whoever ticketed it; drop the
+                 line when there is none.
             <section class="show" id="show-SLUG" role="dialog" aria-modal="true" aria-labelledby="show-SLUG-title" hidden>
                 <div class="show-panel">
                     <button class="show-close" type="button" aria-label="Close">&#x2715;</button>
                     <div class="show-lead">
                         <iframe class="show-embed show-embed--video" data-src="https://www.youtube.com/embed/VIDEO_ID" title="Video from Event Name" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         <h2 class="show-title" id="show-SLUG-title">Event Name</h2>
+                        <a class="show-link" href="LISTING URL" target="_blank" rel="noopener">Event listing <span aria-hidden="true">&#8599;</span></a>
                         <iframe class="show-embed show-embed--audio" data-src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/rquinn1/TRACK&amp;color=%236e64ff&amp;auto_play=false&amp;show_teaser=false" title="Recording of Event Name" loading="lazy" allow="autoplay"></iframe>
                     </div>
                     <div class="show-grid">
@@ -283,6 +286,7 @@
                     <button class="show-close" type="button" aria-label="Close">&#x2715;</button>
                     <div class="show-lead">
                         <h2 class="show-title" id="show-aziman-last-cruise-title">Aziman Tribe&rsquo;s Last Cruise</h2>
+                        <a class="show-link" href="https://posh.vip/e/last-cruise-summer-season-finale-house-music-party" target="_blank" rel="noopener">Event listing <span aria-hidden="true">&#8599;</span></a>
                     </div>
                 </div>
             </section>

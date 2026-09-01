@@ -739,6 +739,19 @@ body.show-open { overflow: hidden; }
 
 .show-lead > :first-child { margin-top: 0; }
 
+.show-link {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--grey);
+    text-decoration: none;
+    transition: color .18s;
+}
+
+.show-link:hover,
+.show-link:focus-visible { color: var(--violet); }
+
 .show-embed {
     display: block;
     width: 100%;
