@@ -1,9 +1,11 @@
-/* Show detail overlays for the DJ page.
+/* Show dialogs for the DJ page.
 
    A Played row whose title is <button aria-controls="show-SLUG"> opens the
-   <section class="show" id="show-SLUG"> that follows the rows. The open show
-   is mirrored in the URL as #show/SLUG so the back button closes it and the
-   link can be shared. Embeds inside a show carry data-src and are given a real
+   <section class="show" id="show-SLUG"> that follows the rows: the section is
+   the backdrop, its .show-panel the box. Escape, the close control, a click on
+   the backdrop, and the browser's back button all close it. The open show is
+   mirrored in the URL as #show/SLUG, which is what makes back work and lets
+   the link be shared. Embeds inside a show carry data-src and are given a real
    src the first time it opens. */
 (function () {
     'use strict';

@@ -129,9 +129,9 @@
             </div>
             <!-- This section stays on the page with nothing booked. It is the
                  standing home for the next date, so it is never removed; with no
-                 rows it shows the gig-empty line under a plain sechead. Once a
-                 show is booked, delete that line and give the header its
-                 Location column back:
+                 rows it is the plain sechead over blank space, and the blank is
+                 deliberate. Once a show is booked, give the header its Location
+                 column back:
             <div class="sechead sechead--cols">
                 <h2>Upcoming</h2>
                 <span class="count">Location</span>
@@ -147,7 +147,6 @@
                 <span class="gig-note">Tickets &#8599;</span>
             </a>
             -->
-            <p class="gig-empty">No dates announced</p>
         </section>
         <section class="sec" id="sets">
             <div class="sechead">
@@ -219,7 +218,8 @@
                 <h2>Played</h2>
                 <span class="count">Location</span>
             </div>
-            <!-- Add one row per gig, newest first:
+            <!-- Add one row per gig, newest first. To give a row a show panel,
+                 see the comment below the rows:
             <div class="gig">
                 <span class="gig-date">FEB 2026</span>
                 <span class="gig-venue">Venue Name</span>
@@ -259,7 +259,8 @@
                  there are none. Embeds use data-src, not src, so hidden shows
                  load nothing until opened. Photos for a show live under
                  images/music/shows/SLUG/. While a show's media is still to come,
-                 show-lead holds a show-empty line and there is no show-grid.
+                 show-lead holds only the title and date, there is no show-grid,
+                 and the panel's blank space is deliberate.
             <section class="show" id="show-SLUG" role="dialog" aria-modal="true" aria-labelledby="show-SLUG-title" hidden>
                 <div class="show-panel">
                     <button class="show-close" type="button">Close <span aria-hidden="true">&#x2715;</span></button>
@@ -284,7 +285,6 @@
                     <div class="show-lead">
                         <h2 class="show-title" id="show-aziman-last-cruise-title">Aziman Tribe&rsquo;s Last Cruise</h2>
                         <p class="show-kicker">Aug 2026 &middot; New York</p>
-                        <p class="show-empty">Coming soon</p>
                     </div>
                 </div>
             </section>
