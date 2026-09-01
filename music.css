@@ -756,6 +756,7 @@ body.show-open { overflow: hidden; }
 .show-lead > :first-child { margin-top: 0; }
 
 .show-link {
+    margin-top: 16px;
     font-family: var(--mono);
     font-size: 10px;
     letter-spacing: .16em;
