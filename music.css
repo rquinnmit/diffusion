@@ -323,22 +323,38 @@ a { color: inherit; text-decoration: none; }
             mask-size: 300% 100%, 100% 100%, 100% 100%;
     -webkit-mask-composite: source-in;
             mask-composite: intersect;
-    animation: mark-front-noise 3.4s cubic-bezier(.35,0,.5,1) both,
+    animation: mark-front-feathered 3.4s cubic-bezier(.35,0,.5,1) both,
                mark-retire 3.45s step-end both;
 }
 
-@keyframes mark-front-noise {
+/* Only the travelling layer's position moves; the two feathers are pinned. A
+   feathered layer must use this and not mark-front, whose single position would
+   slide the feathers along with the band. */
+@keyframes mark-front-feathered {
     0%, 12% { -webkit-mask-position: 100% 0, 0 0, 0 0; mask-position: 100% 0, 0 0, 0 0; }
     100%    { -webkit-mask-position: 0% 0, 0 0, 0 0;   mask-position: 0% 0, 0 0, 0 0; }
 }
 
-/* middle: half-resolved, visible only as a travelling band */
+/* middle: half-resolved, visible only as a travelling band.
+   Feathered like the noise layer above, and for the same reason: the blur and
+   displacement throw ink well outside the element box, the box is exactly the
+   width of the word because .hero is a centring flex column, and without the
+   feathers that overspill is cut square — a grain-filled rectangle straddling
+   the last N. */
 .mark-mid::before {
     z-index: 2;
     filter: url(#mark-noise-mid);
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 36%, #E8E4DC 48%, #E8E4DC 54%, transparent 66%, transparent 100%);
-            mask-image: linear-gradient(90deg, transparent 0%, transparent 36%, #E8E4DC 48%, #E8E4DC 54%, transparent 66%, transparent 100%);
-    animation: mark-front 3.4s cubic-bezier(.35,0,.5,1) both,
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 36%, #E8E4DC 48%, #E8E4DC 54%, transparent 66%, transparent 100%),
+                        linear-gradient(180deg, transparent 0%, #E8E4DC 20%, #E8E4DC 80%, transparent 100%),
+                        linear-gradient(90deg, transparent 0%, #E8E4DC 8%, #E8E4DC 92%, transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0%, transparent 36%, #E8E4DC 48%, #E8E4DC 54%, transparent 66%, transparent 100%),
+                        linear-gradient(180deg, transparent 0%, #E8E4DC 20%, #E8E4DC 80%, transparent 100%),
+                        linear-gradient(90deg, transparent 0%, #E8E4DC 8%, #E8E4DC 92%, transparent 100%);
+    -webkit-mask-size: 300% 100%, 100% 100%, 100% 100%;
+            mask-size: 300% 100%, 100% 100%, 100% 100%;
+    -webkit-mask-composite: source-in;
+            mask-composite: intersect;
+    animation: mark-front-feathered 3.4s cubic-bezier(.35,0,.5,1) both,
                mark-retire 3.45s step-end both;
 }
 
