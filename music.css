@@ -450,10 +450,13 @@ a { color: inherit; text-decoration: none; }
 
 /* ── section shell ── */
 /* scroll-margin-top ≈ the sticky nav's rendered height (20+20 padding + ~22.5px
-   line box + 1px border ≈ 63.5px). .sec's 74px padding-top absorbs the rounding,
-   so anchored headings clear the nav. Raised to 92px at 600px where nav restacks. */
+   line box + 1px border ≈ 63.5px). .sec's padding-top absorbs the rounding, so
+   anchored headings clear the nav. At 600px the nav drops the wordmark and
+   measures 44px, so the margin comes down to match.
+   The top padding is shorter than the bottom on purpose: it ties a header to the
+   rule above it rather than leaving it adrift between two sections. */
 .sec {
-    padding: 74px var(--edge);
+    padding: 52px var(--edge) 74px;
     border-top: 1px solid var(--line);
     scroll-margin-top: 62px;
 }
@@ -468,7 +471,7 @@ a { color: inherit; text-decoration: none; }
 
 .sechead h2 {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 500;
     letter-spacing: .34em;
     text-transform: uppercase;
@@ -792,11 +795,11 @@ body.show-open { overflow: hidden; }
 .show-tile figcaption { margin-top: 10px; }
 
 /* ── booking ── */
-.book { text-align: center; padding-top: 96px; padding-bottom: 96px; }
+.book { text-align: center; padding-top: 72px; padding-bottom: 96px; }
 
 .book-label {
     font-family: var(--mono);
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 500;
     letter-spacing: .34em;
     text-transform: uppercase;
@@ -831,9 +834,6 @@ body.show-open { overflow: hidden; }
     color: var(--grey);
 }
 
-.foot a { color: var(--grey); transition: color .18s; }
-.foot a:hover { color: var(--bone); }
-
 /* ── responsive ── */
 /* Column ladder: 4 -> 3 -> 2 -> 1. These blocks must stay in descending
    max-width order; they are equal specificity, so a later block wins and
@@ -857,12 +857,21 @@ body.show-open { overflow: hidden; }
 
     :root { --gut: 20px; }
 
+    /* Three places instead of two overruns the measure at the full size and
+       wraps. Shrunk to hold one line at 320 too, and to stay narrower than the
+       wordmark above it, which is 263px of ink there. */
+    .hero-tag { font-size: 13.5px; letter-spacing: .26em; }
+
     .nav { flex-direction: column; align-items: flex-start; gap: 10px; padding-top: 14px; padding-bottom: 14px; }
+    /* The wordmark is the first thing in the hero anyway, so on a phone the nav
+       copy of it only costs header height. Hiding it also drops the tap target
+       that returned to #top. */
+    .nav-mark { display: none; }
     .nav-links { gap: 0; justify-content: space-between; width: 100%; }
     /* Five links spread across a 320px viewport leave no gap at the full-size
        tracking, so the labels touch. */
     .nav-links a { font-size: 10px; letter-spacing: .14em; }
-    .sec { scroll-margin-top: 92px; padding-top: 56px; padding-bottom: 56px; }
+    .sec { scroll-margin-top: 42px; padding-top: 38px; padding-bottom: 56px; }
     .sechead { margin-bottom: 24px; }
 
     /* Two columns, not one: six full-width squares stack to more than 2000px
