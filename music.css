@@ -745,9 +745,9 @@ body.show-open { overflow: hidden; }
 
 .show-title {
     margin-top: 16px;
-    /* Deliberate 3px hang outside the panel's padding, chosen by eye. The
+    /* Deliberate 2px hang outside the panel's padding, chosen by eye. The
        title no longer shares the left edge of the link beneath it. */
-    margin-left: -3px;
+    margin-left: -2px;
     font-size: clamp(1.25rem, 3vw, 1.75rem);
     font-weight: 700;
     font-stretch: 108%;
