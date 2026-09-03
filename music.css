@@ -589,6 +589,76 @@ a { color: inherit; text-decoration: none; }
     text-shadow: 0 1px 3px rgba(8, 7, 12, .9);
 }
 
+.shot-btn {
+    appearance: none;
+    background: none;
+    border: 0;
+    padding: 0;
+    display: block;
+    height: 100%;
+    cursor: pointer;
+}
+
+.shot-btn img { transition: filter .18s; }
+
+.shot-btn:hover img,
+.shot-btn:focus-visible img { filter: brightness(1.12); }
+
+/* ── lightbox ──
+   Reuses the show dialog's backdrop and close-button treatment for a single
+   enlarged photo. Unlike a show, there's no panel box around the content, so
+   the close control anchors to the viewport corner rather than a panel edge. */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    padding: var(--gut);
+    background: rgba(8, 7, 12, .82);
+    backdrop-filter: blur(14px);
+    opacity: 0;
+    transition: opacity .26s;
+}
+
+.lightbox[hidden] { display: none; }
+
+.lightbox.is-open { opacity: 1; }
+
+body.lightbox-open { overflow: hidden; }
+
+.lightbox-img {
+    margin: auto;
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 2px;
+    transform: translateY(12px);
+    transition: transform .26s cubic-bezier(.4, 0, .2, 1);
+}
+
+.lightbox.is-open .lightbox-img { transform: none; }
+
+.lightbox-close {
+    position: fixed;
+    top: 16px;
+    right: 18px;
+    z-index: 1;
+    appearance: none;
+    background: none;
+    border: 0;
+    padding: 6px;
+    cursor: pointer;
+    font-family: var(--mono);
+    font-size: 18px;
+    line-height: 1;
+    color: var(--grey);
+    transition: color .18s;
+}
+
+.lightbox-close:hover,
+.lightbox-close:focus-visible { color: var(--bone); }
+
 /* ── played ── */
 /* The header row shares the gig grid, so PLAYED sits over the date column and
    LOCATION exactly over the city column. It was previously a flex row with
