@@ -39,7 +39,9 @@ python3 tools/check.py
 
 Prints `ok`, or one line per problem with a file and line, and exits 1. The
 rules it checks are listed in its docstring. Run it after any edit to
-`index.html` or `css/site.css`.
+`index.html` or `css/site.css`. A GitHub Action runs it on every push as well
+and marks the commit, though it cannot stop Pages publishing a commit that
+fails.
 
 ## Routine edits
 
