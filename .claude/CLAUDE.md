@@ -83,7 +83,7 @@ player, with no date or city line; `show-grid` on the right is one `show-tile`
 per photo, reusing the Sets grid's `tile-art` and `tile-meta` classes. A show
 with no grid narrows to one column. The close control is a bare ✕ with an
 aria-label, no word. The template comment above the first dialog shows the
-full form. Photos for a show live under `images/shows/<slug>/`; video and audio
+full form. Photos for a show will live under `images/shows/<slug>/`; video and audio
 are always embeds, never local files. The cruise and Mirage hold their titles
 and listing links until their media exists. That link is proof the gig
 happened, not an attempt to sell a passed date, so it sits in the same faint
