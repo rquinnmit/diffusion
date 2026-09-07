@@ -35,6 +35,7 @@
         "url": "https://diffusiondj.com/",
         "image": "https://diffusiondj.com/images/og-diffusion.png",
         "location": { "@type": "Place", "name": "Boston, MA" },
+        "genre": ["House", "Tech House", "Hip Hop", "R&B"],
         "sameAs": [
             "https://soundcloud.com/rquinn1",
             "https://www.instagram.com/diffusion.music/"
@@ -173,10 +174,13 @@
             </div>
             <div class="set-grid">
                 <a class="tile" href="https://soundcloud.com/rquinn1/diffusion-rinzler-minimal" target="_blank" rel="noopener">
-                    <img class="tile-art" src="images/sets/minimal-house-b2b-rinzler.webp" alt="Artwork for Minimal House &amp; Indie Dance, B2B with Rinzler" width="500" height="500">
+                    <img class="tile-art" src="images/sets/minimal-house-b2b-rinzler.webp" srcset="images/sets/minimal-house-b2b-rinzler.webp 500w, images/sets/minimal-house-b2b-rinzler-1000.webp 1000w" sizes="(max-width: 900px) 46vw, (max-width: 1200px) 31vw, 340px" alt="Artwork for Minimal House &amp; Indie Dance, B2B with Rinzler" width="500" height="500">
                     <span class="tile-cap">Minimal House &amp; Indie Dance (B2B Rinzler)</span>
                     <span class="tile-meta">Jul 2026 · 51:29</span>
                 </a>
+                <!-- A cover carries srcset with a -1000 twin when SoundCloud holds the
+                     artwork at 1000px or more; the 500px file alone is fine when it
+                     does not (Late Night Mix, R&B Mix). -->
                 <a class="tile" href="https://soundcloud.com/rquinn1/rq-late-night-mix-hip-hip-r-b" target="_blank" rel="noopener">
                     <img class="tile-art" src="images/sets/late-night-mix.webp" alt="Artwork for Late Night Mix" width="500" height="500">
                     <span class="tile-cap">Late Night Mix — Hip Hop, R&amp;B, Pop</span>
@@ -193,12 +197,12 @@
                     <span class="tile-meta">Jan 2026 · 39:48</span>
                 </a>
                 <a class="tile" href="https://soundcloud.com/rquinn1/rq-trap-mix" target="_blank" rel="noopener">
-                    <img class="tile-art" src="images/sets/trap-mix.webp" alt="Artwork for Trap Mix" width="500" height="500" loading="lazy">
+                    <img class="tile-art" src="images/sets/trap-mix.webp" srcset="images/sets/trap-mix.webp 500w, images/sets/trap-mix-1000.webp 1000w" sizes="(max-width: 900px) 46vw, (max-width: 1200px) 31vw, 340px" alt="Artwork for Trap Mix" width="500" height="500" loading="lazy">
                     <span class="tile-cap">Trap Mix</span>
                     <span class="tile-meta">Jun 2025 · 55:11</span>
                 </a>
                 <a class="tile" href="https://soundcloud.com/rquinn1/dj-party-set" target="_blank" rel="noopener">
-                    <img class="tile-art" src="images/sets/party-set.webp" alt="Artwork for Party Set" width="500" height="500" loading="lazy">
+                    <img class="tile-art" src="images/sets/party-set.webp" srcset="images/sets/party-set.webp 500w, images/sets/party-set-1000.webp 1000w" sizes="(max-width: 900px) 46vw, (max-width: 1200px) 31vw, 340px" alt="Artwork for Party Set" width="500" height="500" loading="lazy">
                     <span class="tile-cap">Party Set</span>
                     <span class="tile-meta">May 2025 · 53:11</span>
                 </a>

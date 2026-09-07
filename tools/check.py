@@ -237,13 +237,14 @@ def check_gigs(root: Element) -> None:
 def local_refs(root: Element, css_text: str):
     """Yield (path, where) for every same-site file the page or stylesheet names."""
     for el in root.walk():
-        for attr in ("src", "href", "data-src", "content"):
+        for attr in ("src", "href", "data-src", "content", "srcset"):
             value = el.attrs.get(attr)
             if not value:
                 continue
-            value = value.replace(f"https://{DOMAIN}/", "")
-            if value.startswith(ASSET_DIRS) and "://" not in value:
-                yield value, f"index.html:{el.line}"
+            for candidate in value.split(","):
+                path = candidate.strip().split(" ")[0].replace(f"https://{DOMAIN}/", "")
+                if path.startswith(ASSET_DIRS) and "://" not in path:
+                    yield path, f"index.html:{el.line}"
     for match in re.finditer(r"url\((?:'|\")?\.\./([^'\")]+)", css_text):
         line = css_text.count("\n", 0, match.start()) + 1
         yield match.group(1), f"css/site.css:{line}"

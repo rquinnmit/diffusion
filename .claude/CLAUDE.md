@@ -90,7 +90,23 @@ happened, not an attempt to sell a passed date, so it sits in the same faint
 mono register as a `gig-note` and reads "Event listing" rather than "Tickets".
 
 Photos rail shots open in a centered lightbox on click (`js/lightbox.js`).
-Set covers are 500x500 WebP; rail and show photos are WebP too.
+Set covers are `<name>.webp` at 500px, and where SoundCloud holds the artwork
+at 1000px or more a `<name>-1000.webp` twin joined by `srcset`, so 2x desktop
+screens get the sharp one and phones the small one. The twins are
+centre-square crops of the SoundCloud originals: fetch the track page, take
+its `-t500x500` artwork URL, swap in `-original`. Late Night Mix and R&B Mix
+exist only at 500px there, and the Tech House page did not expose its artwork
+on 2026-09-07. Never upscale a cover to fake the twin. Rail and show photos
+are WebP too.
+
+## Hosting
+
+Cloudflare holds the DNS and stays DNS-only. Proxying through Cloudflare would
+add HTTP/3, Brotli and long browser caching, but GitHub's certificate
+provisioning and renewal for the custom domain expects the records to point
+at Pages directly, and a lapsed renewal behind a proxy breaks HTTPS for the
+whole site. Decided 2026-09-07: the ten-minute cache is the price of not
+babysitting that. Do not turn the proxy on to fix a caching complaint.
 
 ## Wordmark animation
 
