@@ -2,28 +2,72 @@
 
 Ryan's DJ site. He performs as Diffusion. Origin `rquinnmit/diffusion`, public,
 default branch `main`, served by GitHub Pages on push at `https://diffusiondj.com`
-(the `CNAME` file at the root is what binds the domain; never delete it). DNS is
-at Cloudflare. The site lived at `rquinnmit.github.io/music/` until 2026-09-05,
-and that path now redirects here, preserving the `#show/<slug>` hash. The
-professional site links here; this site deliberately does not link back.
+(the `CNAME` file at the root is what binds the domain; never delete it, and
+never delete `.nojekyll`, which makes Pages copy the branch instead of running
+Jekyll over it). DNS is at Cloudflare. The site lived at
+`rquinnmit.github.io/music/` until 2026-09-05, and that path now redirects here,
+preserving the `#show/<slug>` hash. The professional site links here; this site
+deliberately does not link back.
+
+`README.md` explains the layout and the routine edits. This file holds the
+decisions and the rules behind them.
 
 ## Stack
 
 Hand-written HTML, CSS, and vanilla JS. **No package.json, no bundler, no build
-step, no test suite.** There is nothing to run before shipping, and claiming
-"tests pass" here would be meaningless — say so plainly instead.
+step, no test suite.** The one thing to run is `python3 tools/check.py`, a
+standard-library script that verifies the invariants listed in its docstring
+(id and aria references, show dialogs, referenced and orphaned files, image
+attributes, figcaption numbering, Played order, the Upcoming header, the noise
+filter twin, the stylesheet's ordering rules and palette). Run it after editing
+`index.html` or `css/site.css`, and say plainly that it is a lint, not a test
+suite, when reporting.
 
 Because every file is hand-authored, never reformat HTML or CSS wholesale. Match
 the surrounding indentation and leave untouched lines untouched.
 
-Layout: `index.html`, `music.css`, `show.js`, and `lightbox.js` at the root;
-images under `images/` (`sets/`, `photos/`, `shows/<slug>/`, the OG card
-`og-diffusion.png`, and the favicon).
+Layout: `index.html` at the root; `css/site.css`; `js/dialog.js`, `js/shows.js`
+and `js/lightbox.js` as ES modules; `fonts/` with the self-hosted latin woff2
+files; images under `images/` (`sets/`, `photos/`, `shows/<slug>/`, the OG card
+`og-diffusion.png`, and the favicon). Image paths never move: the OG card URL is
+cached by scrapers and the old-domain redirect points at this tree.
+
+Fonts are self-hosted so the wordmark face arrives over the page's own
+connection; the entrance is a one-shot animation that starts at document load,
+so a second origin in front of the font was the site's real performance risk.
+Both files are the latin subsets of Google Fonts' woff2 builds under the SIL
+Open Font License. Do not reintroduce a fonts.googleapis.com or gstatic link.
 
 To look at the page in Playwright, serve the repo over HTTP first (`python3 -m
-http.server`); the Playwright MCP refuses `file:` URLs. Navigating from a URL to
-the same URL plus a hash is a fragment navigation and does not reload the
-document, so add a throwaway query string when a reload is the point.
+http.server`); the Playwright MCP refuses `file:` URLs, and module scripts do
+not run from them either. Navigating from a URL to the same URL plus a hash is
+a fragment navigation and does not reload the document, so add a throwaway
+query string when a reload is the point.
+
+## Stylesheet
+
+`css/site.css` is one file in page order, and each component's tablet and
+phone rules sit directly after its desktop rules rather than in a responsive
+block at the end. Keep it that way when adding a rule: put the media query
+with the component, and keep a selector's max-width blocks in descending
+order (the checker enforces this). `.sec--bleed` must follow `.sec`.
+
+Colour is the six tokens in `:root` and nothing else. A tint is
+`color-mix(in srgb, var(--token) N%, transparent)`, never a new hex; the checker
+flags any hex outside the token block. The hover and dialog timings are
+`--hover` and `--fade`.
+
+## Dialogs
+
+Shows and the lightbox are native `<dialog>` elements opened with
+`showModal()`, so the browser supplies the focus trap, Escape, the inert page
+behind and focus restore. `js/dialog.js` adds only the fade: it flips
+`.is-open` a frame after `showModal()`, and on close removes it and waits for
+the running transitions before `close()`, which handles reduced motion (no
+transitions, closes at once) and a reopen mid-fade (the cancelled transition
+keeps it open). Do not add a hand-rolled focus trap, `hidden` attribute,
+`role="dialog"` or body class back; `body:has(dialog[open])` is the scroll lock.
+Every dialog's close control is `<button class="dialog-close" autofocus>`.
 
 ## Sections
 
@@ -46,45 +90,52 @@ with no media yet.
 A Played row can open a show dialog over the page: a SoundCloud recording, a
 video embed, and photos from that night in a centred panel with the page
 dimmed and blurred behind it. The row's `gig-venue` becomes a `<button
-aria-controls="show-<slug>">`, the row takes `gig--show`, and a hidden
-`<section class="show" id="show-<slug>">` after the rows holds the content.
+aria-controls="show-<slug>">`, the row takes `gig--show`, and a
+`<dialog class="show" id="show-<slug>">` after the rows holds the content.
 There is deliberately no hint text on the row; a faint underline is the only
-mark. `show.js` opens it, mirrors the open show as `#show/<slug>` so back and
-shared links work, closes on Escape, the Close control, or a click on the
-backdrop, and copies `data-src` to `src` on embeds the first time a show opens.
-The panel has two halves and no labels, modelled on a label's release page
-Ryan supplied: `show-lead` on the left holds the video, the title, a `show-link`
-to the event's ticket-page listing, and the SoundCloud player, with no date or
-city line; `show-grid` on the right is one `show-tile` per photo, reusing the
-Sets grid's `tile-art` and `tile-meta` classes. A show with no grid narrows to
-one column. The close control is a bare ✕ with an aria-label, no word. The
-template comment above the first section shows the full form. Photos for a show
-live under `images/shows/<slug>/`; video and audio are always embeds, never
-local files. The cruise holds its title and its posh.vip listing until its
-media exists. That link is proof the gig happened, not an attempt to sell a
-passed date, so it sits in the same faint mono register as a `gig-note` and
-reads "Event listing" rather than "Tickets".
+mark. `js/shows.js` opens it, mirrors the open show as `#show/<slug>` so back and
+shared links work, closes on Escape, the Close control, a click on the
+backdrop, or the back button, and copies `data-src` to `src` on embeds the
+first time a show opens. The panel has two halves and no labels, modelled on a
+label's release page Ryan supplied: `show-lead` on the left holds the video,
+the title, a `show-link` to the event's ticket-page listing, and the SoundCloud
+player, with no date or city line; `show-grid` on the right is one `show-tile`
+per photo, reusing the Sets grid's `tile-art` and `tile-meta` classes. A show
+with no grid narrows to one column. The close control is a bare ✕ with an
+aria-label, no word. The template comment above the first dialog shows the
+full form. Photos for a show live under `images/shows/<slug>/`; video and audio
+are always embeds, never local files. The cruise and Mirage hold their titles
+and listing links until their media exists. That link is proof the gig
+happened, not an attempt to sell a passed date, so it sits in the same faint
+mono register as a `gig-note` and reads "Event listing" rather than "Tickets".
 
-Photos rail shots open in a centered lightbox on click (`lightbox.js`).
+Photos rail shots open in a centered lightbox on click (`js/lightbox.js`).
+Set covers are 500x500 WebP; rail and show photos are WebP too.
 
 ## Wordmark animation
 
 The centered title runs a noise-to-clarity diffusion animation built by clipping
 noise to the letterforms and revealing three states through their own masks.
-`music.css` ends with a `@media (prefers-reduced-motion: reduce)` block, and
+`css/site.css` ends with a `@media (prefers-reduced-motion: reduce)` block, and
 that OS setting has twice been mistaken for the animation being broken. Check
 it before debugging any animation here.
 
-The entrance plays on phones too. Until 2026-08-28 the `@media (max-width: 600px)`
-block in `music.css` hid it outright; it now swaps the middle layer to
-`#mark-noise-mid-sm` in `index.html`, a twin of `#mark-noise-mid` with every
-absolute length halved so the tearing stays proportionate to 50px glyphs. If the
-two filters ever diverge, change both. Verified at 375px and 320px in Playwright
-only, never on phone hardware. To see a phone width, use Playwright's
-`browser_resize`: the Chrome MCP's `resize_window` reports success but leaves
-`innerWidth` unchanged on a maximized window.
+The entrance plays on phones too. Until 2026-08-28 the phone media query hid it
+outright; it now swaps the middle layer to `#mark-noise-mid-sm` in `index.html`,
+a twin of `#mark-noise-mid` with every absolute length halved (rounded to a
+whole number where needed) and the coarse warp frequency doubled, so the
+tearing stays proportionate to 50px glyphs. The checker fails if the two
+diverge. Verified at 375px and 320px in Playwright only, never on phone
+hardware. To see a phone width, use Playwright's `browser_resize`: the Chrome
+MCP's `resize_window` reports success but leaves `innerWidth` unchanged on a
+maximized window.
+
+Playwright's WebKit does not reproduce Safari's mask-plus-filter rendering.
+Anything touching the wordmark's masks or filters must be checked in real
+Safari; the memory note on the Safari testbed says how.
 
 ## Ignored on purpose
 
-`docs/` and `.superpowers/` are gitignored. Pages serves whatever is in the
-branch, so tracking them would publish planning artifacts at diffusiondj.com/docs/.
+`docs/`, `.superpowers/` and `.playwright-mcp/` are gitignored. Pages serves
+whatever is in the branch, so tracking them would publish planning artifacts at
+diffusiondj.com/docs/.

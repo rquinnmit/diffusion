@@ -25,20 +25,21 @@
     <meta name="twitter:image" content="https://diffusiondj.com/images/og-diffusion.png">
     <meta name="twitter:image:alt" content="Diffusion">
 
-    <link rel="stylesheet" href="music.css">
-    <script src="show.js" defer></script>
-    <script src="lightbox.js" defer></script>
+    <meta name="theme-color" content="#08070C">
     <link rel="icon" href="images/favicon-record.svg" type="image/svg+xml">
-    <!-- Only gstatic: the @font-face rules are inlined in music.css, so no
-         render-blocking stylesheet request to fonts.googleapis.com. -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="css/site.css">
     <!-- Preloaded so the real faces are present at first paint. Without this the
          fallback renders first and the wordmark visibly jumps to its real width
-         when Archivo arrives — mid-entrance, which is worse than usual. -->
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-          href="https://fonts.gstatic.com/s/archivo/v25/k3kQo8UDI-1M0wlSfdnoLmvDIaI.woff2">
-    <link rel="preload" as="font" type="font/woff2" crossorigin
-          href="https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwgknk-4.woff2">
+         when Archivo arrives — mid-entrance, which is worse than usual. Fonts
+         are fetched in CORS mode even from the same origin, so the preload
+         needs crossorigin to be matched. -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/archivo-latin.woff2">
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/jetbrains-mono-latin.woff2">
+    <!-- Both entry modules import dialog.js; preloading it flattens the import
+         waterfall to one round trip. -->
+    <link rel="modulepreload" href="js/dialog.js">
+    <script type="module" src="js/shows.js"></script>
+    <script type="module" src="js/lightbox.js"></script>
 </head>
 <body>
 
@@ -155,32 +156,32 @@
             </div>
             <div class="set-grid">
                 <a class="tile" href="https://soundcloud.com/rquinn1/diffusion-rinzler-minimal" target="_blank" rel="noopener">
-                    <img class="tile-art" src="images/sets/minimal-house-b2b-rinzler.jpg" alt="Artwork for Minimal House &amp; Indie Dance, B2B with Rinzler" width="500" height="500">
+                    <img class="tile-art" src="images/sets/minimal-house-b2b-rinzler.webp" alt="Artwork for Minimal House &amp; Indie Dance, B2B with Rinzler" width="500" height="500">
                     <span class="tile-cap">Minimal House &amp; Indie Dance (B2B Rinzler)</span>
                     <span class="tile-meta">Jul 2026 · 51:29</span>
                 </a>
                 <a class="tile" href="https://soundcloud.com/rquinn1/rq-late-night-mix-hip-hip-r-b" target="_blank" rel="noopener">
-                    <img class="tile-art" src="images/sets/late-night-mix.png" alt="Artwork for Late Night Mix" width="500" height="500">
+                    <img class="tile-art" src="images/sets/late-night-mix.webp" alt="Artwork for Late Night Mix" width="500" height="500">
                     <span class="tile-cap">Late Night Mix — Hip Hop, R&amp;B, Pop</span>
                     <span class="tile-meta">Apr 2026 · 40:35</span>
                 </a>
                 <a class="tile" href="https://soundcloud.com/rquinn1/rq-house-mix" target="_blank" rel="noopener">
-                    <img class="tile-art" src="images/sets/tech-house-mix.jpg" alt="Artwork for Tech House Mix" width="500" height="500" loading="lazy">
+                    <img class="tile-art" src="images/sets/tech-house-mix.webp" alt="Artwork for Tech House Mix" width="500" height="500" loading="lazy">
                     <span class="tile-cap">Tech House Mix</span>
                     <span class="tile-meta">Feb 2026 · 46:58</span>
                 </a>
                 <a class="tile" href="https://soundcloud.com/rquinn1/rq-rb-mix" target="_blank" rel="noopener">
-                    <img class="tile-art" src="images/sets/rnb-mix.png" alt="Artwork for R&amp;B Mix" width="500" height="500" loading="lazy">
+                    <img class="tile-art" src="images/sets/rnb-mix.webp" alt="Artwork for R&amp;B Mix" width="500" height="500" loading="lazy">
                     <span class="tile-cap">R&amp;B Mix</span>
                     <span class="tile-meta">Jan 2026 · 39:48</span>
                 </a>
                 <a class="tile" href="https://soundcloud.com/rquinn1/rq-trap-mix" target="_blank" rel="noopener">
-                    <img class="tile-art" src="images/sets/trap-mix.jpg" alt="Artwork for Trap Mix" width="500" height="500" loading="lazy">
+                    <img class="tile-art" src="images/sets/trap-mix.webp" alt="Artwork for Trap Mix" width="500" height="500" loading="lazy">
                     <span class="tile-cap">Trap Mix</span>
                     <span class="tile-meta">Jun 2025 · 55:11</span>
                 </a>
                 <a class="tile" href="https://soundcloud.com/rquinn1/dj-party-set" target="_blank" rel="noopener">
-                    <img class="tile-art" src="images/sets/party-set.jpg" alt="Artwork for Party Set" width="500" height="500" loading="lazy">
+                    <img class="tile-art" src="images/sets/party-set.webp" alt="Artwork for Party Set" width="500" height="500" loading="lazy">
                     <span class="tile-cap">Party Set</span>
                     <span class="tile-meta">May 2025 · 53:11</span>
                 </a>
@@ -194,9 +195,9 @@
                 <!-- Add one figure per photo. Portrait and landscape both work: the rail
                      fixes height and lets width follow the image's own aspect ratio.
                      Number figcaptions sequentially in the order the figures appear.
-                     The image sits inside a shot-btn so clicking it opens #lightbox
-                     below with that photo enlarged; the button's accessible name comes
-                     from the img's alt, so it needs no separate label.
+                     The image sits inside a shot-btn so clicking it opens the #lightbox
+                     dialog below with that photo enlarged (js/lightbox.js); the button's
+                     accessible name comes from the img's alt, so it needs no separate label.
                 <figure class="shot">
                     <button class="shot-btn" type="button" aria-haspopup="dialog" aria-controls="lightbox">
                         <img src="images/photos/FILENAME.webp" alt="DESCRIBE THE SHOT" loading="lazy" height="330">
@@ -229,10 +230,10 @@
                     <figcaption>04</figcaption>
                 </figure>
             </div>
-            <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo" hidden>
-                <button class="lightbox-close" type="button" aria-label="Close">&#x2715;</button>
-                <img class="lightbox-img" src="" alt="">
-            </div>
+            <dialog class="lightbox" id="lightbox" aria-label="Photo">
+                <button class="dialog-close" type="button" aria-label="Close" autofocus>&#x2715;</button>
+                <img class="lightbox-img" alt="">
+            </dialog>
         </section>
         <section class="sec" id="played">
             <div class="sechead sechead--cols">
@@ -270,8 +271,8 @@
 
             <!-- Shows with media. A row opens one of these when its gig-venue is a
                  <button aria-controls="show-SLUG"> and the row carries gig--show.
-                 The section id is show-SLUG and the URL for an open show is
-                 #show/SLUG; show.js does the rest.
+                 The dialog id is show-SLUG and the URL for an open show is
+                 #show/SLUG; js/shows.js does the rest.
                  The panel has two halves and no labels. show-lead is the left
                  half: the video, then the title, then the recording. A show
                  with no video can lead with a photo instead by
@@ -284,9 +285,9 @@
                  no show-grid, and the panel's blank space is deliberate. The
                  show-link is the show's page on whoever ticketed it; drop the
                  line when there is none.
-            <section class="show" id="show-SLUG" role="dialog" aria-modal="true" aria-labelledby="show-SLUG-title" hidden>
+            <dialog class="show" id="show-SLUG" aria-labelledby="show-SLUG-title">
                 <div class="show-panel">
-                    <button class="show-close" type="button" aria-label="Close">&#x2715;</button>
+                    <button class="dialog-close" type="button" aria-label="Close" autofocus>&#x2715;</button>
                     <div class="show-lead">
                         <iframe class="show-embed show-embed--video" data-src="https://www.youtube.com/embed/VIDEO_ID" title="Video from Event Name" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         <h2 class="show-title" id="show-SLUG-title">Event Name</h2>
@@ -300,26 +301,26 @@
                         </figure>
                     </div>
                 </div>
-            </section>
+            </dialog>
             -->
-            <section class="show" id="show-mirage-middle-east" role="dialog" aria-modal="true" aria-labelledby="show-mirage-middle-east-title" hidden>
+            <dialog class="show" id="show-mirage-middle-east" aria-labelledby="show-mirage-middle-east-title">
                 <div class="show-panel">
-                    <button class="show-close" type="button" aria-label="Close">&#x2715;</button>
+                    <button class="dialog-close" type="button" aria-label="Close" autofocus>&#x2715;</button>
                     <div class="show-lead">
                         <h2 class="show-title" id="show-mirage-middle-east-title">Mirage @ The Middle East</h2>
                         <a class="show-link" href="https://www.ticketweb.com/event/mirage-ft-diffusion-torch-middle-east-cornerbakery-tickets/14301214?pl=mideastclub" target="_blank" rel="noopener">Event listing <span aria-hidden="true">&#8599;</span></a>
                     </div>
                 </div>
-            </section>
-            <section class="show" id="show-aziman-last-cruise" role="dialog" aria-modal="true" aria-labelledby="show-aziman-last-cruise-title" hidden>
+            </dialog>
+            <dialog class="show" id="show-aziman-last-cruise" aria-labelledby="show-aziman-last-cruise-title">
                 <div class="show-panel">
-                    <button class="show-close" type="button" aria-label="Close">&#x2715;</button>
+                    <button class="dialog-close" type="button" aria-label="Close" autofocus>&#x2715;</button>
                     <div class="show-lead">
                         <h2 class="show-title" id="show-aziman-last-cruise-title">Aziman Tribe&rsquo;s Last Cruise</h2>
                         <a class="show-link" href="https://posh.vip/e/last-cruise-summer-season-finale-house-music-party" target="_blank" rel="noopener">Event listing <span aria-hidden="true">&#8599;</span></a>
                     </div>
                 </div>
-            </section>
+            </dialog>
         </section>
         <section class="sec book" id="booking">
             <h2 class="book-label">Booking</h2>
