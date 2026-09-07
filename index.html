@@ -247,9 +247,9 @@
                 <span class="gig-city">Boston</span>
             </div>
             -->
-            <div class="gig">
+            <div class="gig gig--show">
                 <span class="gig-date">SEP 2026</span>
-                <span class="gig-venue">Mirage @ The Middle East</span>
+                <button class="gig-venue" type="button" aria-haspopup="dialog" aria-controls="show-mirage-middle-east">Mirage @ The Middle East</button>
                 <span class="gig-city">Cambridge</span>
             </div>
             <div class="gig gig--show">
@@ -302,6 +302,15 @@
                 </div>
             </section>
             -->
+            <section class="show" id="show-mirage-middle-east" role="dialog" aria-modal="true" aria-labelledby="show-mirage-middle-east-title" hidden>
+                <div class="show-panel">
+                    <button class="show-close" type="button" aria-label="Close">&#x2715;</button>
+                    <div class="show-lead">
+                        <h2 class="show-title" id="show-mirage-middle-east-title">Mirage @ The Middle East</h2>
+                        <a class="show-link" href="https://www.ticketweb.com/event/mirage-ft-diffusion-torch-middle-east-cornerbakery-tickets/14301214?pl=mideastclub" target="_blank" rel="noopener">Event listing <span aria-hidden="true">&#8599;</span></a>
+                    </div>
+                </div>
+            </section>
             <section class="show" id="show-aziman-last-cruise" role="dialog" aria-modal="true" aria-labelledby="show-aziman-last-cruise-title" hidden>
                 <div class="show-panel">
                     <button class="show-close" type="button" aria-label="Close">&#x2715;</button>
