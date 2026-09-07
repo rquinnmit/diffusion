@@ -27,7 +27,8 @@ Rules checked
   halved (to the nearest whole number) and its coarse warp frequency doubled.
 - In the stylesheet, .sec--bleed follows .sec, a selector's max-width blocks
   appear in descending order, and the only hex colours are the six tokens.
-- CNAME names the domain and .nojekyll exists.
+- CNAME names the domain and there is no .nojekyll (without Jekyll, Pages
+  would serve .claude/CLAUDE.md).
 """
 from __future__ import annotations
 
@@ -317,8 +318,8 @@ def check_repo_files() -> None:
     cname = ROOT / "CNAME"
     if not cname.is_file() or cname.read_text().strip() != DOMAIN:
         flag("CNAME", f"must contain exactly {DOMAIN}")
-    if not (ROOT / ".nojekyll").is_file():
-        flag(".nojekyll", "missing; Pages would run Jekyll over the branch")
+    if (ROOT / ".nojekyll").is_file():
+        flag(".nojekyll", "must not exist: without Jekyll, Pages serves .claude/CLAUDE.md")
 
 
 def main() -> int:

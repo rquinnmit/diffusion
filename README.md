@@ -5,8 +5,8 @@ Quinn's DJ work as Diffusion. Hand-written HTML, CSS and JavaScript, no
 build step, served by GitHub Pages straight from `main`.
 
 This file explains how the pieces fit and how to make the routine edits.
-`CLAUDE.md` records the design decisions and the rules behind them; read it
-before changing how anything looks or behaves.
+`.claude/CLAUDE.md` records the design decisions and the rules behind them;
+read it before changing how anything looks or behaves.
 
 ## Layout
 
@@ -20,7 +20,7 @@ before changing how anything looks or behaves.
 | `fonts/` | Self-hosted latin subsets of Archivo and JetBrains Mono (SIL Open Font License). |
 | `images/` | `sets/` covers, `photos/` rail shots, `shows/<slug>/` photos for a show panel, the share card and the favicon. |
 | `tools/check.py` | Checks the invariants below. Standard library only. |
-| `CNAME`, `.nojekyll` | Bind the domain; tell Pages to publish the branch as-is. Never delete either. |
+| `CNAME` | Binds the domain. Never delete it. |
 
 ## Preview
 
@@ -76,8 +76,8 @@ Encode WebP with `cwebp -q 85 -m 6 -metadata none in.jpg -o out.webp`.
 
 ## Deploy
 
-Push to `main`. GitHub Pages copies the branch; there is no build. Confirm
-the deploy with:
+Push to `main`. GitHub Pages runs its Jekyll pass, which is what keeps
+`.claude/` off the site, and takes under a minute. Confirm the deploy with:
 
 ```
 gh api repos/rquinnmit/diffusion/pages/builds/latest --jq '{status,created_at,error}'

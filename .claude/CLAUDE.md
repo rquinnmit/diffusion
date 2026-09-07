@@ -2,9 +2,8 @@
 
 Ryan's DJ site. He performs as Diffusion. Origin `rquinnmit/diffusion`, public,
 default branch `main`, served by GitHub Pages on push at `https://diffusiondj.com`
-(the `CNAME` file at the root is what binds the domain; never delete it, and
-never delete `.nojekyll`, which makes Pages copy the branch instead of running
-Jekyll over it). DNS is at Cloudflare. The site lived at
+(the `CNAME` file at the root is what binds the domain; never delete it). DNS
+is at Cloudflare. The site lived at
 `rquinnmit.github.io/music/` until 2026-09-05, and that path now redirects here,
 preserving the `#show/<slug>` hash. The professional site links here; this site
 deliberately does not link back.
@@ -115,8 +114,12 @@ Playwright's WebKit does not reproduce Safari's mask-plus-filter rendering.
 Anything touching the wordmark's masks or filters must be checked in real
 Safari; the memory note on the Safari testbed says how.
 
-## Ignored on purpose
+## Kept off the site
 
 `docs/`, `.superpowers/` and `.playwright-mcp/` are gitignored. Pages serves
 whatever is in the branch, so tracking them would publish planning artifacts at
-diffusiondj.com/docs/.
+diffusiondj.com/docs/. This file lives at `.claude/CLAUDE.md` and there is no
+`.nojekyll` for the same reason: Jekyll's pass is what keeps dot-directories
+off the site (verified 2026-09-07 that with `.nojekyll` present Pages served
+them; only `.github/` stays withheld). Never add `.nojekyll`; the checker
+fails if it appears.
