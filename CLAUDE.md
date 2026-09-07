@@ -16,12 +16,9 @@ decisions and the rules behind them.
 
 Hand-written HTML, CSS, and vanilla JS. **No package.json, no bundler, no build
 step, no test suite.** The one thing to run is `python3 tools/check.py`, a
-standard-library script that verifies the invariants listed in its docstring
-(id and aria references, show dialogs, referenced and orphaned files, image
-attributes, figcaption numbering, Played order, the Upcoming header, the noise
-filter twin, the stylesheet's ordering rules and palette). Run it after editing
-`index.html` or `css/site.css`, and say plainly that it is a lint, not a test
-suite, when reporting.
+standard-library script that verifies the invariants listed in its docstring.
+Run it after editing `index.html` or `css/site.css`, and say plainly that it is
+a lint, not a test suite, when reporting.
 
 Because every file is hand-authored, never reformat HTML or CSS wholesale. Match
 the surrounding indentation and leave untouched lines untouched.
@@ -44,30 +41,14 @@ not run from them either. Navigating from a URL to the same URL plus a hash is
 a fragment navigation and does not reload the document, so add a throwaway
 query string when a reload is the point.
 
-## Stylesheet
+## Stylesheet and dialogs
 
-`css/site.css` is one file in page order, and each component's tablet and
-phone rules sit directly after its desktop rules rather than in a responsive
-block at the end. Keep it that way when adding a rule: put the media query
-with the component, and keep a selector's max-width blocks in descending
-order (the checker enforces this). `.sec--bleed` must follow `.sec`.
-
-Colour is the six tokens in `:root` and nothing else. A tint is
-`color-mix(in srgb, var(--token) N%, transparent)`, never a new hex; the checker
-flags any hex outside the token block. The hover and dialog timings are
-`--hover` and `--fade`.
-
-## Dialogs
-
-Shows and the lightbox are native `<dialog>` elements opened with
-`showModal()`, so the browser supplies the focus trap, Escape, the inert page
-behind and focus restore. `js/dialog.js` adds only the fade: it flips
-`.is-open` a frame after `showModal()`, and on close removes it and waits for
-the running transitions before `close()`, which handles reduced motion (no
-transitions, closes at once) and a reopen mid-fade (the cancelled transition
-keeps it open). Do not add a hand-rolled focus trap, `hidden` attribute,
-`role="dialog"` or body class back; `body:has(dialog[open])` is the scroll lock.
-Every dialog's close control is `<button class="dialog-close" autofocus>`.
+The header comment of `css/site.css` and the docstring of `js/dialog.js` say
+how each works. The rules: a new CSS rule's media query goes beside its
+component, not in a block at the end; a tint is `color-mix()` of a palette
+token, never a new hex; shows and the lightbox stay native `<dialog>`s, so do
+not add a hand-rolled focus trap, `hidden`, `role="dialog"` or a body class
+back. The checker enforces the CSS half of this.
 
 ## Sections
 

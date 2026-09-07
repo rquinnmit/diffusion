@@ -37,15 +37,9 @@ python3 -m http.server 8000
 python3 tools/check.py
 ```
 
-Prints `ok`, or one line per problem with a file and line, and exits 1. It
-verifies that every `aria-controls` and `aria-labelledby` resolves, that every
-show dialog has a row and a title id, that every referenced file exists and
-no file is orphaned, that images carry alt and dimensions, that rail
-figcaptions are numbered in order, that Played rows run newest first, that
-the Upcoming header matches whether it has rows, that the two noise filters
-stay in lockstep, and that the stylesheet keeps its two ordering rules and
-uses only the six palette colours. Run it after any edit to `index.html` or
-`css/site.css`.
+Prints `ok`, or one line per problem with a file and line, and exits 1. The
+rules it checks are listed in its docstring. Run it after any edit to
+`index.html` or `css/site.css`.
 
 ## Routine edits
 
