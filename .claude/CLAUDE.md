@@ -94,10 +94,13 @@ Set covers are `<name>.webp` at 500px, and where SoundCloud holds the artwork
 at 1000px or more a `<name>-1000.webp` twin joined by `srcset`, so 2x desktop
 screens get the sharp one and phones the small one. The twins are
 centre-square crops of the SoundCloud originals: fetch the track page, take
-its `-t500x500` artwork URL, swap in `-original`. Late Night Mix and R&B Mix
-exist only at 500px there, and the Tech House page did not expose its artwork
-on 2026-09-07. Never upscale a cover to fake the twin. Rail and show photos
-are WebP too.
+its `-t500x500` artwork URL, swap in `-original`. That original is the camera's
+own frame with the EXIF orientation stripped, so a phone photo arrives lying on
+its side; the Trap Mix and Party Set twins shipped rotated a quarter turn on
+2026-09-07 and were only visible that way on a 2x screen. Rotate to match the
+`-t500x500` render before cropping, and look at the finished twin. Late Night
+Mix and R&B Mix exist only at 500px there. Never upscale a cover to fake the
+twin. Rail and show photos are WebP too.
 
 ## Hosting
 
