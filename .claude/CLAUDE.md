@@ -111,6 +111,11 @@ at Pages directly, and a lapsed renewal behind a proxy breaks HTTPS for the
 whole site. Decided 2026-09-07: the ten-minute cache is the price of not
 babysitting that. Do not turn the proxy on to fix a caching complaint.
 
+Google Search Console has a Domain property for `diffusiondj.com` (added
+2026-09-16 under Ryan's Google account), verified by a `google-site-verification`
+TXT record on the zone root at Cloudflare. That record is what keeps the
+property verified; never delete it when tidying DNS.
+
 ## Wordmark animation
 
 The centered title runs a noise-to-clarity diffusion animation built by clipping
