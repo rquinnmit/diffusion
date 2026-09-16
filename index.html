@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diffusion Music</title>
-    <meta name="description" content="Diffusion — DJ based in Boston, MA. Recorded sets on SoundCloud. Booking: djdiffusionmusic@gmail.com">
+    <meta name="description" content="Diffusion is a Boston-based DJ mixing house, tech house, hip hop and R&amp;B. Listen to recorded sets, explore past shows and get in touch for bookings.">
     <link rel="canonical" href="https://diffusiondj.com/">
 
     <meta property="og:type" content="profile">
     <meta property="og:title" content="Diffusion">
-    <meta property="og:description" content="DJ based in Boston, MA. Recorded sets on SoundCloud.">
+    <meta property="og:site_name" content="Diffusion Music">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:description" content="Diffusion is a Boston-based DJ mixing house, tech house, hip hop and R&amp;B. Listen to recorded sets, explore past shows and get in touch for bookings.">
     <meta property="og:url" content="https://diffusiondj.com/">
     <!-- The share card is the wordmark, not a set cover: pasted links should read
          as the artist, and any one set's artwork dates the link. 1200x630 is the
@@ -21,24 +23,48 @@
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Diffusion">
-    <meta name="twitter:description" content="DJ based in Boston, MA. Recorded sets on SoundCloud.">
+    <meta name="twitter:description" content="Diffusion is a Boston-based DJ mixing house, tech house, hip hop and R&amp;B. Listen to recorded sets, explore past shows and get in touch for bookings.">
     <meta name="twitter:image" content="https://diffusiondj.com/images/og-diffusion.png">
     <meta name="twitter:image:alt" content="Diffusion">
 
-    <!-- Tells search engines which SoundCloud and Instagram accounts belong to
-         this name, so a search for it attaches the right ones. -->
+    <!-- Connect the artist, official site and social profiles with stable IDs. -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "MusicGroup",
-        "name": "Diffusion",
-        "url": "https://diffusiondj.com/",
-        "image": "https://diffusiondj.com/images/og-diffusion.png",
-        "location": { "@type": "Place", "name": "Boston, MA" },
-        "genre": ["House", "Tech House", "Hip Hop", "R&B"],
-        "sameAs": [
-            "https://soundcloud.com/rquinn1",
-            "https://www.instagram.com/diffusion.music/"
+        "@graph": [
+            {
+                "@type": "MusicGroup",
+                "@id": "https://diffusiondj.com/#artist",
+                "name": "Diffusion",
+                "alternateName": "Diffusion Music",
+                "description": "Diffusion is a Boston-based DJ mixing house, tech house, hip hop and R&B.",
+                "url": "https://diffusiondj.com/",
+                "image": "https://diffusiondj.com/images/og-diffusion.png",
+                "email": "djdiffusionmusic@gmail.com",
+                "location": { "@type": "Place", "name": "Boston, MA" },
+                "genre": ["House", "Tech House", "Hip Hop", "R&B"],
+                "sameAs": [
+                    "https://soundcloud.com/rquinn1",
+                    "https://www.instagram.com/diffusion.music/"
+                ]
+            },
+            {
+                "@type": "WebSite",
+                "@id": "https://diffusiondj.com/#website",
+                "name": "Diffusion Music",
+                "alternateName": "Diffusion",
+                "url": "https://diffusiondj.com/",
+                "inLanguage": "en-US",
+                "publisher": { "@id": "https://diffusiondj.com/#artist" }
+            },
+            {
+                "@type": "WebPage",
+                "@id": "https://diffusiondj.com/#webpage",
+                "url": "https://diffusiondj.com/",
+                "name": "Diffusion Music",
+                "isPartOf": { "@id": "https://diffusiondj.com/#website" },
+                "mainEntity": { "@id": "https://diffusiondj.com/#artist" }
+            }
         ]
     }
     </script>
