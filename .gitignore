@@ -2,3 +2,19 @@ docs/
 .superpowers/
 .DS_Store
 .playwright-mcp/
+
+# Claude Code instructions live at .claude/CLAUDE.md, not the repo root. Pages
+# serves whatever is in the branch, so a root CLAUDE.md gets published at
+# diffusiondj.com/CLAUDE.md — dot-directories are not served.
+/CLAUDE.md
+
+# Codex reads this from disk; committing it would publish it at the site root
+# for the same reason as /CLAUDE.md above.
+/AGENTS.md
+
+# Codex's per-directory MCP config. Machine-local, and it carries absolute
+# paths to this machine's Claude Extensions directory.
+.codex/
+
+# Machine-local permissions and preferences.
+.claude/settings.local.json
