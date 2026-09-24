@@ -426,27 +426,17 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ── sets ── */
-.set-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 28px 24px;
-}
-
-/* Column ladder: 4 -> 3 -> 2 -> 2. These blocks must stay in descending
-   max-width order; they are equal specificity, so a later block wins and
-   reordering would strand the grid at the wrong count. */
-@media (max-width: 1200px) {
-    .set-grid { grid-template-columns: repeat(3, 1fr); }
-}
+/* Sets share the Photos .rail scroller. A tile is a fixed-width column whose
+   square cover is as tall as a photo at each breakpoint, so the two rails
+   line up; the caption under it is what tells them apart. */
+.rail > .tile { flex: 0 0 auto; width: 330px; }
 
 @media (max-width: 900px) {
-    .set-grid { grid-template-columns: repeat(2, 1fr); }
+    .rail > .tile { width: 260px; }
 }
 
 @media (max-width: 600px) {
-    /* Two columns, not one: six full-width squares stack to more than 2000px
-       and lose the grid the desktop page is built around. */
-    .set-grid { grid-template-columns: repeat(2, 1fr); gap: 22px 14px; }
+    .rail > .tile { width: 220px; }
 }
 
 .tile { display: block; }
@@ -459,14 +449,13 @@ a { color: inherit; text-decoration: none; }
     object-fit: cover;
     border-radius: 2px;
     background: var(--panel);
-    transition: transform .25s cubic-bezier(.4, 0, .2, 1), box-shadow .25s;
+    transition: filter var(--hover);
 }
 
+/* The Photos rail's hover, not a lift: the rail scrolls, so it clips
+   anything that rises above its top edge, shadow included. */
 .tile:hover .tile-art,
-.tile:focus-visible .tile-art {
-    transform: translateY(-3px);
-    box-shadow: 0 14px 44px color-mix(in srgb, var(--void) 55%, transparent);
-}
+.tile:focus-visible .tile-art { filter: brightness(1.12); }
 
 .tile-cap {
     display: block;
@@ -767,6 +756,28 @@ body:has(dialog[open]) { overflow: hidden; }
 
 .show.is-open .show-panel { transform: none; }
 
+/* A set panel is a release page: the cover beside the title, player and
+   link. Two classes, so it outranks the one-column rule above for a panel
+   with no show-grid. */
+.show-panel.show-panel--set {
+    grid-template-columns: minmax(0, 460px) minmax(0, 1fr);
+    width: min(100%, 1040px);
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .show-panel.show-panel--set {
+        grid-template-columns: minmax(0, 1fr);
+        width: min(100%, 560px);
+    }
+}
+
+@media (max-width: 600px) {
+    /* Room above the cover for the close control, which would otherwise sit
+       on the artwork's corner. */
+    .show-panel.show-panel--set { padding-top: 48px; }
+}
+
 @media (max-width: 900px) {
     .show-panel { grid-template-columns: minmax(0, 1fr); }
 }
@@ -888,11 +899,6 @@ body:has(dialog[open]) { overflow: hidden; }
     *, *::before, *::after {
         transition: none !important;
         animation: none !important;
-    }
-
-    .tile:hover .tile-art,
-    .tile:focus-visible .tile-art {
-        transform: none;
     }
 
     /* `animation: none` alone would freeze the sweep mid-travel, leaving a violet

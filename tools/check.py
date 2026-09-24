@@ -15,7 +15,7 @@ Run from anywhere::
 Rules checked
 -------------
 - Every id is unique; every aria-controls and aria-labelledby resolves.
-- Every show dialog has a Played row that opens it, an h2 titled
+- Every show dialog has one opener, a Played row or a Sets tile, an h2 titled
   ``<id>-title``, and only data-src on its embeds.
 - Every local file the page references exists, and every file under css/,
   js/, fonts/ and images/ is referenced somewhere (no orphans).
@@ -146,6 +146,12 @@ def check_shows(root: Element) -> None:
             flag(f"index.html:{row.line}", "gig--show row needs exactly one button with aria-controls")
             continue
         openers.setdefault(buttons[0].attrs["aria-controls"], []).append(row.line)
+    for tile in root.find_all("a", cls="tile"):
+        target = tile.attrs.get("aria-controls")
+        if not target:
+            flag(f"index.html:{tile.line}", "set tile needs aria-controls naming its panel")
+            continue
+        openers.setdefault(target, []).append(tile.line)
     for dialog in root.find_all("dialog", cls="show"):
         did = dialog.attrs.get("id", "")
         where = f"index.html:{dialog.line}"
@@ -153,9 +159,9 @@ def check_shows(root: Element) -> None:
             flag(where, f"show dialog id {did!r} must start with 'show-'")
         rows = openers.pop(did, [])
         if not rows:
-            flag(where, f"no gig--show row opens {did!r}")
+            flag(where, f"no gig--show row or set tile opens {did!r}")
         elif len(rows) > 1:
-            flag(where, f"{did!r} is opened by rows on lines {rows}")
+            flag(where, f"{did!r} is opened from lines {rows}")
         titles = [h for h in dialog.find_all("h2") if h.attrs.get("id") == f"{did}-title"]
         if len(titles) != 1:
             flag(where, f"show needs one h2 with id {did + '-title'!r}")
@@ -167,7 +173,7 @@ def check_shows(root: Element) -> None:
         if not any(b.has_class("dialog-close") for b in dialog.find_all("button")):
             flag(where, "show has no .dialog-close button")
     for did, rows in openers.items():
-        flag(f"index.html:{rows[0]}", f"row opens {did!r}, which is not a show dialog")
+        flag(f"index.html:{rows[0]}", f"opener names {did!r}, which is not a show dialog")
 
 
 def check_images(root: Element) -> None:
@@ -185,8 +191,10 @@ def check_images(root: Element) -> None:
 
 
 def check_rail_captions(root: Element) -> None:
-    rails = list(root.find_all(cls="rail"))
+    photos = next((el for el in root.walk() if el.attrs.get("id") == "photos"), None)
+    rails = list(photos.find_all(cls="rail")) if photos else []
     if not rails:
+        flag("index.html", "no rail in #photos")
         return
     captions = list(rails[0].find_all("figcaption"))
     for n, cap in enumerate(captions, start=1):
