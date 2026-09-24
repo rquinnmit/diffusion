@@ -80,7 +80,7 @@ first time a show opens. The panel has two halves and no labels, modelled on a
 label's release page Ryan supplied: `show-lead` on the left holds the video,
 the title, a `show-link` to the event's ticket-page listing, and the SoundCloud
 player, with no date or city line; `show-grid` on the right is one `show-tile`
-per photo, reusing the Sets tiles' `tile-art` and `tile-meta` classes. A show
+per photo, reusing the Sets grid's `tile-art` and `tile-meta` classes. A show
 with no grid narrows to one column. The close control is a bare ✕ with an
 aria-label, no word. The template comment above the first dialog shows the
 full form. Photos for a show will live under `images/shows/<slug>/`; video and audio
@@ -88,16 +88,6 @@ are always embeds, never local files. The cruise and Mirage hold their titles
 and listing links until their media exists. That link is proof the gig
 happened, not an attempt to sell a passed date, so it sits in the same faint
 mono register as a `gig-note` and reads "Event listing" rather than "Tickets".
-
-Sets is a rail beside Photos, not a grid: Ryan chose on 2026-09-23 to give it
-the Photos feel, with square covers as tall as the photos and the title and
-date/length under each. A cover opens a set panel, which is a show dialog
-(`#show/<slug>`, handled by `js/shows.js`) laid out as a release page: the
-cover beside the title, date and length, the SoundCloud player and an "On
-SoundCloud" link. The tile stays an `<a href>` to the track so it works
-without the script, and a modified click still opens a new tab. Hover on a
-rail is a brightness lift, never a translate: the scroller clips anything that
-rises above its top edge.
 
 Photos rail shots open in a centered lightbox on click (`js/lightbox.js`).
 Set covers are `<name>.webp` at 500px, and where SoundCloud holds the artwork

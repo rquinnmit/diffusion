@@ -64,11 +64,10 @@ itself stays.
 there. Photos go under `images/shows/<slug>/`; video and audio are always
 embeds with `data-src`, never local files.
 
-**Add a set.** Add a `tile` to the Sets rail, newest first, and its set panel
-after the rail, both from the templates in the section. The cover goes in
+**Add a set.** Add a `tile` to `.set-grid`, newest first, with the cover in
 `images/sets/` as `<name>.webp` at 500px and, when the SoundCloud original is
-1000px or more, `<name>-1000.webp` named in the `srcset` of both the tile and
-the panel. Covers after the first two take `loading="lazy"`.
+1000px or more, `<name>-1000.webp` named in the tile's `srcset` (see the
+comment in the grid). Covers below the first row take `loading="lazy"`.
 
 **Add a photo.** Add a `figure.shot` to the rail with a WebP in
 `images/photos/` and the next figcaption number. Portrait and landscape both

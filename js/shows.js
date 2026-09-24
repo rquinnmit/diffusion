@@ -1,13 +1,12 @@
 /**
- * Show dialogs for Played rows and Sets tiles.
+ * Show dialogs for Played rows.
  *
- * A row whose title is <button aria-controls="show-SLUG">, or a set tile
- * <a aria-controls="show-SLUG">, opens <dialog class="show" id="show-SLUG">.
- * The open show is mirrored in the URL as #show/SLUG, which is what makes the
- * back button close it and lets the link be shared; a page loaded with that
- * hash opens the show at once. Embeds inside a show carry data-src rather
- * than src and are given a real src the first time it opens, so a show that
- * is never opened loads nothing.
+ * A row whose title is <button aria-controls="show-SLUG"> opens
+ * <dialog class="show" id="show-SLUG">. The open show is mirrored in the URL
+ * as #show/SLUG, which is what makes the back button close it and lets the
+ * link be shared; a page loaded with that hash opens the show at once. Embeds
+ * inside a show carry data-src rather than src and are given a real src the
+ * first time it opens, so a show that is never opened loads nothing.
  */
 import { openDialog, closeDialog, onDismiss } from './dialog.js';
 
@@ -82,9 +81,6 @@ document.addEventListener('click', (event) => {
     if (!trigger) return;
     const dialog = document.getElementById(trigger.getAttribute('aria-controls'));
     if (!dialog || !dialog.classList.contains('show')) return;
-    // A set tile is also a link to SoundCloud; a modified click keeps its
-    // new-tab meaning.
-    if (trigger.href && (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)) return;
     event.preventDefault();
     history.pushState(null, '', HASH_PREFIX + dialog.id.slice(ID_PREFIX.length));
     pushed = true;

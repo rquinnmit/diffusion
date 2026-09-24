@@ -202,146 +202,45 @@
                 <span class="gig-note">Tickets &#8599;</span>
             </a>
         </section>
-        <section class="sec sec--bleed" id="sets">
+        <section class="sec" id="sets">
             <div class="sechead">
                 <h2>Sets</h2>
             </div>
-            <div class="rail" tabindex="0" role="region" aria-label="Sets">
-                <!-- One tile per set, newest first. The tile is a link to the set on
-                     SoundCloud that js/shows.js turns into the opener of its panel,
-                     so the link still works if the script does not run. Each tile's
-                     aria-controls names a set panel below.
-                <a class="tile" href="SOUNDCLOUD URL" target="_blank" rel="noopener" aria-haspopup="dialog" aria-controls="show-SLUG">
-                    <img class="tile-art" src="images/sets/SLUG.webp" alt="Artwork for SET NAME" width="500" height="500" loading="lazy">
-                    <span class="tile-cap">Set Name</span>
-                    <span class="tile-meta">Mon YYYY · MM:SS</span>
-                </a>
-                -->
-                <a class="tile" href="https://soundcloud.com/rquinn1/diffusion-deep-tech-house-mix" target="_blank" rel="noopener" aria-haspopup="dialog" aria-controls="show-deep-tech-house-mix">
-                    <img class="tile-art" src="images/sets/deep-tech-house-mix.webp" srcset="images/sets/deep-tech-house-mix.webp 500w, images/sets/deep-tech-house-mix-1000.webp 1000w" sizes="(max-width: 600px) 220px, (max-width: 900px) 260px, 330px" alt="Artwork for Deep Tech House Mix" width="500" height="500">
+            <div class="set-grid">
+                <a class="tile" href="https://soundcloud.com/rquinn1/diffusion-deep-tech-house-mix" target="_blank" rel="noopener">
+                    <img class="tile-art" src="images/sets/deep-tech-house-mix.webp" srcset="images/sets/deep-tech-house-mix.webp 500w, images/sets/deep-tech-house-mix-1000.webp 1000w" sizes="(max-width: 900px) 46vw, (max-width: 1200px) 31vw, 340px" alt="Artwork for Deep Tech House Mix" width="500" height="500">
                     <span class="tile-cap">Deep Tech House Mix</span>
                     <span class="tile-meta">Sep 2026 · 60:13</span>
                 </a>
-                <a class="tile" href="https://soundcloud.com/rquinn1/diffusion-rinzler-minimal" target="_blank" rel="noopener" aria-haspopup="dialog" aria-controls="show-minimal-house-b2b-rinzler">
-                    <img class="tile-art" src="images/sets/minimal-house-b2b-rinzler.webp" srcset="images/sets/minimal-house-b2b-rinzler.webp 500w, images/sets/minimal-house-b2b-rinzler-1000.webp 1000w" sizes="(max-width: 600px) 220px, (max-width: 900px) 260px, 330px" alt="Artwork for Minimal House &amp; Indie Dance, B2B with Rinzler" width="500" height="500">
+                <a class="tile" href="https://soundcloud.com/rquinn1/diffusion-rinzler-minimal" target="_blank" rel="noopener">
+                    <img class="tile-art" src="images/sets/minimal-house-b2b-rinzler.webp" srcset="images/sets/minimal-house-b2b-rinzler.webp 500w, images/sets/minimal-house-b2b-rinzler-1000.webp 1000w" sizes="(max-width: 900px) 46vw, (max-width: 1200px) 31vw, 340px" alt="Artwork for Minimal House &amp; Indie Dance, B2B with Rinzler" width="500" height="500">
                     <span class="tile-cap">Minimal House &amp; Indie Dance (B2B Rinzler)</span>
                     <span class="tile-meta">Jul 2026 · 51:29</span>
                 </a>
                 <!-- A cover carries srcset with a -1000 twin when SoundCloud holds the
                      artwork at 1000px or more; the 500px file alone is fine when it
                      does not (Late Night Mix, R&B Mix). -->
-                <a class="tile" href="https://soundcloud.com/rquinn1/rq-late-night-mix-hip-hip-r-b" target="_blank" rel="noopener" aria-haspopup="dialog" aria-controls="show-late-night-mix">
+                <a class="tile" href="https://soundcloud.com/rquinn1/rq-late-night-mix-hip-hip-r-b" target="_blank" rel="noopener">
                     <img class="tile-art" src="images/sets/late-night-mix.webp" alt="Artwork for Late Night Mix" width="500" height="500" loading="lazy">
                     <span class="tile-cap">Late Night Mix — Hip Hop, R&amp;B, Pop</span>
                     <span class="tile-meta">Apr 2026 · 40:35</span>
                 </a>
-                <a class="tile" href="https://soundcloud.com/rquinn1/rq-rb-mix" target="_blank" rel="noopener" aria-haspopup="dialog" aria-controls="show-rnb-mix">
+                <a class="tile" href="https://soundcloud.com/rquinn1/rq-rb-mix" target="_blank" rel="noopener">
                     <img class="tile-art" src="images/sets/rnb-mix.webp" alt="Artwork for R&amp;B Mix" width="500" height="500" loading="lazy">
                     <span class="tile-cap">R&amp;B Mix</span>
                     <span class="tile-meta">Jan 2026 · 39:48</span>
                 </a>
-                <a class="tile" href="https://soundcloud.com/rquinn1/rq-trap-mix" target="_blank" rel="noopener" aria-haspopup="dialog" aria-controls="show-trap-mix">
-                    <img class="tile-art" src="images/sets/trap-mix.webp" srcset="images/sets/trap-mix.webp 500w, images/sets/trap-mix-1000.webp 1000w" sizes="(max-width: 600px) 220px, (max-width: 900px) 260px, 330px" alt="Artwork for Trap Mix" width="500" height="500" loading="lazy">
+                <a class="tile" href="https://soundcloud.com/rquinn1/rq-trap-mix" target="_blank" rel="noopener">
+                    <img class="tile-art" src="images/sets/trap-mix.webp" srcset="images/sets/trap-mix.webp 500w, images/sets/trap-mix-1000.webp 1000w" sizes="(max-width: 900px) 46vw, (max-width: 1200px) 31vw, 340px" alt="Artwork for Trap Mix" width="500" height="500" loading="lazy">
                     <span class="tile-cap">Trap Mix</span>
                     <span class="tile-meta">Jun 2025 · 55:11</span>
                 </a>
-                <a class="tile" href="https://soundcloud.com/rquinn1/dj-party-set" target="_blank" rel="noopener" aria-haspopup="dialog" aria-controls="show-party-set">
-                    <img class="tile-art" src="images/sets/party-set.webp" srcset="images/sets/party-set.webp 500w, images/sets/party-set-1000.webp 1000w" sizes="(max-width: 600px) 220px, (max-width: 900px) 260px, 330px" alt="Artwork for Party Set" width="500" height="500" loading="lazy">
+                <a class="tile" href="https://soundcloud.com/rquinn1/dj-party-set" target="_blank" rel="noopener">
+                    <img class="tile-art" src="images/sets/party-set.webp" srcset="images/sets/party-set.webp 500w, images/sets/party-set-1000.webp 1000w" sizes="(max-width: 900px) 46vw, (max-width: 1200px) 31vw, 340px" alt="Artwork for Party Set" width="500" height="500" loading="lazy">
                     <span class="tile-cap">Party Set</span>
                     <span class="tile-meta">May 2025 · 53:11</span>
                 </a>
             </div>
-
-            <!-- Set panels. These are show dialogs (js/shows.js, #show/SLUG) laid
-                 out as a release page: the cover on the left, and on the right the
-                 title, the date and length, the SoundCloud player and the link to
-                 the track. The panel's cover is the tile's image again, sized for
-                 the panel.
-            <dialog class="show" id="show-SLUG" aria-labelledby="show-SLUG-title">
-                <div class="show-panel show-panel--set">
-                    <button class="dialog-close" type="button" aria-label="Close" autofocus>&#x2715;</button>
-                    <img class="tile-art" src="images/sets/SLUG.webp" alt="Artwork for SET NAME" width="500" height="500" loading="lazy">
-                    <div class="show-lead">
-                        <h2 class="show-title" id="show-SLUG-title">Set Name</h2>
-                        <span class="tile-meta">Mon YYYY · MM:SS</span>
-                        <iframe class="show-embed show-embed--audio" data-src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/rquinn1/TRACK&amp;color=%236e64ff&amp;auto_play=false&amp;show_teaser=false" title="SET NAME" loading="lazy" allow="autoplay"></iframe>
-                        <a class="show-link" href="SOUNDCLOUD URL" target="_blank" rel="noopener">On SoundCloud <span aria-hidden="true">&#8599;</span></a>
-                    </div>
-                </div>
-            </dialog>
-            -->
-            <dialog class="show" id="show-deep-tech-house-mix" aria-labelledby="show-deep-tech-house-mix-title">
-                <div class="show-panel show-panel--set">
-                    <button class="dialog-close" type="button" aria-label="Close" autofocus>&#x2715;</button>
-                    <img class="tile-art" src="images/sets/deep-tech-house-mix.webp" srcset="images/sets/deep-tech-house-mix.webp 500w, images/sets/deep-tech-house-mix-1000.webp 1000w" sizes="(max-width: 900px) 100vw, 480px" alt="Artwork for Deep Tech House Mix" width="500" height="500" loading="lazy">
-                    <div class="show-lead">
-                        <h2 class="show-title" id="show-deep-tech-house-mix-title">Deep Tech House Mix</h2>
-                        <span class="tile-meta">Sep 2026 · 60:13</span>
-                        <iframe class="show-embed show-embed--audio" data-src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/rquinn1/diffusion-deep-tech-house-mix&amp;color=%236e64ff&amp;auto_play=false&amp;show_teaser=false" title="Deep Tech House Mix" loading="lazy" allow="autoplay"></iframe>
-                        <a class="show-link" href="https://soundcloud.com/rquinn1/diffusion-deep-tech-house-mix" target="_blank" rel="noopener">On SoundCloud <span aria-hidden="true">&#8599;</span></a>
-                    </div>
-                </div>
-            </dialog>
-            <dialog class="show" id="show-minimal-house-b2b-rinzler" aria-labelledby="show-minimal-house-b2b-rinzler-title">
-                <div class="show-panel show-panel--set">
-                    <button class="dialog-close" type="button" aria-label="Close" autofocus>&#x2715;</button>
-                    <img class="tile-art" src="images/sets/minimal-house-b2b-rinzler.webp" srcset="images/sets/minimal-house-b2b-rinzler.webp 500w, images/sets/minimal-house-b2b-rinzler-1000.webp 1000w" sizes="(max-width: 900px) 100vw, 480px" alt="Artwork for Minimal House &amp; Indie Dance, B2B with Rinzler" width="500" height="500" loading="lazy">
-                    <div class="show-lead">
-                        <h2 class="show-title" id="show-minimal-house-b2b-rinzler-title">Minimal House &amp; Indie Dance (B2B Rinzler)</h2>
-                        <span class="tile-meta">Jul 2026 · 51:29</span>
-                        <iframe class="show-embed show-embed--audio" data-src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/rquinn1/diffusion-rinzler-minimal&amp;color=%236e64ff&amp;auto_play=false&amp;show_teaser=false" title="Minimal House &amp; Indie Dance, B2B with Rinzler" loading="lazy" allow="autoplay"></iframe>
-                        <a class="show-link" href="https://soundcloud.com/rquinn1/diffusion-rinzler-minimal" target="_blank" rel="noopener">On SoundCloud <span aria-hidden="true">&#8599;</span></a>
-                    </div>
-                </div>
-            </dialog>
-            <dialog class="show" id="show-late-night-mix" aria-labelledby="show-late-night-mix-title">
-                <div class="show-panel show-panel--set">
-                    <button class="dialog-close" type="button" aria-label="Close" autofocus>&#x2715;</button>
-                    <img class="tile-art" src="images/sets/late-night-mix.webp" alt="Artwork for Late Night Mix" width="500" height="500" loading="lazy">
-                    <div class="show-lead">
-                        <h2 class="show-title" id="show-late-night-mix-title">Late Night Mix — Hip Hop, R&amp;B, Pop</h2>
-                        <span class="tile-meta">Apr 2026 · 40:35</span>
-                        <iframe class="show-embed show-embed--audio" data-src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/rquinn1/rq-late-night-mix-hip-hip-r-b&amp;color=%236e64ff&amp;auto_play=false&amp;show_teaser=false" title="Late Night Mix" loading="lazy" allow="autoplay"></iframe>
-                        <a class="show-link" href="https://soundcloud.com/rquinn1/rq-late-night-mix-hip-hip-r-b" target="_blank" rel="noopener">On SoundCloud <span aria-hidden="true">&#8599;</span></a>
-                    </div>
-                </div>
-            </dialog>
-            <dialog class="show" id="show-rnb-mix" aria-labelledby="show-rnb-mix-title">
-                <div class="show-panel show-panel--set">
-                    <button class="dialog-close" type="button" aria-label="Close" autofocus>&#x2715;</button>
-                    <img class="tile-art" src="images/sets/rnb-mix.webp" alt="Artwork for R&amp;B Mix" width="500" height="500" loading="lazy">
-                    <div class="show-lead">
-                        <h2 class="show-title" id="show-rnb-mix-title">R&amp;B Mix</h2>
-                        <span class="tile-meta">Jan 2026 · 39:48</span>
-                        <iframe class="show-embed show-embed--audio" data-src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/rquinn1/rq-rb-mix&amp;color=%236e64ff&amp;auto_play=false&amp;show_teaser=false" title="R&amp;B Mix" loading="lazy" allow="autoplay"></iframe>
-                        <a class="show-link" href="https://soundcloud.com/rquinn1/rq-rb-mix" target="_blank" rel="noopener">On SoundCloud <span aria-hidden="true">&#8599;</span></a>
-                    </div>
-                </div>
-            </dialog>
-            <dialog class="show" id="show-trap-mix" aria-labelledby="show-trap-mix-title">
-                <div class="show-panel show-panel--set">
-                    <button class="dialog-close" type="button" aria-label="Close" autofocus>&#x2715;</button>
-                    <img class="tile-art" src="images/sets/trap-mix.webp" srcset="images/sets/trap-mix.webp 500w, images/sets/trap-mix-1000.webp 1000w" sizes="(max-width: 900px) 100vw, 480px" alt="Artwork for Trap Mix" width="500" height="500" loading="lazy">
-                    <div class="show-lead">
-                        <h2 class="show-title" id="show-trap-mix-title">Trap Mix</h2>
-                        <span class="tile-meta">Jun 2025 · 55:11</span>
-                        <iframe class="show-embed show-embed--audio" data-src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/rquinn1/rq-trap-mix&amp;color=%236e64ff&amp;auto_play=false&amp;show_teaser=false" title="Trap Mix" loading="lazy" allow="autoplay"></iframe>
-                        <a class="show-link" href="https://soundcloud.com/rquinn1/rq-trap-mix" target="_blank" rel="noopener">On SoundCloud <span aria-hidden="true">&#8599;</span></a>
-                    </div>
-                </div>
-            </dialog>
-            <dialog class="show" id="show-party-set" aria-labelledby="show-party-set-title">
-                <div class="show-panel show-panel--set">
-                    <button class="dialog-close" type="button" aria-label="Close" autofocus>&#x2715;</button>
-                    <img class="tile-art" src="images/sets/party-set.webp" srcset="images/sets/party-set.webp 500w, images/sets/party-set-1000.webp 1000w" sizes="(max-width: 900px) 100vw, 480px" alt="Artwork for Party Set" width="500" height="500" loading="lazy">
-                    <div class="show-lead">
-                        <h2 class="show-title" id="show-party-set-title">Party Set</h2>
-                        <span class="tile-meta">May 2025 · 53:11</span>
-                        <iframe class="show-embed show-embed--audio" data-src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/rquinn1/dj-party-set&amp;color=%236e64ff&amp;auto_play=false&amp;show_teaser=false" title="Party Set" loading="lazy" allow="autoplay"></iframe>
-                        <a class="show-link" href="https://soundcloud.com/rquinn1/dj-party-set" target="_blank" rel="noopener">On SoundCloud <span aria-hidden="true">&#8599;</span></a>
-                    </div>
-                </div>
-            </dialog>
         </section>
         <section class="sec sec--bleed" id="photos">
             <div class="sechead">
