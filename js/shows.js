@@ -1,7 +1,7 @@
 /**
- * Show dialogs for Played cards.
+ * Show dialogs for Played rows.
  *
- * A card that is a <button aria-controls="show-SLUG"> opens
+ * A row whose title is <button aria-controls="show-SLUG"> opens
  * <dialog class="show" id="show-SLUG">. The open show is mirrored in the URL
  * as #show/SLUG, which is what makes the back button close it and lets the
  * link be shared; a page loaded with that hash opens the show at once. Embeds

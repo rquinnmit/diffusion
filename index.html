@@ -186,8 +186,8 @@
             </div>
                  Then add one row per booked show, soonest first. The date is the
                  day here, not the year, because an upcoming show needs the day.
-                 Once it passes, delete the row and add a card for the show to
-                 the #played rail (the template is there):
+                 Once it passes, move the row to #played, change the date to
+                 MONTH YEAR, and drop the gig--next class and the gig-note line:
             <a class="gig gig--next" href="TICKET URL" target="_blank" rel="noopener">
                 <span class="gig-date">MON DD</span>
                 <span class="gig-venue">Event Name</span>
@@ -290,55 +290,44 @@
                 <img class="lightbox-img" alt="">
             </dialog>
         </section>
-        <section class="sec sec--bleed" id="played">
-            <div class="sechead">
+        <section class="sec" id="played">
+            <div class="sechead sechead--cols">
                 <h2>Played</h2>
+                <span class="count">Location</span>
             </div>
-            <div class="rail" tabindex="0" role="region" aria-label="Shows played">
-                <!-- One gig-card per show, newest first. A show with a panel is a
-                     button whose aria-controls names its dialog below; its flyer
-                     lives at images/shows/SLUG/flyer.webp, 1000px on the long
-                     edge, and keeps its own aspect ratio (the rail fixes the
-                     height). The flyer's alt is empty because the caption under
-                     it names the show. The date is MON YYYY.
-                <button class="gig-card" type="button" aria-haspopup="dialog" aria-controls="show-SLUG">
-                    <img class="gig-card-art" src="images/shows/SLUG/flyer.webp" alt="" width="W" height="1000" loading="lazy">
-                    <span class="tile-cap">Event Name</span>
-                    <span class="tile-meta"><span class="gig-date">MON YYYY</span> · City</span>
-                </button>
-                     A show with no flyer and no panel is a plain card whose art is
-                     its name set in type:
-                <div class="gig-card">
-                    <span class="gig-card-art gig-card-art--type" aria-hidden="true">Event Name</span>
-                    <span class="tile-cap">Event Name</span>
-                    <span class="tile-meta"><span class="gig-date">MON YYYY</span> · City</span>
-                </div>
-                -->
-                <button class="gig-card" type="button" aria-haspopup="dialog" aria-controls="show-mirage-middle-east">
-                    <img class="gig-card-art" src="images/shows/mirage-middle-east/flyer.webp" alt="" width="1000" height="1000" loading="lazy">
-                    <span class="tile-cap">Mirage @ The Middle East</span>
-                    <span class="tile-meta"><span class="gig-date">SEP 2026</span> · Cambridge</span>
-                </button>
-                <button class="gig-card" type="button" aria-haspopup="dialog" aria-controls="show-aziman-last-cruise">
-                    <img class="gig-card-art" src="images/shows/aziman-last-cruise/flyer.webp" alt="" width="707" height="1000" loading="lazy">
-                    <span class="tile-cap">Aziman Tribe&rsquo;s Last Cruise</span>
-                    <span class="tile-meta"><span class="gig-date">AUG 2026</span> · New York</span>
-                </button>
-                <div class="gig-card">
-                    <span class="gig-card-art gig-card-art--type" aria-hidden="true">MIT SpringFest Opener</span>
-                    <span class="tile-cap">MIT SpringFest Opener</span>
-                    <span class="tile-meta"><span class="gig-date">MAY 2026</span> · Cambridge</span>
-                </div>
-                <div class="gig-card">
-                    <span class="gig-card-art gig-card-art--type" aria-hidden="true">MIT Disorientation</span>
-                    <span class="tile-cap">MIT Disorientation</span>
-                    <span class="tile-meta"><span class="gig-date">NOV 2025</span> · Cambridge</span>
-                </div>
+            <!-- Add one row per gig, newest first. To give a row a show panel,
+                 see the comment below the rows:
+            <div class="gig">
+                <span class="gig-date">FEB 2026</span>
+                <span class="gig-venue">Venue Name</span>
+                <span class="gig-city">Boston</span>
+            </div>
+            -->
+            <div class="gig gig--show">
+                <span class="gig-date">SEP 2026</span>
+                <button class="gig-venue" type="button" aria-haspopup="dialog" aria-controls="show-mirage-middle-east">Mirage @ The Middle East</button>
+                <span class="gig-city">Cambridge</span>
+            </div>
+            <div class="gig gig--show">
+                <span class="gig-date">AUG 2026</span>
+                <button class="gig-venue" type="button" aria-haspopup="dialog" aria-controls="show-aziman-last-cruise">Aziman Tribe&rsquo;s Last Cruise</button>
+                <span class="gig-city">New York</span>
+            </div>
+            <div class="gig">
+                <span class="gig-date">MAY 2026</span>
+                <span class="gig-venue">MIT SpringFest Opener</span>
+                <span class="gig-city">Cambridge</span>
+            </div>
+            <div class="gig">
+                <span class="gig-date">NOV 2025</span>
+                <span class="gig-venue">MIT Disorientation</span>
+                <span class="gig-city">Cambridge</span>
             </div>
 
-            <!-- Show panels. A gig-card button with aria-controls="show-SLUG"
-                 opens one of these. The dialog id is show-SLUG and the URL for
-                 an open show is #show/SLUG; js/shows.js does the rest.
+            <!-- Shows with media. A row opens one of these when its gig-venue is a
+                 <button aria-controls="show-SLUG"> and the row carries gig--show.
+                 The dialog id is show-SLUG and the URL for an open show is
+                 #show/SLUG; js/shows.js does the rest.
                  The panel has two halves and no labels. show-lead is the left
                  half: the video, then the title, then the recording. A show
                  with no video can lead with a photo instead by
@@ -350,13 +339,11 @@
                  show-lead holds only the title and the listing link, there is
                  no show-grid, and the panel's blank space is deliberate. The
                  show-link is the show's page on whoever ticketed it; drop the
-                 line when there is none. A show with a flyer opens its lead
-                 with it as a show-flyer, the same file as its card.
+                 line when there is none.
             <dialog class="show" id="show-SLUG" aria-labelledby="show-SLUG-title">
                 <div class="show-panel">
                     <button class="dialog-close" type="button" aria-label="Close" autofocus>&#x2715;</button>
                     <div class="show-lead">
-                        <img class="show-flyer" src="images/shows/SLUG/flyer.webp" alt="Flyer for Event Name" width="W" height="H" loading="lazy">
                         <iframe class="show-embed show-embed--video" data-src="https://www.youtube.com/embed/VIDEO_ID" title="Video from Event Name" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         <h2 class="show-title" id="show-SLUG-title">Event Name</h2>
                         <a class="show-link" href="LISTING URL" target="_blank" rel="noopener">Event listing <span aria-hidden="true">&#8599;</span></a>
@@ -375,7 +362,6 @@
                 <div class="show-panel">
                     <button class="dialog-close" type="button" aria-label="Close" autofocus>&#x2715;</button>
                     <div class="show-lead">
-                        <img class="show-flyer" src="images/shows/mirage-middle-east/flyer.webp" alt="Flyer for Mirage @ The Middle East" width="1000" height="1000" loading="lazy">
                         <h2 class="show-title" id="show-mirage-middle-east-title">Mirage @ The Middle East</h2>
                         <a class="show-link" href="https://www.ticketweb.com/event/mirage-ft-diffusion-torch-middle-east-cornerbakery-tickets/14301214?pl=mideastclub" target="_blank" rel="noopener">Event listing <span aria-hidden="true">&#8599;</span></a>
                     </div>
@@ -385,7 +371,6 @@
                 <div class="show-panel">
                     <button class="dialog-close" type="button" aria-label="Close" autofocus>&#x2715;</button>
                     <div class="show-lead">
-                        <img class="show-flyer" src="images/shows/aziman-last-cruise/flyer.webp" alt="Flyer for Aziman Tribe&rsquo;s Last Cruise" width="707" height="1000" loading="lazy">
                         <h2 class="show-title" id="show-aziman-last-cruise-title">Aziman Tribe&rsquo;s Last Cruise</h2>
                         <a class="show-link" href="https://posh.vip/e/last-cruise-summer-season-finale-house-music-party" target="_blank" rel="noopener">Event listing <span aria-hidden="true">&#8599;</span></a>
                     </div>
