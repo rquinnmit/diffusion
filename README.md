@@ -15,7 +15,7 @@ read it before changing how anything looks or behaves.
 | `index.html` | The page. Content lives here, with a template for each repeating block in an HTML comment beside it. |
 | `css/site.css` | The one stylesheet, in page order. Each component's phone rules sit right after its desktop rules. |
 | `js/dialog.js` | Opens and closes a `<dialog>` with a fade. Shared by the two below. |
-| `js/shows.js` | Show panels: opens one from its Played row, mirrors it to `#show/<slug>`, loads embeds on first open. |
+| `js/shows.js` | Show panels: opens one from its Played card, mirrors it to `#show/<slug>`, loads embeds on first open. |
 | `js/lightbox.js` | Enlarges a Photos rail shot in the `#lightbox` dialog. |
 | `fonts/` | Self-hosted latin subsets of Archivo and JetBrains Mono (SIL Open Font License). |
 | `images/` | `sets/` covers, `photos/` rail shots, `shows/<slug>/` photos for a show panel, the share card and the favicon. |
@@ -53,16 +53,19 @@ then run the checker.
 add a `gig gig--next` row linking to the ticket page, soonest first. The date
 is the day (`AUG 29`).
 
-**A show has passed.** Move its row to the top of `#played`, change the date
-to month and year (`AUG 2026`), drop `gig--next` and the ticket line. If no
-show remains upcoming, put the header back to its plain form; the section
-itself stays.
+**A show has passed.** Delete its Upcoming row and add a `gig-card` at the
+start of the `#played` rail, dated month and year (`AUG 2026`), from the
+template there. Take the flyer from the event's listing page (its `og:image`,
+or a larger original where the host serves one), save it as
+`images/shows/<slug>/flyer.webp` at 1000px on the long edge, and make the card
+a button that opens a show panel. A show with no flyer gets the plain
+typographic card and no panel. If no show remains upcoming, put the header
+back to its plain form; the section itself stays.
 
-**Give a played show a panel.** Turn the row's `gig-venue` span into a
-`<button aria-controls="show-<slug>">`, add `gig--show` to the row, and add a
-`<dialog class="show" id="show-<slug>">` after the rows using the template
-there. Photos go under `images/shows/<slug>/`; video and audio are always
-embeds with `data-src`, never local files.
+**Fill in a show panel.** Each carded show has a `<dialog class="show"
+id="show-<slug>">` after the rail, built from the template there, which leads
+with the flyer. Photos go under `images/shows/<slug>/`; video and audio are
+always embeds with `data-src`, never local files.
 
 **Add a set.** Add a `tile` to `.set-grid`, newest first, with the cover in
 `images/sets/` as `<name>.webp` at 500px and, when the SoundCloud original is

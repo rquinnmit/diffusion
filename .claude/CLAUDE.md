@@ -54,10 +54,16 @@ back. The checker enforces the CSS half of this.
 Sections are `#upcoming`, `#sets`, `#photos`, `#played`, and `#booking` — there
 is deliberately no About section.
 
-`#upcoming` and `#played` share one grid, so a show moves between them by
-editing its date and dropping `gig--next`. Upcoming rows are links to the ticket
-page and carry a day-level date (`Aug 29`); played rows carry month and year
-(`May 2026`). The row template lives in an HTML comment above the rows.
+`#upcoming` is a grid of rows that link to the ticket page and carry a
+day-level date (`Aug 29`); the row template lives in an HTML comment above the
+rows. `#played` is a rail like Photos (decided 2026-09-24): one `gig-card` per
+show, newest first, dated month and year (`May 2026`), its art the event's
+flyer at the photos' height in its own aspect ratio, with the venue and date
+and city under it. A show leaves Upcoming by losing its row and gaining a card,
+no longer by editing a date. Flyers come from the event's listing page and live
+at `images/shows/<slug>/flyer.webp`, 1000px on the long edge. A show with no
+flyer gets a square card with its name set in the panel-title face; that card
+is the show in type, not an empty state, so it carries no "no flyer" wording.
 
 `#upcoming` stays on the page when nothing is booked. Ryan decided this on
 2026-09-01: with no rows it is a plain `sechead` over blank space, with no
@@ -67,25 +73,24 @@ Never delete the section or its nav link, and never add a "nothing here"
 message; blank space is his chosen signal for that, here and in a show panel
 with no media yet.
 
-A Played row can open a show dialog over the page: a SoundCloud recording, a
-video embed, and photos from that night in a centred panel with the page
-dimmed and blurred behind it. The row's `gig-venue` becomes a `<button
-aria-controls="show-<slug>">`, the row takes `gig--show`, and a
-`<dialog class="show" id="show-<slug>">` after the rows holds the content.
-There is deliberately no hint text on the row; a faint underline is the only
-mark. `js/shows.js` opens it, mirrors the open show as `#show/<slug>` so back and
+A Played card with a flyer opens a show dialog over the page: the flyer, a
+SoundCloud recording, a video embed, and photos from that night in a centred
+panel with the page dimmed and blurred behind it. The card is a `<button
+aria-controls="show-<slug>">` and a `<dialog class="show" id="show-<slug>">`
+after the rail holds the content. There is deliberately no hint text on the
+card; the flyer brightening on hover is the only mark. `js/shows.js` opens it, mirrors the open show as `#show/<slug>` so back and
 shared links work, closes on Escape, the Close control, a click on the
 backdrop, or the back button, and copies `data-src` to `src` on embeds the
 first time a show opens. The panel has two halves and no labels, modelled on a
-label's release page Ryan supplied: `show-lead` on the left holds the video,
-the title, a `show-link` to the event's ticket-page listing, and the SoundCloud
+label's release page Ryan supplied: `show-lead` on the left holds the flyer
+(`show-flyer`, kept short of the fold), the video, the title, a `show-link` to the event's ticket-page listing, and the SoundCloud
 player, with no date or city line; `show-grid` on the right is one `show-tile`
 per photo, reusing the Sets grid's `tile-art` and `tile-meta` classes. A show
 with no grid narrows to one column. The close control is a bare ✕ with an
 aria-label, no word. The template comment above the first dialog shows the
 full form. Photos for a show will live under `images/shows/<slug>/`; video and audio
-are always embeds, never local files. The cruise and Mirage hold their titles
-and listing links until their media exists. That link is proof the gig
+are always embeds, never local files. The cruise and Mirage hold their flyers,
+titles and listing links until their media exists. That link is proof the gig
 happened, not an attempt to sell a passed date, so it sits in the same faint
 mono register as a `gig-note` and reads "Event listing" rather than "Tickets".
 

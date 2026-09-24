@@ -647,9 +647,9 @@ body:has(dialog[open]) { overflow: hidden; }
 .lightbox.is-open .lightbox-img { transform: none; }
 
 /* ── gigs ── */
-/* One grid serves Upcoming and Played, so a show moves between the two
-   sections by editing its date and dropping .gig--next.
-   The header row shares the gig grid, so PLAYED sits over the date column and
+/* Upcoming rows. Once a show has passed it leaves this grid for a card in
+   the Played rail.
+   The header row shares the gig grid, so UPCOMING sits over the date column and
    LOCATION exactly over the city column. It was previously a flex row with
    space-between while the rows below were a 3-column grid, so the right-hand
    label missed the city column by the width of .gig's horizontal padding. */
@@ -657,7 +657,7 @@ body:has(dialog[open]) { overflow: hidden; }
     display: grid;
     grid-template-columns: 104px minmax(0, 1fr) 140px;
     gap: 18px;
-    /* Overrides .sechead's baseline alignment: PLAYED is 13px and LOCATION is
+    /* Overrides .sechead's baseline alignment: UPCOMING is 13px and LOCATION is
        10px, so a shared baseline left LOCATION's cap band sitting low. */
     align-items: center;
 }
@@ -701,8 +701,8 @@ body:has(dialog[open]) { overflow: hidden; }
 .gig-venue { font-size: 15px; font-weight: 500; color: var(--bone); }
 
 /* Upcoming rows only. .gig-note is its own cell rather than a child of
-   .gig-venue so the mobile stack keeps the played order: venue, city, then
-   the ticket line. */
+   .gig-venue so the mobile stack keeps the row order: venue, city, then the
+   ticket line. */
 .gig--next { row-gap: 5px; }
 
 .gig-note {
@@ -718,28 +718,70 @@ body:has(dialog[open]) { overflow: hidden; }
 .gig--next:hover .gig-note,
 .gig--next:focus-visible .gig-note { color: var(--violet); }
 
-/* ── shows ── */
-.gig--show .gig-venue {
+/* ── played ── */
+/* Played is a rail like Photos: every card is a photo's height and its flyer
+   keeps its own aspect ratio, so a square flyer and a portrait one sit side
+   by side. min-content makes the card as wide as its art, so the caption
+   wraps under the flyer instead of widening the card. */
+.gig-card {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: min-content;
+}
+
+button.gig-card {
     appearance: none;
     background: none;
     border: 0;
     padding: 0;
     font: inherit;
-    font-size: 15px;
-    font-weight: 500;
+    color: inherit;
     text-align: left;
-    justify-self: start;
     cursor: pointer;
-    text-decoration: underline;
-    text-decoration-color: color-mix(in srgb, var(--bone) 28%, transparent);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 5px;
-    transition: text-decoration-color var(--hover);
 }
 
-.gig--show .gig-venue:hover,
-.gig--show .gig-venue:focus-visible { text-decoration-color: var(--violet); }
+.gig-card-art {
+    display: block;
+    height: 330px;
+    width: auto;
+    border-radius: 2px;
+    background: var(--panel);
+    transition: filter var(--hover);
+}
 
+@media (max-width: 900px) {
+    .gig-card-art { height: 260px; }
+}
+
+@media (max-width: 600px) {
+    .gig-card-art { height: 220px; }
+}
+
+/* A show with no flyer: its name set in the panel-title face on a square,
+   standing in for the art rather than apologising for its absence. */
+.gig-card-art--type {
+    display: flex;
+    align-items: flex-end;
+    aspect-ratio: 1 / 1;
+    padding: 22px;
+    border: 1px solid var(--line);
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    font-weight: 700;
+    font-stretch: 108%;
+    letter-spacing: -.015em;
+    line-height: 1.15;
+    color: var(--bone);
+}
+
+button.gig-card:hover .gig-card-art,
+button.gig-card:focus-visible .gig-card-art { filter: brightness(1.12); }
+
+button.gig-card:hover .tile-meta,
+button.gig-card:focus-visible .tile-meta { color: var(--violet); }
+
+/* ── shows ── */
 /* margin: auto centres the panel when it fits and lets the backdrop scroll
    when it does not, where align-items: center would clip the top. The
    min-height is for a show with nothing in it yet: the blank under the title
@@ -772,7 +814,9 @@ body:has(dialog[open]) { overflow: hidden; }
 }
 
 @media (max-width: 600px) {
-    .show-panel { padding: 20px; gap: 28px; }
+    /* The top padding clears the close control, which would otherwise sit on
+       the corner of a flyer. */
+    .show-panel { padding: 48px 20px 20px; gap: 28px; }
     .show-panel .dialog-close { top: 10px; right: 12px; }
 }
 
@@ -797,6 +841,18 @@ body:has(dialog[open]) { overflow: hidden; }
 }
 
 .show-lead > :first-child { margin-top: 0; }
+
+/* Contained, not full-width: a portrait flyer at the lead's width would run
+   past the fold before the title. */
+.show-flyer {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: min(62vh, 560px);
+    margin-bottom: 8px;
+    border-radius: 2px;
+}
 
 .show-link {
     font-family: var(--mono);

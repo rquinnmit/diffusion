@@ -15,13 +15,13 @@ Run from anywhere::
 Rules checked
 -------------
 - Every id is unique; every aria-controls and aria-labelledby resolves.
-- Every show dialog has a Played row that opens it, an h2 titled
+- Every show dialog has one Played card that opens it, an h2 titled
   ``<id>-title``, and only data-src on its embeds.
 - Every local file the page references exists, and every file under css/,
   js/, fonts/ and images/ is referenced somewhere (no orphans).
 - Every img has alt; grid images carry width and height, rail images height.
 - Photos rail figcaptions are 01, 02, ... in document order.
-- Played rows are dated MON YYYY and run newest first.
+- Played cards are dated MON YYYY and run newest first.
 - Upcoming has the Location header exactly when it has rows.
 - The phone twin of the noise filter is the desktop filter with every length
   halved (to the nearest whole number) and its coarse warp frequency doubled.
@@ -140,12 +140,12 @@ def check_ids_and_refs(root: Element) -> None:
 
 def check_shows(root: Element) -> None:
     openers = {}
-    for row in root.find_all(cls="gig--show"):
-        buttons = [b for b in row.find_all("button") if b.attrs.get("aria-controls")]
-        if len(buttons) != 1:
-            flag(f"index.html:{row.line}", "gig--show row needs exactly one button with aria-controls")
+    for card in root.find_all("button", cls="gig-card"):
+        target = card.attrs.get("aria-controls")
+        if not target:
+            flag(f"index.html:{card.line}", "a gig-card button needs aria-controls naming its show")
             continue
-        openers.setdefault(buttons[0].attrs["aria-controls"], []).append(row.line)
+        openers.setdefault(target, []).append(card.line)
     for dialog in root.find_all("dialog", cls="show"):
         did = dialog.attrs.get("id", "")
         where = f"index.html:{dialog.line}"
@@ -153,9 +153,9 @@ def check_shows(root: Element) -> None:
             flag(where, f"show dialog id {did!r} must start with 'show-'")
         rows = openers.pop(did, [])
         if not rows:
-            flag(where, f"no gig--show row opens {did!r}")
+            flag(where, f"no gig-card opens {did!r}")
         elif len(rows) > 1:
-            flag(where, f"{did!r} is opened by rows on lines {rows}")
+            flag(where, f"{did!r} is opened by cards on lines {rows}")
         titles = [h for h in dialog.find_all("h2") if h.attrs.get("id") == f"{did}-title"]
         if len(titles) != 1:
             flag(where, f"show needs one h2 with id {did + '-title'!r}")
@@ -167,7 +167,7 @@ def check_shows(root: Element) -> None:
         if not any(b.has_class("dialog-close") for b in dialog.find_all("button")):
             flag(where, "show has no .dialog-close button")
     for did, rows in openers.items():
-        flag(f"index.html:{rows[0]}", f"row opens {did!r}, which is not a show dialog")
+        flag(f"index.html:{rows[0]}", f"card opens {did!r}, which is not a show dialog")
 
 
 def check_images(root: Element) -> None:
@@ -185,8 +185,10 @@ def check_images(root: Element) -> None:
 
 
 def check_rail_captions(root: Element) -> None:
-    rails = list(root.find_all(cls="rail"))
+    photos = next((el for el in root.walk() if el.attrs.get("id") == "photos"), None)
+    rails = list(photos.find_all(cls="rail")) if photos else []
     if not rails:
+        flag("index.html", "no rail in #photos")
         return
     captions = list(rails[0].find_all("figcaption"))
     for n, cap in enumerate(captions, start=1):
@@ -209,15 +211,18 @@ def check_gigs(root: Element) -> None:
         flag("index.html", "no #played section")
     else:
         previous = None
-        for row in played.find_all(cls="gig"):
-            date_el = next(row.find_all(cls="gig-date"), None)
+        cards = list(played.find_all(cls="gig-card"))
+        if list(played.find_all(cls="gig")):
+            flag(f"index.html:{played.line}", "#played holds gig-cards, not gig rows")
+        for card in cards:
+            date_el = next(card.find_all(cls="gig-date"), None)
             text = date_el.text if date_el else ""
             value = parse_month_year(text)
             if value is None:
-                flag(f"index.html:{row.line}", f"played date {text.strip()!r} must be MON YYYY")
+                flag(f"index.html:{card.line}", f"played date {text.strip()!r} must be MON YYYY")
                 continue
             if previous is not None and value > previous:
-                flag(f"index.html:{row.line}", f"played rows must run newest first; {text.strip()!r} is out of order")
+                flag(f"index.html:{card.line}", f"played cards must run newest first; {text.strip()!r} is out of order")
             previous = value
     upcoming = sections.get("upcoming")
     if upcoming is None:
