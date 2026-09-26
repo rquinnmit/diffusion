@@ -299,9 +299,9 @@
                 <span class="gig-city">Boston</span>
             </div>
             -->
-            <div class="gig">
+            <div class="gig gig--show">
                 <span class="gig-date">SEP 2026</span>
-                <span class="gig-venue">Fridays @ 51</span>
+                <button class="gig-venue" type="button" aria-haspopup="dialog" aria-controls="show-fridays-51">Fridays @ 51</button>
                 <span class="gig-city">Boston</span>
             </div>
             <div class="gig gig--show">
@@ -354,6 +354,15 @@
                 </div>
             </dialog>
             -->
+            <dialog class="show" id="show-fridays-51" aria-labelledby="show-fridays-51-title">
+                <div class="show-panel">
+                    <button class="dialog-close" type="button" aria-label="Close" autofocus>&#x2715;</button>
+                    <div class="show-lead">
+                        <h2 class="show-title" id="show-fridays-51-title">Fridays @ 51</h2>
+                        <a class="show-link" href="https://posh.vip/e/51-friday-7?t=ryan-quinn" target="_blank" rel="noopener">Event listing <span aria-hidden="true">&#8599;</span></a>
+                    </div>
+                </div>
+            </dialog>
             <dialog class="show" id="show-mirage-middle-east" aria-labelledby="show-mirage-middle-east-title">
                 <div class="show-panel">
                     <button class="dialog-close" type="button" aria-label="Close" autofocus>&#x2715;</button>
