@@ -5,7 +5,7 @@ default branch `main`, served by GitHub Pages on push at `https://diffusiondj.co
 (the `CNAME` file at the root is what binds the domain; never delete it). DNS
 is at Cloudflare. The site lived at
 `rquinnmit.github.io/music/` until 2026-09-05, and that path now redirects here,
-preserving the `#show/<slug>` hash. The professional site links here; this site
+preserving the hash (an old `#show/<slug>` link now just opens the page). The professional site links here; this site
 deliberately does not link back.
 
 `README.md` explains the layout and the routine edits. This file holds the
@@ -22,9 +22,9 @@ a lint, not a test suite, when reporting.
 Because every file is hand-authored, never reformat HTML or CSS wholesale. Match
 the surrounding indentation and leave untouched lines untouched.
 
-Layout: `index.html` at the root; `css/site.css`; `js/dialog.js`, `js/shows.js`
+Layout: `index.html` at the root; `css/site.css`; `js/dialog.js`, `js/photos.js`
 and `js/lightbox.js` as ES modules; `fonts/` with the self-hosted latin woff2
-files; images under `images/` (`sets/`, `photos/`, `shows/<slug>/`, the OG card
+files; images under `images/` (`sets/`, `photos/`, the OG card
 `og-diffusion.png`, and the favicon). Image paths never move: the OG card URL is
 cached by scrapers and the old-domain redirect points at this tree.
 
@@ -45,7 +45,7 @@ query string when a reload is the point.
 The header comment of `css/site.css` and the docstring of `js/dialog.js` say
 how each works. The rules: a new CSS rule's media query goes beside its
 component, not in a block at the end; a tint is `color-mix()` of a palette
-token, never a new hex; shows and the lightbox stay native `<dialog>`s, so do
+token, never a new hex; the lightbox stays a native `<dialog>`, so do
 not add a hand-rolled focus trap, `hidden`, `role="dialog"` or a body class
 back. The checker enforces the CSS half of this.
 
@@ -65,39 +65,36 @@ height, opening the show panel, which leads with the flyer. Ryan shipped and
 then withdrew it on 2026-09-24 because four gigs, two without flyers, do not
 fill a rail; he wants it back once he has more gigs behind him. Revive it by
 rebasing or cherry-picking that commit rather than rebuilding, and fetch
-flyers for any shows played since.
+flyers for any shows played since. The show panels it opens were removed on
+2026-10-01 (below), so a revival has to bring `js/shows.js` and the dialogs
+back from that branch's history or link each card to its listing instead.
 
 `#upcoming` stays on the page when nothing is booked. Ryan decided this on
 2026-09-01: with no rows it is a plain `sechead` over blank space, with no
 empty-state line, and the `sechead--cols` header with its Location label comes
 back with the first row. The HTML comment in the section shows both forms.
 Never delete the section or its nav link, and never add a "nothing here"
-message; blank space is his chosen signal for that, here and in a show panel
-with no media yet.
+message; blank space is his chosen signal for that.
 
-A Played row can open a show dialog over the page: a SoundCloud recording, a
-video embed, and photos from that night in a centred panel with the page
-dimmed and blurred behind it. The row's `gig-venue` becomes a `<button
-aria-controls="show-<slug>">`, the row takes `gig--show`, and a
-`<dialog class="show" id="show-<slug>">` after the rows holds the content.
-There is deliberately no hint text on the row; a faint underline is the only
-mark. `js/shows.js` opens it, mirrors the open show as `#show/<slug>` so back and
-shared links work, closes on Escape, the Close control, a click on the
-backdrop, or the back button, and copies `data-src` to `src` on embeds the
-first time a show opens. The panel has two halves and no labels, modelled on a
-label's release page Ryan supplied: `show-lead` on the left holds the video,
-the title, a `show-link` to the event's ticket-page listing, and the SoundCloud
-player, with no date or city line; `show-grid` on the right is one `show-tile`
-per photo, reusing the Sets grid's `tile-art` and `tile-meta` classes. A show
-with no grid narrows to one column. The close control is a bare ✕ with an
-aria-label, no word. The template comment above the first dialog shows the
-full form. Photos for a show will live under `images/shows/<slug>/`; video and audio
-are always embeds, never local files. The cruise and Mirage hold their titles
-and listing links until their media exists. That link is proof the gig
-happened, not an attempt to sell a passed date, so it sits in the same faint
-mono register as a `gig-note` and reads "Event listing" rather than "Tickets".
+A Played row's venue name links straight to the event's listing page in a
+new tab. Until 2026-10-01 it opened a show dialog (`js/shows.js`, `#show/<slug>`
+hashes) meant to hold a recording, a video and photos from the night; none of
+those ever arrived, so every panel was a title and a link, and Ryan had the
+row link to the listing directly. The link is proof the gig happened, not an
+attempt to sell a passed date, so a faint underline is its only mark: no
+arrow, no "Tickets" hint. A row with no listing keeps a plain span.
 
-Photos rail shots open in a centered lightbox on click (`js/lightbox.js`).
+Photos is a palette, modelled on moskomusic.com's photo section: every photo
+visible at once, each shown whole at its own aspect ratio. Ryan asked on
+2026-10-01 for the layout to follow the images' native sizes rather than
+fixed crops or hand-tuned columns. `js/photos.js` reads each img's `width` and
+`height` (the checker holds them to the file's real pixel size) and solves
+each row so its pieces share a height and fill the measure; a `shot-stack`
+puts photos one above another in a column, which is how two landscapes sit
+beside a portrait. The target row height is `--photo-row` in the stylesheet,
+per breakpoint. There are no number captions on the photos. Shots open in a
+centered lightbox on click (`js/lightbox.js`).
+
 Set covers are `<name>.webp` at 500px, and where SoundCloud holds the artwork
 at 1000px or more a `<name>-1000.webp` twin joined by `srcset`, so 2x desktop
 screens get the sharp one and phones the small one. The twins are
@@ -108,7 +105,7 @@ its side; the Trap Mix and Party Set twins shipped rotated a quarter turn on
 2026-09-07 and were only visible that way on a 2x screen. Rotate to match the
 `-t500x500` render before cropping, and look at the finished twin. Late Night
 Mix and R&B Mix exist only at 500px there. Never upscale a cover to fake the
-twin. Rail and show photos are WebP too.
+twin. Photos are WebP too.
 
 ## Hosting
 

@@ -15,18 +15,17 @@ Run from anywhere::
 Rules checked
 -------------
 - Every id is unique; every aria-controls and aria-labelledby resolves.
-- Every show dialog has a Played row that opens it, an h2 titled
-  ``<id>-title``, and only data-src on its embeds.
+- A linked Played venue opens its listing in a new tab with rel=noopener.
 - Every local file the page references exists, and every file under css/,
   js/, fonts/ and images/ is referenced somewhere (no orphans).
-- Every img has alt; grid images carry width and height, rail images height.
-- Photos rail figcaptions are 01, 02, ... in document order.
+- Every img has alt and carries width and height; in the Photos grid those
+  are the file's real pixel size, because js/photos.js lays out from them.
 - Played rows are dated MON YYYY and run newest first.
 - Upcoming has the Location header exactly when it has rows.
 - The phone twin of the noise filter is the desktop filter with every length
   halved (to the nearest whole number) and its coarse warp frequency doubled.
-- In the stylesheet, .sec--bleed follows .sec, a selector's max-width blocks
-  appear in descending order, and the only hex colours are the six tokens.
+- In the stylesheet, a selector's max-width blocks appear in descending
+  order, and the only hex colours are the six tokens.
 - CNAME names the domain and there is no .nojekyll (without Jekyll, Pages
   would serve .claude/CLAUDE.md).
 """
@@ -138,36 +137,29 @@ def check_ids_and_refs(root: Element) -> None:
                 flag(f"index.html:{el.line}", f"{attr}={target!r} matches no id")
 
 
-def check_shows(root: Element) -> None:
-    openers = {}
-    for row in root.find_all(cls="gig--show"):
-        buttons = [b for b in row.find_all("button") if b.attrs.get("aria-controls")]
-        if len(buttons) != 1:
-            flag(f"index.html:{row.line}", "gig--show row needs exactly one button with aria-controls")
-            continue
-        openers.setdefault(buttons[0].attrs["aria-controls"], []).append(row.line)
-    for dialog in root.find_all("dialog", cls="show"):
-        did = dialog.attrs.get("id", "")
-        where = f"index.html:{dialog.line}"
-        if not did.startswith("show-"):
-            flag(where, f"show dialog id {did!r} must start with 'show-'")
-        rows = openers.pop(did, [])
-        if not rows:
-            flag(where, f"no gig--show row opens {did!r}")
-        elif len(rows) > 1:
-            flag(where, f"{did!r} is opened by rows on lines {rows}")
-        titles = [h for h in dialog.find_all("h2") if h.attrs.get("id") == f"{did}-title"]
-        if len(titles) != 1:
-            flag(where, f"show needs one h2 with id {did + '-title'!r}")
-        if dialog.attrs.get("aria-labelledby") != f"{did}-title":
-            flag(where, f"aria-labelledby must be {did + '-title'!r}")
-        for frame in dialog.find_all("iframe"):
-            if "src" in frame.attrs:
-                flag(f"index.html:{frame.line}", "iframe inside a show must use data-src, not src")
-        if not any(b.has_class("dialog-close") for b in dialog.find_all("button")):
-            flag(where, "show has no .dialog-close button")
-    for did, rows in openers.items():
-        flag(f"index.html:{rows[0]}", f"row opens {did!r}, which is not a show dialog")
+def check_venue_links(root: Element) -> None:
+    for link in root.find_all("a", cls="gig-venue"):
+        where = f"index.html:{link.line}"
+        if not link.attrs.get("href", "").startswith("https://"):
+            flag(where, "venue link needs an https:// listing URL")
+        if link.attrs.get("target") != "_blank" or link.attrs.get("rel") != "noopener":
+            flag(where, 'venue link needs target="_blank" rel="noopener"')
+
+
+def webp_size(path: Path):
+    """Return (width, height) from a WebP file's header, or None."""
+    data = path.read_bytes()[:30]
+    if len(data) < 30 or data[:4] != b"RIFF" or data[8:12] != b"WEBP":
+        return None
+    chunk = data[12:16]
+    if chunk == b"VP8X":
+        return 1 + int.from_bytes(data[24:27], "little"), 1 + int.from_bytes(data[27:30], "little")
+    if chunk == b"VP8 ":
+        return int.from_bytes(data[26:28], "little") & 0x3FFF, int.from_bytes(data[28:30], "little") & 0x3FFF
+    if chunk == b"VP8L":
+        bits = int.from_bytes(data[21:25], "little")
+        return (bits & 0x3FFF) + 1, ((bits >> 14) & 0x3FFF) + 1
+    return None
 
 
 def check_images(root: Element) -> None:
@@ -177,22 +169,17 @@ def check_images(root: Element) -> None:
             flag(where, "img without alt")
         if img.has_class("lightbox-img"):
             continue
-        in_rail = img.ancestor("rail") is not None
-        if in_rail and "height" not in img.attrs:
-            flag(where, "rail img needs height")
-        if not in_rail and not ("width" in img.attrs and "height" in img.attrs):
+        if not ("width" in img.attrs and "height" in img.attrs):
             flag(where, "img needs width and height")
-
-
-def check_rail_captions(root: Element) -> None:
-    rails = list(root.find_all(cls="rail"))
-    if not rails:
-        return
-    captions = list(rails[0].find_all("figcaption"))
-    for n, cap in enumerate(captions, start=1):
-        expected = f"{n:02d}"
-        if cap.text.strip() != expected:
-            flag(f"index.html:{cap.line}", f"figcaption {cap.text.strip()!r} should be {expected!r}")
+            continue
+        if img.ancestor("photo-grid") is None:
+            continue
+        path = ROOT / img.attrs.get("src", "")
+        size = webp_size(path) if path.is_file() else None
+        if size is None:
+            flag(where, f"cannot read the size of {img.attrs.get('src')!r}; photos must be WebP")
+        elif size != (int(img.attrs["width"]), int(img.attrs["height"])):
+            flag(where, f"width/height must be the file's real size, {size[0]}x{size[1]}")
 
 
 def parse_month_year(text: str):
@@ -292,11 +279,6 @@ def check_filter_twin(root: Element) -> None:
 
 
 def check_css(css_text: str) -> None:
-    bleed = css_text.find(".sec--bleed {")
-    plain = css_text.find(".sec {")
-    if bleed == -1 or plain == -1 or bleed < plain:
-        flag("css/site.css", ".sec--bleed must come after .sec")
-
     hexes = set(re.findall(r"#[0-9A-Fa-f]{3,8}\b", css_text))
     tokens = set(re.findall(r"--\w+:\s*(#[0-9A-Fa-f]{6})", css_text))
     for h in sorted(hexes - tokens):
@@ -327,9 +309,8 @@ def main() -> int:
     root = load_tree(ROOT / "index.html")
     css_text = (ROOT / "css" / "site.css").read_text(encoding="utf-8")
     check_ids_and_refs(root)
-    check_shows(root)
+    check_venue_links(root)
     check_images(root)
-    check_rail_captions(root)
     check_gigs(root)
     check_files(root, css_text)
     check_filter_twin(root)

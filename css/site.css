@@ -3,11 +3,10 @@
 
    One stylesheet, read top to bottom in page order: tokens, fonts, base,
    nav, hero and wordmark, section shell, sets, photos, dialogs, lightbox,
-   gigs, shows, booking, footer, reduced motion. Each component carries its
-   own tablet and phone rules directly after its desktop rules, so it can be
-   read in one place. Two ordering rules are load-bearing and are marked
-   where they apply: .sec--bleed after .sec, and a selector's max-width
-   blocks in descending order.
+   gigs, booking, footer, reduced motion. Each component carries its own
+   tablet and phone rules directly after its desktop rules, so it can be read
+   in one place. One ordering rule is load-bearing and is marked where it
+   applies: a selector's max-width blocks stay in descending order.
 
    Colour comes only from the six tokens in :root. A tint is color-mix() of a
    token with transparent, never a new hex; tools/check.py counts the hexes.
@@ -496,66 +495,43 @@ a { color: inherit; text-decoration: none; }
 .tile:focus-visible .tile-meta { color: var(--violet); }
 
 /* ── photos ── */
-/* .sec--bleed must stay AFTER .sec in this file. Both are single-class selectors,
-   so source order alone decides which padding wins. Do not reorder these blocks. */
-.sec--bleed { padding-left: 0; padding-right: 0; }
-.sec--bleed .sechead { padding: 0 var(--edge); }
-
-.rail {
+/* js/photos.js sizes and places every shot from its image's own aspect
+   ratio, aiming each row at --photo-row, then adds .is-laid. Until it runs,
+   or without it, the photos wrap as a strip at that height, uncropped. */
+.photo-grid {
+    --photo-row: 480px;
     display: flex;
-    align-items: stretch;
+    flex-wrap: wrap;
     gap: 14px;
-    overflow-x: auto;
-    padding: 0 var(--edge) 16px;
-    /* No scroll-snap here on purpose. The photos are mixed crops, so the snap
-       points sit at irregular intervals; with only ~300px of scrollable width
-       the second point is further away than the rail can travel, so proximity
-       snapping dragged the view back to the start on every pause. */
-    /* `none`, not `contain`. Both stop scroll chaining to the page, but `contain`
-       still allows the local rubber-band, and with only ~295px of travel a
-       trackpad flick hits the limit instantly and springs back — indistinguishable
-       from the snap bug this rail already had once. */
-    overscroll-behavior-x: none;
-}
-
-.rail::-webkit-scrollbar { height: 3px; }
-.rail::-webkit-scrollbar-track { background: var(--panel); }
-.rail::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--bone) 20%, transparent); }
-
-.shot {
-    flex: 0 0 auto;
-    position: relative;
-    height: 330px;
-    border-radius: 2px;
-    overflow: hidden;
-    background: var(--panel);
 }
 
 @media (max-width: 900px) {
-    .shot { height: 260px; }
+    .photo-grid { --photo-row: 340px; }
 }
 
 @media (max-width: 600px) {
-    .shot { height: 220px; }
+    .photo-grid { --photo-row: 240px; gap: 10px; }
+}
+
+.shot-stack { display: contents; }
+
+.shot {
+    position: relative;
+    height: var(--photo-row);
+    border-radius: 2px;
+    overflow: hidden;
+    background: var(--panel);
 }
 
 .shot img {
     display: block;
     height: 100%;
     width: auto;
-    object-fit: cover;
 }
 
-.shot figcaption {
-    position: absolute;
-    left: 12px;
-    bottom: 10px;
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: .2em;
-    color: color-mix(in srgb, var(--bone) 62%, transparent);
-    text-shadow: 0 1px 3px color-mix(in srgb, var(--void) 90%, transparent);
-}
+.photo-grid.is-laid { display: block; position: relative; }
+.is-laid .shot { position: absolute; }
+.is-laid .shot img { width: 100%; }
 
 .shot-btn {
     appearance: none;
@@ -563,6 +539,7 @@ a { color: inherit; text-decoration: none; }
     border: 0;
     padding: 0;
     display: block;
+    width: 100%;
     height: 100%;
     cursor: pointer;
 }
@@ -572,8 +549,11 @@ a { color: inherit; text-decoration: none; }
 .shot-btn:hover img,
 .shot-btn:focus-visible img { filter: brightness(1.12); }
 
+/* Inset, because .shot clips anything drawn outside it. */
+.shot-btn:focus-visible { outline-offset: -2px; }
+
 /* ── dialogs ──
-   Shows and the lightbox are native <dialog>s opened with showModal(), which
+   The lightbox is a native <dialog> opened with showModal(), which
    gives the focus trap, Escape, the inert page behind and focus restore. The
    dialog element itself is the full-viewport dimmed, blurred layer, so a click
    on it outside the content is a click on the backdrop; the browser's own
@@ -608,8 +588,8 @@ dialog.is-open { opacity: 1; }
 
 body:has(dialog[open]) { overflow: hidden; }
 
-/* Absolute, not fixed: inside the lightbox the dialog is the containing
-   block, so this is the viewport corner; inside a show it is the panel's. */
+/* Absolute, not fixed: the dialog is the containing block, and it covers
+   the viewport, so this is the viewport corner. */
 .dialog-close {
     position: absolute;
     top: 16px;
@@ -718,18 +698,11 @@ body:has(dialog[open]) { overflow: hidden; }
 .gig--next:hover .gig-note,
 .gig--next:focus-visible .gig-note { color: var(--violet); }
 
-/* ── shows ── */
-.gig--show .gig-venue {
-    appearance: none;
-    background: none;
-    border: 0;
-    padding: 0;
-    font: inherit;
-    font-size: 15px;
-    font-weight: 500;
-    text-align: left;
+/* Played rows link the venue name to the event's listing. The faint
+   underline is the only mark: the link is proof the gig happened, not a
+   ticket sale for a passed date. */
+a.gig-venue {
     justify-self: start;
-    cursor: pointer;
     text-decoration: underline;
     text-decoration-color: color-mix(in srgb, var(--bone) 28%, transparent);
     text-decoration-thickness: 1px;
@@ -737,103 +710,8 @@ body:has(dialog[open]) { overflow: hidden; }
     transition: text-decoration-color var(--hover);
 }
 
-.gig--show .gig-venue:hover,
-.gig--show .gig-venue:focus-visible { text-decoration-color: var(--violet); }
-
-/* margin: auto centres the panel when it fits and lets the backdrop scroll
-   when it does not, where align-items: center would clip the top. The
-   min-height is for a show with nothing in it yet: the blank under the title
-   is the intended empty state, and the title alone would make a strip. */
-.show-panel {
-    position: relative;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 40px;
-    width: min(100%, 1400px);
-    min-height: 360px;
-    margin: auto;
-    padding: 40px;
-    background: var(--void);
-    border: 1px solid var(--line);
-    border-radius: 2px;
-    transform: translateY(12px);
-    transition: transform var(--fade) cubic-bezier(.4, 0, .2, 1);
-}
-
-.show-panel:not(:has(.show-grid)) {
-    grid-template-columns: minmax(0, 1fr);
-    width: min(100%, 720px);
-}
-
-.show.is-open .show-panel { transform: none; }
-
-@media (max-width: 900px) {
-    .show-panel { grid-template-columns: minmax(0, 1fr); }
-}
-
-@media (max-width: 600px) {
-    .show-panel { padding: 20px; gap: 28px; }
-    .show-panel .dialog-close { top: 10px; right: 12px; }
-}
-
-.show-lead {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-}
-
-.show-title {
-    margin-top: 16px;
-    /* Deliberate 2px hang outside the panel's padding, chosen by eye. The
-       title no longer shares the left edge of the link beneath it. */
-    margin-left: -2px;
-    font-size: clamp(1.25rem, 3vw, 1.75rem);
-    font-weight: 700;
-    font-stretch: 108%;
-    letter-spacing: -.015em;
-    line-height: 1.15;
-    color: var(--bone);
-}
-
-.show-lead > :first-child { margin-top: 0; }
-
-.show-link {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-    color: var(--grey);
-    text-decoration: none;
-    transition: color var(--hover);
-}
-
-.show-link:hover,
-.show-link:focus-visible { color: var(--violet); }
-
-.show-embed {
-    display: block;
-    width: 100%;
-    border: 0;
-    border-radius: 2px;
-    background: var(--panel);
-}
-
-.show-embed--video { aspect-ratio: 16 / 9; height: auto; }
-.show-embed--audio { height: 166px; margin-top: 16px; }
-
-.show-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 28px 24px;
-    align-content: start;
-}
-
-@media (max-width: 600px) {
-    .show-grid { gap: 22px 14px; }
-}
-
-.show-tile figcaption { margin-top: 10px; }
+a.gig-venue:hover,
+a.gig-venue:focus-visible { text-decoration-color: var(--violet); }
 
 /* ── booking ── */
 .book { text-align: center; padding-top: 72px; padding-bottom: 96px; }

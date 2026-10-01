@@ -14,11 +14,11 @@ read it before changing how anything looks or behaves.
 |---|---|
 | `index.html` | The page. Content lives here, with a template for each repeating block in an HTML comment beside it. |
 | `css/site.css` | The one stylesheet, in page order. Each component's phone rules sit right after its desktop rules. |
-| `js/dialog.js` | Opens and closes a `<dialog>` with a fade. Shared by the two below. |
-| `js/shows.js` | Show panels: opens one from its Played row, mirrors it to `#show/<slug>`, loads embeds on first open. |
-| `js/lightbox.js` | Enlarges a Photos rail shot in the `#lightbox` dialog. |
+| `js/dialog.js` | Opens and closes a `<dialog>` with a fade. Used by the lightbox. |
+| `js/photos.js` | Lays out the Photos palette from each image's own width and height. |
+| `js/lightbox.js` | Enlarges a photo in the `#lightbox` dialog. |
 | `fonts/` | Self-hosted latin subsets of Archivo and JetBrains Mono (SIL Open Font License). |
-| `images/` | `sets/` covers, `photos/` rail shots, `shows/<slug>/` photos for a show panel, the share card and the favicon. |
+| `images/` | `sets/` covers, `photos/` for the Photos palette, the share card and the favicon. |
 | `tools/check.py` | Checks the invariants below. Standard library only. |
 | `CNAME` | Binds the domain. Never delete it. |
 
@@ -58,20 +58,20 @@ to month and year (`AUG 2026`), drop `gig--next` and the ticket line. If no
 show remains upcoming, put the header back to its plain form; the section
 itself stays.
 
-**Give a played show a panel.** Turn the row's `gig-venue` span into a
-`<button aria-controls="show-<slug>">`, add `gig--show` to the row, and add a
-`<dialog class="show" id="show-<slug>">` after the rows using the template
-there. Photos go under `images/shows/<slug>/`; video and audio are always
-embeds with `data-src`, never local files.
+**Link a played show.** Make the row's `gig-venue` an
+`<a href="LISTING URL" target="_blank" rel="noopener">` pointing at the
+event's listing page, as in the template above the rows.
 
 **Add a set.** Add a `tile` to `.set-grid`, newest first, with the cover in
 `images/sets/` as `<name>.webp` at 500px and, when the SoundCloud original is
 1000px or more, `<name>-1000.webp` named in the tile's `srcset` (see the
 comment in the grid). Covers below the first row take `loading="lazy"`.
 
-**Add a photo.** Add a `figure.shot` to the rail with a WebP in
-`images/photos/` and the next figcaption number. Portrait and landscape both
-work.
+**Add a photo.** Add a `figure.shot` to `.photo-grid` with a WebP in
+`images/photos/`, giving the img the file's real `width` and `height` (the
+checker compares them). Portrait and landscape both work; the layout sizes
+every photo from those numbers. Wrap two photos in a `div.shot-stack` to stack
+them in one column.
 
 Encode WebP with `cwebp -q 85 -m 6 -metadata none in.jpg -o out.webp`.
 
