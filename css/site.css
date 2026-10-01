@@ -716,22 +716,6 @@ a.gig-venue:focus-visible { text-decoration-color: var(--violet); }
 /* ── booking ── */
 .book { text-align: center; padding-top: 72px; padding-bottom: 96px; }
 
-/* The one-line bio, standing in for an About section. It leads into the
-   booking address so a promoter reads who Diffusion is just before writing;
-   the hero stays the bare wordmark. */
-.book-bio {
-    max-width: 34em;
-    margin: 0 auto 48px;
-    font-size: 16px;
-    line-height: 1.55;
-    color: color-mix(in srgb, var(--bone) 78%, transparent);
-    text-wrap: balance;
-}
-
-@media (max-width: 600px) {
-    .book-bio { font-size: 14.5px; margin-bottom: 40px; }
-}
-
 .book-label {
     font-family: var(--mono);
     font-size: 13px;
