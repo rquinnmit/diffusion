@@ -2,10 +2,10 @@
    Diffusion — diffusiondj.com
 
    One stylesheet, read top to bottom in page order: tokens, fonts, base,
-   nav, hero and wordmark, section shell, sets, photos, dialogs, lightbox,
-   gigs, booking, footer, reduced motion. Each component carries its own
-   tablet and phone rules directly after its desktop rules, so it can be read
-   in one place. One ordering rule is load-bearing and is marked where it
+   nav, hero and wordmark, section shell, about, sets, photos, dialogs,
+   lightbox, gigs, booking, footer, reduced motion. Each component carries
+   its own tablet and phone rules directly after its desktop rules, so it can
+   be read in one place. One ordering rule is load-bearing and is marked where it
    applies: a selector's max-width blocks stay in descending order.
 
    Colour comes only from the six tokens in :root. A tint is color-mix() of a
@@ -146,6 +146,11 @@ a { color: inherit; text-decoration: none; }
     /* Five links spread across a 320px viewport leave no gap at the full-size
        tracking, so the labels touch. */
     .nav-links a { font-size: 10px; letter-spacing: .14em; }
+}
+
+@media (max-width: 360px) {
+    /* Six links at .14em leave under 3px between them at 320. */
+    .nav-links a { letter-spacing: .06em; }
 }
 
 /* ── hero ── */
@@ -422,6 +427,28 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 600px) {
     .sec { scroll-margin-top: 42px; padding-top: 38px; padding-bottom: 56px; }
     .sechead { margin-bottom: 24px; }
+}
+
+/* ── about ── */
+/* Set a size above body text: one sentence at 16px would read as a stray
+   line in an empty section, where at this size it holds the section as a
+   statement. */
+.about-text {
+    max-width: 30em;
+    font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: -.01em;
+    color: color-mix(in srgb, var(--bone) 74%, transparent);
+    text-wrap: balance;
+}
+
+/* The genre in the wordmark's own cut, heavy and wide, at full strength
+   against the softer sentence around it. */
+.about-text strong {
+    font-weight: 750;
+    font-stretch: 110%;
+    color: var(--bone);
 }
 
 /* ── sets ── */
@@ -715,22 +742,6 @@ a.gig-venue:focus-visible { text-decoration-color: var(--violet); }
 
 /* ── booking ── */
 .book { text-align: center; padding-top: 72px; padding-bottom: 96px; }
-
-/* The one-line bio, standing in for an About section. It leads into the
-   booking address so a promoter reads who Diffusion is just before writing;
-   the hero stays the bare wordmark. */
-.book-bio {
-    max-width: 34em;
-    margin: 0 auto 48px;
-    font-size: 16px;
-    line-height: 1.55;
-    color: color-mix(in srgb, var(--bone) 78%, transparent);
-    text-wrap: balance;
-}
-
-@media (max-width: 600px) {
-    .book-bio { font-size: 14.5px; margin-bottom: 40px; }
-}
 
 .book-label {
     font-family: var(--mono);
