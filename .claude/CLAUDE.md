@@ -52,10 +52,12 @@ back. The checker enforces the CSS half of this.
 ## Sections
 
 Sections are `#upcoming`, `#sets`, `#photos`, `#played`, and `#booking` — there
-is deliberately no About section. Its job is done by one line of body text
-under the wordmark, `hero-bio`, added 2026-10-01: "Diffusion is a Boston-based
-DJ and MIT student playing indie tech, a fusion of tech house and indie
-dance." Ryan chose that wording; indie tech is the genre he is building
+is deliberately no About section. Its job is done by one line of body text,
+`book-bio`, leading into the Booking address, added 2026-10-01: "Diffusion is
+a Boston-based DJ and MIT student playing indie tech, a fusion of tech house
+and indie dance." It went under the wordmark first and Ryan moved it the same
+day: the hero's bare wordmark, tagline and icons are the appeal of the
+opening, so keep text out of it. Ryan chose that wording; indie tech is the genre he is building
 toward, named as what he plays rather than an aspiration, and glossed with
 the two familiar genres for promoters who do not know the term. MIT came off
 the tagline on 2026-09-29 and belongs in the bio, not back in the tagline.
