@@ -52,7 +52,16 @@ back. The checker enforces the CSS half of this.
 ## Sections
 
 Sections are `#upcoming`, `#sets`, `#photos`, `#played`, and `#booking` — there
-is deliberately no About section.
+is deliberately no About section. Its job is done by one line of body text
+under the wordmark, `hero-bio`, added 2026-10-01: "Diffusion is a Boston-based
+DJ and MIT student playing indie tech, a fusion of tech house and indie
+dance." Ryan chose that wording; indie tech is the genre he is building
+toward, named as what he plays rather than an aspiration, and glossed with
+the two familiar genres for promoters who do not know the term. MIT came off
+the tagline on 2026-09-29 and belongs in the bio, not back in the tagline.
+The meta, Open Graph and Twitter descriptions and the JSON-LD description
+open with the same sentence, and the JSON-LD genres are Indie Tech, Tech
+House and Indie Dance; change all of them together.
 
 `#upcoming` and `#played` share one grid, so a show moves between them by
 editing its date and dropping `gig--next`. Upcoming rows are links to the ticket
