@@ -157,7 +157,7 @@ Safari; the memory note on the Safari testbed says how.
 
 ## Kept off the site
 
-`docs/`, `.superpowers/` and `.playwright-mcp/` are gitignored. Pages serves
+`docs/` and `.playwright-mcp/` are gitignored. Pages serves
 whatever is in the branch, so tracking them would publish planning artifacts at
 diffusiondj.com/docs/. This file lives at `.claude/CLAUDE.md` and there is no
 `.nojekyll` for the same reason: Jekyll's pass is what keeps dot-directories
