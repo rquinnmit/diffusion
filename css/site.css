@@ -359,13 +359,6 @@ a { color: inherit; text-decoration: none; }
     color: var(--grey);
 }
 
-@media (max-width: 600px) {
-    /* Three places instead of two overruns the measure at the full size and
-       wraps. Shrunk to hold one line at 320 too, and to stay narrower than the
-       wordmark above it, which is 263px of ink there. */
-    .hero-tag { font-size: 13.5px; letter-spacing: .26em; }
-}
-
 /* Decorative separator: aria-hidden in the markup, so it is pure decoration
    and exempt from WCAG 1.4.3. Do not "fix" this to a brighter value. */
 .hero-tag span { color: color-mix(in srgb, var(--bone) 34%, transparent); margin: 0 .8em; }
