@@ -15,17 +15,19 @@ Run from anywhere::
 Rules checked
 -------------
 - Every id is unique; every aria-controls and aria-labelledby resolves.
-- A linked Played venue opens its listing in a new tab with rel=noopener.
+- A linked Played venue opens an https listing in a new tab with rel=noopener.
 - Every local file the page references exists, and every file under css/,
   js/, fonts/ and images/ is referenced somewhere (no orphans).
-- Every img has alt and carries width and height; in the Photos grid those
-  are the file's real pixel size, because js/photos.js lays out from them.
-- Played rows are dated MON YYYY and run newest first.
-- Upcoming has the Location header exactly when it has rows.
+- Every img has alt and, the lightbox's empty img aside, carries width and
+  height; in the Photos grid those are the file's real pixel size, because
+  js/photos.js lays out from them.
+- #played exists; its rows are dated MON YYYY and run newest first.
+- #upcoming exists; it has the Location header exactly when it has rows, and
+  every row there carries gig--next.
 - The phone twin of the noise filter is the desktop filter with every length
   halved (to the nearest whole number) and its coarse warp frequency doubled.
 - In the stylesheet, a selector's max-width blocks appear in descending
-  order, and the only hex colours are the six tokens.
+  order, and every hex colour is the value of a token (a custom property).
 - CNAME names the domain and there is no .nojekyll (without Jekyll, Pages
   would serve .claude/CLAUDE.md).
 """
@@ -275,7 +277,7 @@ def check_filter_twin(root: Element) -> None:
                 flag(where, f"baseFrequency should be {expected:g}")
 
 
-# ── css checks ──
+# ── css and repo checks ──
 
 
 def check_css(css_text: str) -> None:

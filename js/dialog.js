@@ -1,14 +1,15 @@
 /**
  * Fade a native <dialog> in and out.
  *
- * Both overlays on the page, a show panel and the photo lightbox, are <dialog>
- * elements opened with showModal(), so the browser owns the focus trap,
+ * The page's one overlay, the photo lightbox, is a <dialog>
+ * element opened with showModal(), so the browser owns the focus trap,
  * Escape, the inert page behind and focus restore. This module adds the one
  * thing the platform lacks: a transition on the way in and out. The stylesheet
- * fades `dialog` from opacity 0 to 1 on `.is-open`; opening flips the class one
- * frame after showModal() so the transition has a start state, and closing
- * removes it and waits for the running transitions before close(). Under
- * prefers-reduced-motion nothing transitions, so the wait resolves at once.
+ * fades `dialog` from opacity 0 to 1 on `.is-open`; opening adds the class
+ * after showModal() and a forced layout so the transition has a start state,
+ * and closing removes it and waits for the running transitions before
+ * close(). Under prefers-reduced-motion nothing transitions, so the wait
+ * resolves at once.
  */
 
 export function openDialog(dialog) {
@@ -35,7 +36,7 @@ export function closeDialog(dialog) {
 
 /**
  * Send the three dismissal gestures, Escape, the close control and a click
- * on the backdrop outside the panel, to one handler. Escape arrives as the
+ * on the backdrop outside the content, to one handler. Escape arrives as the
  * dialog's `cancel` event; it is prevented so the fade can run, and the
  * handler is expected to end in closeDialog(). A browser that refuses to let
  * the page delay Escape skips `cancel` and closes at once, so callers that

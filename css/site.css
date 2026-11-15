@@ -9,7 +9,7 @@
    applies: a selector's max-width blocks stay in descending order.
 
    Colour comes only from the six tokens in :root. A tint is color-mix() of a
-   token with transparent, never a new hex; tools/check.py counts the hexes.
+   token with transparent, never a new hex; tools/check.py flags any other hex.
    ───────────────────────────────────────────── */
 
 /* ── tokens ── */
@@ -287,7 +287,6 @@ a { color: inherit; text-decoration: none; }
     .mark-mid::before { filter: url(#mark-noise-mid-sm); }
 }
 
-/* bottom: the real text, arriving from the left */
 .mark-text {
     display: block;
     position: relative;
@@ -436,7 +435,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 600px) {
-    /* Two columns, not one: six full-width squares stack to more than 2000px
+    /* Two columns, not one: full-width squares stack into one long column
        and lose the grid the desktop page is built around. */
     .set-grid { grid-template-columns: repeat(2, 1fr); gap: 22px 14px; }
 }
@@ -621,7 +620,7 @@ body:has(dialog[open]) { overflow: hidden; }
 
 /* ── gigs ── */
 /* One grid serves Upcoming and Played, so a show moves between the two
-   sections by editing its date and dropping .gig--next.
+   sections as an edit to its row in index.html.
    The header row shares the gig grid, so PLAYED sits over the date column and
    LOCATION exactly over the city column. It was previously a flex row with
    space-between while the rows below were a 3-column grid, so the right-hand
@@ -674,7 +673,7 @@ body:has(dialog[open]) { overflow: hidden; }
 .gig-venue { font-size: 15px; font-weight: 500; color: var(--bone); }
 
 /* Upcoming rows only. .gig-note is its own cell rather than a child of
-   .gig-venue so the mobile stack keeps the played order: venue, city, then
+   .gig-venue so the row keeps the played order: venue, city, then
    the ticket line. */
 .gig--next { row-gap: 5px; }
 

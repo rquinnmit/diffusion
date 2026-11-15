@@ -1,10 +1,10 @@
 /**
- * Lightbox for the Photos rail.
+ * Lightbox for the Photos palette.
  *
  * Clicking a .shot-btn copies that photo into the single shared #lightbox
  * dialog and opens it, enlarged and centered over the dimmed page. There is
- * no gallery navigation between photos and no URL hash: unlike a show, an
- * enlarged photo is not a destination worth linking to on its own.
+ * no gallery navigation between photos and no URL hash: an enlarged photo
+ * is not a destination worth linking to on its own.
  */
 import { openDialog, closeDialog, onDismiss } from './dialog.js';
 

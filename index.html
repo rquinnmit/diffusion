@@ -27,7 +27,6 @@
     <meta name="twitter:image" content="https://diffusiondj.com/images/og-diffusion.png">
     <meta name="twitter:image:alt" content="Diffusion">
 
-    <!-- Connect the artist, official site and social profiles with stable IDs. -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -76,9 +75,10 @@
          full-bleed square (no transparency) rather than the inscribed circle. -->
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <link rel="stylesheet" href="css/site.css">
-    <!-- Preloaded so the real faces are present at first paint. Without this the
-         fallback renders first and the wordmark visibly jumps to its real width
-         when Archivo arrives — mid-entrance, which is worse than usual. Fonts
+    <!-- Preloaded so the real faces are present at first paint. Archivo is
+         font-display: optional because a late swap made the wordmark jump to
+         its real width mid-entrance, so without the preload it can miss first
+         paint and leave the fallback face up for that page view. Fonts
          are fetched in CORS mode even from the same origin, so the preload
          needs crossorigin to be matched. -->
     <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/archivo-latin.woff2">
@@ -188,8 +188,9 @@
             </div>
                  Then add one row per booked show, soonest first. The date is the
                  day here, not the year, because an upcoming show needs the day.
-                 Once it passes, move the row to #played, change the date to
-                 MONTH YEAR, and drop the gig--next class and the gig-note line:
+                 Once it passes, move the row to #played as a div in the shape
+                 shown there, change the date to MON YYYY, and drop the
+                 gig--next class and the gig-note line:
             <a class="gig gig--next" href="TICKET URL" target="_blank" rel="noopener">
                 <span class="gig-date">MON DD</span>
                 <span class="gig-venue">Event Name</span>
