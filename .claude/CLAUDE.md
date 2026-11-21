@@ -103,7 +103,7 @@ its `-t500x500` artwork URL, swap in `-original`. That original is the camera's
 own frame with the EXIF orientation stripped, so a phone photo arrives lying on
 its side, and a twin left that way looks wrong only on a 2x screen. Rotate to
 match the `-t500x500` render before cropping, and look at the finished twin.
-Late Night Mix and R&B Mix exist only at 500px there; ship such a cover at
+Late Night Mix exists only at 500px there; ship such a cover at
 500px alone, and never upscale it to fake the twin.
 
 ## Hosting
