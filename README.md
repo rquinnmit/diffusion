@@ -66,6 +66,12 @@ event's listing page, as in the template above the rows.
 `images/sets/` as `<name>.webp` at 500px and, when the SoundCloud original is
 1000px or more, `<name>-1000.webp` named in the tile's `srcset` (see the
 comment in the grid). Covers after the first three take `loading="lazy"`.
+To make the 1000px twin, fetch the track page, take its `-t500x500` artwork
+URL and swap in `-original`. That original is the camera's own frame with the
+EXIF orientation stripped, so a phone photo can arrive on its side: rotate it
+to match the `-t500x500` render, then crop the centre square. When SoundCloud
+holds the artwork only at 500px, ship that cover alone rather than upscaling
+it.
 
 **Add a photo.** Add a `figure.shot` to `.photo-grid` with a WebP in
 `images/photos/`, giving the img the file's real `width` and `height` (the

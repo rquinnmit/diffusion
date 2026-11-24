@@ -49,10 +49,9 @@ back. The checker enforces the CSS half of this.
 
 ## Sections
 
-Sections are `#upcoming`, `#sets`, `#photos`, `#played`, and `#booking` — there
-is deliberately no About section and no bio on the page. A one-sentence bio was
-tried in three placements and none looked natural, so it is off the page until
-a press kit and better photos exist. Keep text out of the hero in any case: its
+The page deliberately has no About section and no bio: a one-sentence bio
+looked wrong in every placement tried, so it waits for a press kit and better
+photos. Keep text out of the hero in any case: its
 bare wordmark, tagline and icons are the appeal of the opening. Indie tech is
 the genre Ryan is building toward. The bio sentence still opens the meta, Open
 Graph and Twitter descriptions and the JSON-LD description, and the JSON-LD
@@ -64,13 +63,9 @@ and the parked `content/about` branch.
 `#upcoming` and `#played` share one grid, so a show moves between them as a row
 edit; `README.md` gives the steps and the date formats.
 
-A flyer rail for Played is built and parked on the `played-rail` branch
-(commit f0e5065): one card per show with the event's flyer at the Photos
-height. It is off the page because too few gigs have flyers to fill a rail, and
-Ryan wants it back once he has more gigs behind him. Before reviving it, read
-the memory note `diffusion-page-section-decisions`: start from that commit
-rather than rebuilding, and plan for the show panels its cards opened, which no
-longer exist.
+A flyer rail for Played is parked on the `played-rail` branch until enough gigs
+have flyers to fill it, and Ryan wants it back then. Before reviving it, read
+the memory note `diffusion-page-section-decisions`, which says how.
 
 `#upcoming` stays on the page when nothing is booked: with no rows it is a
 plain `sechead` over blank space, with no empty-state line, and the
@@ -82,29 +77,20 @@ message, because blank space is Ryan's chosen signal that nothing is booked.
 A Played row's venue name links straight to the event's listing page in a
 new tab. The link is proof the gig happened, not an attempt to sell a passed
 date, so a faint underline is its only mark: no arrow, no "Tickets" hint. A row
-with no listing keeps a plain span. Rows used to open show dialogs
-(`js/shows.js`, `#show/<slug>` hashes), which were removed because no panel
-ever held more than a title and a link; before bringing show panels back, read
-the memory note `diffusion-page-section-decisions`.
+with no listing keeps a plain span. The show dialogs that rows used to open
+were removed on purpose; before bringing them back, read the memory note
+`diffusion-page-section-decisions`.
 
 Photos is a palette, modelled on moskomusic.com's photo section: every photo
 visible at once, each shown whole at its own aspect ratio. The layout follows
 the images' native sizes rather than fixed crops or hand-tuned columns, at
 Ryan's request; the docstring of `js/photos.js` says how each row is solved.
 The target row height is `--photo-row` in the stylesheet, per breakpoint. There
-are no number captions on the photos. Shots open in a centered lightbox on
-click (`js/lightbox.js`).
+are no number captions on the photos.
 
-Set covers are `<name>.webp` at 500px, and where SoundCloud holds the artwork
-at 1000px or more a `<name>-1000.webp` twin joined by `srcset`, so 2x desktop
-screens get the sharp one and phones the small one. The twins are
-centre-square crops of the SoundCloud originals: fetch the track page, take
-its `-t500x500` artwork URL, swap in `-original`. That original is the camera's
-own frame with the EXIF orientation stripped, so a phone photo arrives lying on
-its side, and a twin left that way looks wrong only on a 2x screen. Rotate to
-match the `-t500x500` render before cropping, and look at the finished twin.
-Late Night Mix exists only at 500px there; ship such a cover at
-500px alone, and never upscale it to fake the twin.
+A set cover's 1000px twin comes from the SoundCloud original, which can arrive
+rotated on its side and then looks wrong only on a 2x screen. Follow "Add a
+set" in `README.md`, and look at each finished twin.
 
 ## Hosting
 
